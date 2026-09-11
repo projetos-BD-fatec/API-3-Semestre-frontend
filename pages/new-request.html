@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>FuSEx - Nova solicitação</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">
+                FuSEx
+            </a>
+            <a href="../index.html" class="back-button">
+                Voltar
+            </a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <section class="page-header">
+            <h1>Nova solicitação</h1>
+            <p>
+                Preencha as informações abaixo para solicitar sua pré-guia.
+            </p>
+        </section>
+
+        <form class="request-form">
+            <section class="form-section">
+                <h2>1. Encaminhamento</h2>
+                <p class="form-description">
+                    Anexe o encaminhamento médico referente ao exame.
+                </p>
+                <label for="encaminhamento"
+                       class="file-upload">
+                    <span class="file-icon">
+                        📎
+                    </span>
+                    <span class="file-title">
+                        Anexar encaminhamento
+                    </span>
+                    <span class="file-description">
+                        PDF, JPG ou PNG
+                    </span>
+                </label>
+                <input
+                    type="file"
+                    id="encaminhamento"
+                    name="encaminhamento"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                    required
+                >
+            </section>
+
+            <section class="form-section">
+                <h2>2. Exame</h2>
+                <p class="form-description">
+                    Selecione o exame solicitado pelo médico.
+                </p>
+
+                <div class="form-field">
+                    <label for="exame">
+                        Exame
+                    </label>
+                    <select id="exame"
+                            name="exame"
+                            required>
+                        <option value="">
+                            Selecione o exame
+                        </option>
+                        <option value="ressonancia">
+                            Ressonância Magnética
+                        </option>
+                        <option value="tomografia">
+                            Tomografia
+                        </option>
+                        <option value="ultrassonografia">
+                            Ultrassonografia
+                        </option>
+                        <option value="raio-x">
+                            Raio-X
+                        </option>
+                    </select>
+                </div>
+            </section>
+
+            <section class="form-section">
+                <h2>3. Clínica</h2>
+                <p class="form-description">
+                    Selecione onde deseja realizar o exame.
+                </p>
+
+                <div class="form-field">
+                    <label for="clinica">
+                        Clínica
+                    </label>
+                    <select id="clinica"
+                            name="clinica"
+                            required>
+                        <option value="">
+                            Selecione a clínica
+                        </option>
+                        <option value="clinica-a">
+                            Clínica A
+                        </option>
+                        <option value="clinica-b">
+                            Clínica B
+                        </option>
+                        <option value="clinica-c">
+                            Clínica C
+                        </option>
+                    </select>
+                </div>
+            </section>
+
+            <div class="form-actions">
+                <a href="../index.html"
+                   class="secondary-button">
+                    Cancelar
+                </a>
+                <button type="submit"
+                        class="primary-button">
+                    Enviar solicitação
+                </button>
+            </div>
+        </form>
+    </main>
+</body>
+</html>
