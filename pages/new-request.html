@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
-    <title>FuSEx - Nova solicitação</title>
+    <title>FUSEx - Nova solicitação</title>
     <link rel="stylesheet" href="../css/style.css">
 </head>
 
@@ -29,7 +29,7 @@
             </p>
         </section>
 
-        <form class="request-form">
+        <form id="request-form" class="request-form">
             <section class="form-section">
                 <h2>1. Encaminhamento</h2>
                 <p class="form-description">
@@ -54,6 +54,8 @@
                     accept=".pdf,.jpg,.jpeg,.png"
                     required
                 >
+                <div id="file-info" class="file-info"></div>
+                <div id="file-error" class="form-error"></div>
             </section>
 
             <section class="form-section">
@@ -116,7 +118,7 @@
                     </select>
                 </div>
             </section>
-
+            <div id="form-error" class="form-error"></div>
             <div class="form-actions">
                 <a href="../index.html"
                    class="secondary-button">
@@ -128,6 +130,40 @@
                 </button>
             </div>
         </form>
+        <div id="confirmation" class="confirmation">
+        <div class="confirmation-content">
+            <h2>Confirmar solicitação</h2>
+            <div class="confirmation-item">
+                <span>Exame</span>
+                <strong id="confirmation-exam"></strong>
+            </div>
+            <div class="confirmation-item">
+                <span>Clínica</span>
+                <strong id="confirmation-clinic"></strong>
+            </div>
+            <div class="confirmation-item">
+                <span>Encaminhamento</span>
+                <strong id="confirmation-file"></strong>
+            </div>
+            <div class="confirmation-actions">
+                <button
+                    type="button"
+                    id="cancel-confirmation"
+                    class="secondary-button"
+                >
+                    Voltar
+                </button>
+                <button
+                    type="button"
+                    id="confirm-submit"
+                    class="primary-button"
+                >
+                    Confirmar envio
+                </button>
+            </div>
+        </div>
+    </div>
     </main>
+    <script src="../js/new-request.js"></script>
 </body>
 </html>
