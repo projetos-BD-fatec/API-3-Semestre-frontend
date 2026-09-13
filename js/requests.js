@@ -1,34 +1,30 @@
-const requests = [
-    {
-        id: 1,
-        exam: "Ressonância Magnética",
-        clinic: "Clínica A",
-        date: "12/09/2026",
-        status: "EM_ANALISE"
-    },
-    {
-        id: 2,
-        exam: "Ultrassonografia",
-        clinic: "Clínica B",
-        date: "08/09/2026",
-        status: "AUTORIZADA"
-    },
-    {
-        id: 3,
-        exam: "Tomografia",
-        clinic: "Clínica C",
-        date: "01/09/2026",
-        status: "NEGADA"
-    }
-];
-
+const API_URL = 'http://localhost:8080/solicitacoes';
 const requestList = document.getElementById("request-list");
 const emptyState = document.getElementById("empty-state");
 
+async function loadRequests() {
+    try {
+        const response = await fetch(API_URL);
+
+        if (!response.ok) {
+            throw new Error('Erro ao buscar solicitações.');
+        }
+
+        const requests = await response.json();
+
+        renderRequests(requests);
+
+    } catch (error) {
+        console.error('Erro:', error);
+    }
+}
+
 function createRequestCard(request) {
     const card = document.createElement("a");
+
     card.classList.add("request-card");
     card.href = `solicitacao.html?id=${request.id}`;
+
     card.innerHTML = `
         <div class="request-card-header">
             <h2>${request.exam}</h2>
@@ -36,6 +32,7 @@ function createRequestCard(request) {
                 ${getStatusLabel(request.status)}
             </span>
         </div>
+
         <div class="request-card-info">
             <span>Clínica</span>
             <strong>${request.clinic}</strong>
@@ -46,6 +43,7 @@ function createRequestCard(request) {
             <strong>${request.date}</strong>
         </div>
     `;
+
     return card;
 }
 
@@ -55,20 +53,24 @@ function getStatusLabel(status) {
         AUTORIZADA: "Autorizada",
         NEGADA: "Negada"
     };
+
     return statusLabels[status] || "Desconhecido";
 }
 
-function renderRequests() {
+function renderRequests(requests) {
     requestList.innerHTML = "";
+
     if (requests.length === 0) {
         emptyState.style.display = "flex";
         return;
     }
+
     emptyState.style.display = "none";
+
     requests.forEach(function (request) {
         const card = createRequestCard(request);
         requestList.appendChild(card);
     });
 }
 
-renderRequests();
+document.addEventListener('DOMContentLoaded', loadRequests);
