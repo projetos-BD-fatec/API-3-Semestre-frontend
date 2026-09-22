@@ -1,0 +1,43 @@
+<!-- Aqui a ideia é ter um histórico de todas as solicitações já feitas pelo beneficiário -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FuSEx - Minhas solicitações</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-container">
+        <a href="../index.html" class="logo">FUSEx</a>
+        <a href="../index.html" class="back-button">Voltar</a>
+    </div>
+</header>
+
+<main class="main-container">
+
+    <section class="page-header">
+        <h1>Minhas solicitações</h1>
+        <p>Acompanhe suas solicitações de pré-guia.</p>
+    </section>
+
+    <div class="request-list" id="request-list">
+        <!-- Os cards são inseridos pelo Javascript dinamicamente -->
+    </div>
+
+    <div class="empty-state" id="empty-state">
+        <h2>Nenhuma solicitação</h2>
+        <p>Você ainda não possui solicitações.</p>
+        <a href="nova-solicitacao.html" class="primary-button">
+            Nova solicitação
+        </a>
+    </div>
+
+</main>
+
+<script src="../js/requests.js"></script>
+
+</body>
+</html>
