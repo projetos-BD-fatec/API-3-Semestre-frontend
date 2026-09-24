@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>FUSEx - Acesso OCS</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="login-page">
+
+<header class="header">
+    <div class="header-container">
+
+        <a href="../index.html" class="logo">
+            FUSEx
+        </a>
+
+    </div>
+</header>
+
+
+<main class="login-main">
+
+    <section class="login-wrapper">
+
+        <div class="login-intro">
+
+            <span class="login-badge">
+                Organização Civil de Saúde
+            </span>
+
+            <h1>
+                Acesso da OCS
+            </h1>
+
+            <p>
+                Entre com os dados da sua organização para acessar
+                o sistema e validar as guias dos beneficiários.
+            </p>
+
+        </div>
+
+
+        <div class="login-card">
+
+            <form id="formLoginOcs">
+
+                <div class="form-field">
+
+                    <label for="cnpj">
+                        CNPJ
+                    </label>
+
+                    <input
+                            type="text"
+                            id="cnpj"
+                            name="cnpj"
+                            placeholder="00.000.000/0000-00"
+                            maxlength="18"
+                            required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="senha">
+                        Senha
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                                type="password"
+                                id="senha"
+                                name="senha"
+                                placeholder="Digite sua senha"
+                                required
+                        >
+
+                        <button
+                                type="button"
+                                class="password-toggle"
+                                id="toggleSenha"
+                        >
+                            Mostrar
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="login-options">
+
+                    <label class="remember-option">
+
+                        <input
+                                type="checkbox"
+                                id="lembrar"
+                        >
+
+                        <span>
+                            Manter conectado
+                        </span>
+
+                    </label>
+
+                    <a href="#"
+                       class="login-link">
+                        Esqueci minha senha
+                    </a>
+
+                </div>
+
+
+                <div
+                        id="loginError"
+                        class="form-feedback"
+                ></div>
+
+
+                <button
+                        type="submit"
+                        class="primary-button login-submit"
+                >
+                    Entrar
+                </button>
+
+            </form>
+
+
+            <div class="login-divider">
+                <span>ou</span>
+            </div>
+
+
+            <div class="login-register">
+
+                <p>
+                    Sua clínica ainda não possui acesso?
+                </p>
+
+                <a
+                        href="cadastro-ocs.html"
+                        class="secondary-button login-register-button"
+                >
+                    Criar cadastro da OCS
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <p class="login-support">
+            O acesso é destinado às organizações credenciadas ao FUSEx.
+        </p>
+
+    </section>
+
+</main>
+
+
+<script src="../js/login-ocs.js"></script>
+
+</body>
+
+</html>
