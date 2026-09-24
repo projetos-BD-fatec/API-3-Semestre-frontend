@@ -52,71 +52,25 @@
                     id="encaminhamento"
                     name="encaminhamento"
                     accept=".pdf,.jpg,.jpeg,.png"
-                    required
                 >
                 <div id="file-info" class="file-info"></div>
                 <div id="file-error" class="form-error"></div>
             </section>
 
             <section class="form-section">
-                <h2>2. Exame</h2>
+                <h2>2. Exames e clínicas</h2>
                 <p class="form-description">
-                    Selecione o exame solicitado pelo médico.
+                    Adicione os exames solicitados e selecione a clínica onde deseja realizar cada um deles.
                 </p>
 
-                <div class="form-field">
-                    <label for="exame">
-                        Exame
-                    </label>
-                    <select id="exame"
-                            name="exame"
-                            required>
-                        <option value="">
-                            Selecione o exame
-                        </option>
-                        <option value="ressonancia">
-                            Ressonância Magnética
-                        </option>
-                        <option value="tomografia">
-                            Tomografia
-                        </option>
-                        <option value="ultrassonografia">
-                            Ultrassonografia
-                        </option>
-                        <option value="raio-x">
-                            Raio-X
-                        </option>
-                    </select>
-                </div>
-            </section>
-
-            <section class="form-section">
-                <h2>3. Clínica</h2>
-                <p class="form-description">
-                    Selecione onde deseja realizar o exame.
-                </p>
-
-                <div class="form-field">
-                    <label for="clinica">
-                        Clínica
-                    </label>
-                    <select id="clinica"
-                            name="clinica"
-                            required>
-                        <option value="">
-                            Selecione a clínica
-                        </option>
-                        <option value="clinica-a">
-                            Clínica A
-                        </option>
-                        <option value="clinica-b">
-                            Clínica B
-                        </option>
-                        <option value="clinica-c">
-                            Clínica C
-                        </option>
-                    </select>
-                </div>
+                <div id="request-items"></div>
+                <button 
+                    type="button"
+                    id="add-item"
+                    class="add-item-button"
+                >
+                    + Adicionar exame
+                </button>    
             </section>
             <div id="form-error" class="form-error"></div>
             <div class="form-actions">
@@ -131,35 +85,66 @@
             </div>
         </form>
         <div id="confirmation" class="confirmation">
-        <div class="confirmation-content">
-            <h2>Confirmar solicitação</h2>
-            <div class="confirmation-item">
-                <span>Exame</span>
-                <strong id="confirmation-exam"></strong>
+            <div class="confirmation-content">
+                <h2>Confirmar solicitação</h2>
+                <div class="confirmation-item">
+                    <span>Exame</span>
+                    <strong id="confirmation-exam"></strong>
+                </div>
+                <div class="confirmation-item">
+                    <span>Clínica</span>
+                    <strong id="confirmation-clinic"></strong>
+                </div>
+                <div class="confirmation-item">
+                    <span>Encaminhamento</span>
+                    <strong id="confirmation-file"></strong>
+                </div>
+                <div class="confirmation-actions">
+                    <button
+                        type="button"
+                        id="cancel-confirmation"
+                        class="secondary-button"
+                    >
+                        Voltar
+                    </button>
+
+                    <button
+                        type="button"
+                        id="confirm-submit"
+                        class="primary-button"
+                    >
+                        Confirmar envio
+                    </button>
+
+                </div>
             </div>
-            <div class="confirmation-item">
-                <span>Clínica</span>
-                <strong id="confirmation-clinic"></strong>
-            </div>
-            <div class="confirmation-item">
-                <span>Encaminhamento</span>
-                <strong id="confirmation-file"></strong>
-            </div>
-            <div class="confirmation-actions">
-                <button
-                    type="button"
-                    id="cancel-confirmation"
-                    class="secondary-button"
-                >
-                    Voltar
-                </button>
-                <button
-                    type="button"
-                    id="confirm-submit"
-                    class="primary-button"
-                >
-                    Confirmar envio
-                </button>
+        </div>
+        <div id="success" class="confirmation">
+            <div class="confirmation-content success-content">
+                <div class="success-icon">
+                    ✓
+                </div>
+                <h2>Solicitação enviada!</h2>
+                <p>
+                    Sua pré-guia foi enviada com sucesso e está
+                    aguardando análise.
+                </p>
+                <div class="confirmation-actions">
+                    <button
+                        type="button"
+                        id="new-request"
+                        class="secondary-button"
+                    >
+                        Nova solicitação
+                    </button>
+                    <button
+                        type="button"
+                        id="view-requests"
+                        class="primary-button"
+                    >
+                        Ver minhas solicitações
+                    </button>
+                </div>
             </div>
         </div>
     </div>
