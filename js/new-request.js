@@ -315,8 +315,6 @@ function bindItemEvents() {
                         this.closest(".search-select");
 
                     select.classList.add("open");
-
-                    updateItem(itemId);
                 }
             );
         });
@@ -731,29 +729,6 @@ function selectClinicForItem(itemId, clinic) {
 
 
 // ==============================
-// ATUALIZAÇÃO DE ITEM
-// ==============================
-
-function updateItem(itemId) {
-
-    renderItems();
-
-    const item = getItem(itemId);
-
-    if (
-        item &&
-        item.exameId
-    ) {
-
-        loadClinics(
-            itemId,
-            item.exameId
-        );
-    }
-}
-
-
-// ==============================
 // FECHAR LISTAS
 // ==============================
 
@@ -958,6 +933,7 @@ form.addEventListener(
         // --------------------------
 
         confirmationFile.textContent = inputFile.files[0].name;
+        renderConfirmation();
         confirmation.classList.add("show");
     }
 );
@@ -1108,6 +1084,33 @@ viewRequests.addEventListener("click",function () {
         window.location.href = "../index.html";
     }
 );
+
+function renderConfirmation() {
+    const confirmationItems = document.getElementById("confirmation-items");
+
+    confirmationItems.innerHTML = "";
+
+    items.forEach(function (item, index) {
+        const confirmationItem = document.createElement("div");
+        confirmationItem.classList.add("confirmation-request-item");
+
+        confirmationItem.innerHTML = `
+            <div class="confirmation-item-number">
+                Exame ${index + 1}
+            </div>
+
+            <div class="confirmation-item-exam">
+                ${item.exameNome}
+            </div>
+
+            <div class="confirmation-item-clinic">
+                ${item.prestadorNome}
+            </div>
+        `;
+
+        confirmationItems.appendChild(confirmationItem);
+    });
+}
 
 // ==============================
 // BOTÃO ADICIONAR

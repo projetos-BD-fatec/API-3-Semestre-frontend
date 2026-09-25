@@ -1,15 +1,9 @@
 const form = document.getElementById("formCadastroUsuario");
-
 const mensagem = document.getElementById("mensagemCadastro");
-
 const btnCadastrar = document.getElementById("btnCadastrar");
-
 const campoCpf = document.getElementById("cpf");
-
 const campoTelefone = document.getElementById("telefone");
-
 const campoSenha = document.getElementById("senha");
-
 const toggleSenha = document.getElementById("toggleSenha");
 
 
@@ -18,17 +12,11 @@ const toggleSenha = document.getElementById("toggleSenha");
 ========================= */
 
 toggleSenha.addEventListener("click", function () {
-
     if (campoSenha.type === "password") {
-
         campoSenha.type = "text";
-
         toggleSenha.textContent = "Ocultar";
-
     } else {
-
         campoSenha.type = "password";
-
         toggleSenha.textContent = "Mostrar";
     }
 });
@@ -39,26 +27,13 @@ toggleSenha.addEventListener("click", function () {
 ========================= */
 
 campoCpf.addEventListener("input", function () {
-
     let valor = campoCpf.value.replace(/\D/g, "");
-
     valor = valor.substring(0, 11);
+    valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
 
-    valor = valor.replace(
-        /(\d{3})(\d)/,
-        "$1.$2"
-    );
+    valor = valor.replace(/(\d{3})(\d)/, "$1.$2");
 
-    valor = valor.replace(
-        /(\d{3})(\d)/,
-        "$1.$2"
-    );
-
-    valor = valor.replace(
-        /(\d{3})(\d{1,2})$/,
-        "$1-$2"
-    );
-
+    valor = valor.replace(/(\d{3})(\d{1,2})$/, "$1-$2");
     campoCpf.value = valor;
 });
 
