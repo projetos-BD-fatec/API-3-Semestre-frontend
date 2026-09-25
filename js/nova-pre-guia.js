@@ -396,8 +396,7 @@ async function loadExams() {
 
     try {
 
-        const response =
-            await fetch(`${API_URL}/exames`);
+        const response = await fetchAutenticado(`${API_URL}/exames`);
 
         if (!response.ok) {
 
@@ -569,10 +568,7 @@ async function loadClinics(
 
     try {
 
-        const response =
-            await fetch(
-                `${API_URL}/prestadores?exameId=${examId}`
-            );
+        const response = await fetchAutenticado(`${API_URL}/exames`);
 
 
         if (!response.ok) {
@@ -1023,7 +1019,7 @@ confirmSubmit.addEventListener(
             // --------------------------
 
             const response =
-                await fetch(
+                await fetchAutenticado(
                     `${API_URL}/pre-guias`,
                     {
                         method: "POST",

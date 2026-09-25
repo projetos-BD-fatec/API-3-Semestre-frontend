@@ -5,14 +5,13 @@ const emptyState = document.getElementById("empty-state");
 
 async function loadRequests() {
     try {
-        const response = await fetch(`${API_URL}/pre-guias`);
+        const response = await fetchAutenticado(`${API_URL}/pre-guias/me`);
 
         if (!response.ok) {
             throw new Error('Erro ao buscar solicitações.');
         }
 
         const requests = await response.json();
-        
         renderRequests(requests);
 
     } catch (error) {
