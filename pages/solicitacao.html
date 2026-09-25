@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUSEx - Detalhes da solicitação</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-container">
+        <a href="../index.html" class="logo">FUSEx</a>
+        <a href="requests.html" class="back-button">Voltar</a>
+    </div>
+</header>
+
+<main class="main-container">
+
+    <section class="page-header">
+        <h1 id="detail-exam">Carregando...</h1>
+        <p id="detail-clinic"></p>
+    </section>
+
+    <section class="form-section">
+        <h2>Status da solicitação</h2>
+        <span id="detail-status" class="request-status"></span>
+
+        <div class="request-card-info">
+            <span>Data da solicitação</span>
+            <strong id="detail-date"></strong>
+        </div>
+    </section>
+
+    <section class="form-section" id="guia-section" style="display:none;">
+        <h2>Guia emitida</h2>
+        <p class="form-description">
+            Sua guia já foi emitida. Faça o download do PDF e leve até a clínica no dia do exame.
+        </p>
+
+        <button type="button" id="btn-download-guia" class="primary-button">
+            Baixar guia (PDF)
+        </button>
+
+        <div id="download-error" class="form-error"></div>
+    </section>
+
+    <section class="form-section" id="pending-section">
+        <p class="form-description" id="pending-message">
+            Sua solicitação ainda está em análise. Assim que a guia for emitida, o botão de download aparecerá aqui.
+        </p>
+    </section>
+
+    <div id="detail-error" class="form-feedback"></div>
+
+</main>
+
+<script src="../js/solicitacao.js"></script>
+
+</body>
+</html>
