@@ -212,7 +212,7 @@ formLoginUsuario.addEventListener("submit", async function (event) {
 
 
     const dadosLogin = {
-        email: email,
+        login: email,
         senha: senha
     };
 
