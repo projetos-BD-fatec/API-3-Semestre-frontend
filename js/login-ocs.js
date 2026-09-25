@@ -1,11 +1,8 @@
 const formLogin = document.getElementById("formLoginOcs");
-
 const campoCnpj = document.getElementById("cnpj");
 const campoSenha = document.getElementById("senha");
-
 const toggleSenha = document.getElementById("toggleSenha");
 const loginError = document.getElementById("loginError");
-
 const botaoEntrar = document.querySelector(".login-submit");
 
 

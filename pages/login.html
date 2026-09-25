@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>FUSEx - Entrar</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body class="login-page">
+
+<header class="header">
+    <div class="header-container">
+
+        <a href="../index.html" class="logo">
+            FUSEx
+        </a>
+
+    </div>
+</header>
+
+
+<main class="login-main">
+
+    <section class="login-wrapper">
+
+        <div class="login-intro">
+
+            <span class="login-badge" id="loginBadge">
+                Beneficiário
+            </span>
+
+            <h1 id="loginTitulo">
+                Acesse sua conta
+            </h1>
+
+            <p id="loginDescricao">
+                Entre com seus dados para solicitar guias e acompanhar
+                suas solicitações no FUSEx.
+            </p>
+
+        </div>
+
+
+        <div class="login-card">
+
+            <div class="login-type-toggle" role="tablist">
+
+                <button
+                        type="button"
+                        class="login-type-btn is-active"
+                        id="tabUsuario"
+                        role="tab"
+                        aria-selected="true"
+                >
+                    Sou usuário
+                </button>
+
+                <button
+                        type="button"
+                        class="login-type-btn"
+                        id="tabOcs"
+                        role="tab"
+                        aria-selected="false"
+                >
+                    Sou OCS
+                </button>
+
+            </div>
+
+
+            <!-- ===============================
+                 LOGIN - USUÁRIO
+            ================================ -->
+
+            <form id="formLoginUsuario" class="login-form">
+
+                <div class="form-field">
+
+                    <label for="email">
+                        E-mail
+                    </label>
+
+                    <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="exemplo@email.com"
+                            required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="senhaUsuario">
+                        Senha
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                                type="password"
+                                id="senhaUsuario"
+                                name="senha"
+                                placeholder="Digite sua senha"
+                                required
+                        >
+
+                        <button
+                                type="button"
+                                class="password-toggle"
+                                id="toggleSenhaUsuario"
+                        >
+                            Mostrar
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="login-options">
+
+                    <label class="remember-option">
+
+                        <input
+                                type="checkbox"
+                                id="lembrarUsuario"
+                        >
+
+                        <span>
+                            Manter conectado
+                        </span>
+
+                    </label>
+
+                    <a href="#"
+                       class="login-link">
+                        Esqueci minha senha
+                    </a>
+
+                </div>
+
+
+                <div
+                        id="loginErrorUsuario"
+                        class="form-feedback"
+                ></div>
+
+
+                <button
+                        type="submit"
+                        class="primary-button login-submit"
+                >
+                    Entrar
+                </button>
+
+            </form>
+
+
+            <!-- ===============================
+                 LOGIN - OCS
+            ================================ -->
+
+            <form id="formLoginOcs" class="login-form" hidden>
+
+                <div class="form-field">
+
+                    <label for="cnpj">
+                        CNPJ
+                    </label>
+
+                    <input
+                            type="text"
+                            id="cnpj"
+                            name="cnpj"
+                            placeholder="00.000.000/0000-00"
+                            maxlength="18"
+                            required
+                    >
+
+                </div>
+
+
+                <div class="form-field">
+
+                    <label for="senhaOcs">
+                        Senha
+                    </label>
+
+                    <div class="password-wrapper">
+
+                        <input
+                                type="password"
+                                id="senhaOcs"
+                                name="senha"
+                                placeholder="Digite sua senha"
+                                required
+                        >
+
+                        <button
+                                type="button"
+                                class="password-toggle"
+                                id="toggleSenhaOcs"
+                        >
+                            Mostrar
+                        </button>
+
+                    </div>
+
+                </div>
+
+
+                <div class="login-options">
+
+                    <label class="remember-option">
+
+                        <input
+                                type="checkbox"
+                                id="lembrarOcs"
+                        >
+
+                        <span>
+                            Manter conectado
+                        </span>
+
+                    </label>
+
+                    <a href="#"
+                       class="login-link">
+                        Esqueci minha senha
+                    </a>
+
+                </div>
+
+
+                <div
+                        id="loginErrorOcs"
+                        class="form-feedback"
+                ></div>
+
+
+                <button
+                        type="submit"
+                        class="primary-button login-submit"
+                >
+                    Entrar
+                </button>
+
+            </form>
+
+
+            <div class="login-divider">
+                <span>ou</span>
+            </div>
+
+
+            <div class="login-register">
+
+                <p id="loginRegistroTexto">
+                    Ainda não possui cadastro?
+                </p>
+
+                <a
+                        href="cadastro-usuario.html"
+                        class="secondary-button login-register-button"
+                        id="loginRegistroLink"
+                >
+                    Criar conta de usuário
+                </a>
+
+            </div>
+
+        </div>
+
+
+        <p class="login-support" id="loginSuporte">
+            O acesso é destinado aos beneficiários cadastrados no FUSEx.
+        </p>
+
+    </section>
+
+</main>
+
+
+<script src="../js/login.js"></script>
+
+</body>
+
+</html>

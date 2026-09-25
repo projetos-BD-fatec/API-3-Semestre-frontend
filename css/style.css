@@ -449,6 +449,24 @@ input[type="file"] {
     background-color: var(--color-danger-bg);
 }
 
+/* Two fields side by side (e.g. número + complemento, cidade + UF) */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-row.form-row-narrow {
+    grid-template-columns: 1fr 120px;
+}
+
+@media (max-width: 560px) {
+    .form-row,
+    .form-row.form-row-narrow {
+        grid-template-columns: 1fr;
+    }
+}
+
 /* Searchable selects */
 
 .search-select {
@@ -1196,6 +1214,57 @@ a.request-card:has(.request-status.negada) {
     padding: 28px;
 
     box-shadow: var(--shadow-md);
+}
+
+
+/* Toggle usuário / OCS */
+
+.login-type-toggle {
+    display: flex;
+
+    padding: 4px;
+
+    margin-bottom: 24px;
+
+    background: var(--color-surface-muted);
+
+    border-radius: var(--radius-sm);
+}
+
+.login-type-btn {
+    flex: 1;
+
+    padding: 10px 12px;
+
+    border: none;
+    border-radius: 6px;
+
+    background: transparent;
+
+    color: var(--color-ink-soft);
+
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        color 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+.login-type-btn.is-active {
+    background: var(--color-surface);
+
+    color: var(--color-primary-dark);
+
+    box-shadow: var(--shadow-sm);
+}
+
+.login-type-btn:not(.is-active):hover {
+    color: var(--color-ink);
 }
 
 
