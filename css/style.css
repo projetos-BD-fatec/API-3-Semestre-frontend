@@ -465,6 +465,8 @@ input[type="file"] {
     .form-row.form-row-narrow {
         grid-template-columns: 1fr;
     }
+}
+
 /* Searchable selects */
 
 .search-select {
