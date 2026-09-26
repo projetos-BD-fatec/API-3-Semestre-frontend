@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>FUSEx - Cadastro de OCS</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-container">
+
+        <a href="../index.html" class="logo">
+            FUSEx
+        </a>
+
+        <button class="menu-button"
+                type="button"
+                aria-label="Abrir menu">
+            ☰
+        </button>
+
+    </div>
+</header>
+
+
+<main class="main-container">
+
+    <section class="page-header">
+        <h1>Cadastro de OCS</h1>
+
+        <p>
+            Preencha os dados da organização e do responsável para
+            solicitar o acesso da OCS ao FUSEx.
+        </p>
+    </section>
+
+
+    <form id="formCadastroOcs">
+
+        <section class="form-section">
+
+            <h2>Dados da organização</h2>
+
+            <p class="form-description">
+                Informe os dados de identificação da clínica/OCS.
+            </p>
+
+
+            <div class="form-field">
+                <label for="nomePrestador">
+                    Razão social
+                </label>
+
+                <input
+                        type="text"
+                        id="nomePrestador"
+                        name="nomePrestador"
+                        placeholder="Digite a razão social da OCS"
+                        maxlength="200"
+                        required
+                >
+            </div>
+
+
+            <div class="form-field">
+                <label for="nomeFantasia">
+                    Nome fantasia
+                </label>
+
+                <input
+                        type="text"
+                        id="nomeFantasia"
+                        name="nomeFantasia"
+                        placeholder="Digite o nome fantasia (opcional)"
+                        maxlength="200"
+                >
+            </div>
+
+
+            <div class="form-field">
+                <label for="cnpj">
+                    CNPJ
+                </label>
+
+                <input
+                        type="text"
+                        id="cnpj"
+                        name="cnpj"
+                        placeholder="00.000.000/0000-00"
+                        maxlength="18"
+                        required
+                >
+            </div>
+
+        </section>
+
+
+        <section class="form-section">
+
+            <h2>Endereço</h2>
+
+            <p class="form-description">
+                Informe o endereço de atendimento da OCS.
+            </p>
+
+
+            <div class="form-field">
+                <label for="cep">
+                    CEP
+                </label>
+
+                <input
+                        type="text"
+                        id="cep"
+                        name="cep"
+                        placeholder="00000-000"
+                        maxlength="9"
+                        required
+                >
+            </div>
+
+
+            <div class="form-field">
+                <label for="logradouro">
+                    Logradouro
+                </label>
+
+                <input
+                        type="text"
+                        id="logradouro"
+                        name="logradouro"
+                        placeholder="Rua, avenida..."
+                        maxlength="200"
+                        required
+                >
+            </div>
+
+
+            <div class="form-row">
+
+                <div class="form-field">
+                    <label for="numero">
+                        Número
+                    </label>
+
+                    <input
+                            type="text"
+                            id="numero"
+                            name="numero"
+                            placeholder="Nº"
+                            maxlength="20"
+                            required
+                    >
+                </div>
+
+                <div class="form-field">
+                    <label for="complemento">
+                        Complemento
+                    </label>
+
+                    <input
+                            type="text"
+                            id="complemento"
+                            name="complemento"
+                            placeholder="Sala, bloco... (opcional)"
+                            maxlength="100"
+                    >
+                </div>
+
+            </div>
+
+
+            <div class="form-field">
+                <label for="bairro">
+                    Bairro
+                </label>
+
+                <input
+                        type="text"
+                        id="bairro"
+                        name="bairro"
+                        placeholder="Digite o bairro"
+                        maxlength="100"
+                        required
+                >
+            </div>
+
+
+            <div class="form-row form-row-narrow">
+
+                <div class="form-field">
+                    <label for="cidade">
+                        Cidade
+                    </label>
+
+                    <input
+                            type="text"
+                            id="cidade"
+                            name="cidade"
+                            placeholder="Digite a cidade"
+                            maxlength="100"
+                            required
+                    >
+                </div>
+
+                <div class="form-field">
+                    <label for="uf">
+                        UF
+                    </label>
+
+                    <select id="uf" name="uf" required>
+                        <option value="" disabled selected>UF</option>
+                        <option value="AC">AC</option>
+                        <option value="AL">AL</option>
+                        <option value="AP">AP</option>
+                        <option value="AM">AM</option>
+                        <option value="BA">BA</option>
+                        <option value="CE">CE</option>
+                        <option value="DF">DF</option>
+                        <option value="ES">ES</option>
+                        <option value="GO">GO</option>
+                        <option value="MA">MA</option>
+                        <option value="MT">MT</option>
+                        <option value="MS">MS</option>
+                        <option value="MG">MG</option>
+                        <option value="PA">PA</option>
+                        <option value="PB">PB</option>
+                        <option value="PR">PR</option>
+                        <option value="PE">PE</option>
+                        <option value="PI">PI</option>
+                        <option value="RJ">RJ</option>
+                        <option value="RN">RN</option>
+                        <option value="RS">RS</option>
+                        <option value="RO">RO</option>
+                        <option value="RR">RR</option>
+                        <option value="SC">SC</option>
+                        <option value="SP">SP</option>
+                        <option value="SE">SE</option>
+                        <option value="TO">TO</option>
+                    </select>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <section class="form-section">
+
+            <h2>Dados do responsável</h2>
+
+            <p class="form-description">
+                Informe os dados de quem será o responsável pelo acesso
+                da OCS ao sistema.
+            </p>
+
+
+            <div class="form-field">
+                <label for="nomeResponsavel">
+                    Nome do responsável
+                </label>
+
+                <input
+                        type="text"
+                        id="nomeResponsavel"
+                        name="nomeResponsavel"
+                        placeholder="Digite o nome do responsável"
+                        maxlength="150"
+                        required
+                >
+            </div>
+
+
+            <div class="form-field">
+                <label for="cpfResponsavel">
+                    CPF
+                </label>
+
+                <input
+                        type="text"
+                        id="cpfResponsavel"
+                        name="cpfResponsavel"
+                        placeholder="000.000.000-00"
+                        maxlength="14"
+                        required
+                >
+            </div>
+
+
+            <div class="form-field">
+                <label for="telefoneResponsavel">
+                    Telefone
+                </label>
+
+                <input
+                        type="text"
+                        id="telefoneResponsavel"
+                        name="telefoneResponsavel"
+                        placeholder="(00) 00000-0000"
+                        maxlength="20"
+                        required
+                >
+            </div>
+
+        </section>
+
+
+        <section class="form-section">
+
+            <h2>Dados de acesso</h2>
+
+            <p class="form-description">
+                Informe o e-mail e a senha que serão utilizados para
+                acessar o sistema.
+            </p>
+
+
+            <div class="form-field">
+                <label for="email">
+                    E-mail
+                </label>
+
+                <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="exemplo@email.com"
+                        maxlength="150"
+                        required
+                >
+            </div>
+
+
+            <div class="form-field">
+                <label for="senha">
+                    Senha
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+                            type="password"
+                            id="senha"
+                            name="senha"
+                            placeholder="Digite sua senha"
+                            minlength="6"
+                            maxlength="100"
+                            required
+                    >
+
+                    <button
+                            type="button"
+                            id="toggleSenha"
+                            class="password-toggle"
+                            aria-label="Mostrar senha"
+                    >
+                        Mostrar
+                    </button>
+
+                </div>
+
+                <span class="field-helper">
+                    A senha deve possuir pelo menos 6 caracteres.
+                </span>
+            </div>
+
+        </section>
+
+
+        <div id="mensagemCadastro"
+             class="form-feedback"></div>
+
+
+        <div class="form-actions">
+
+            <button
+                    type="button"
+                    class="secondary-button"
+                    onclick="history.back()"
+            >
+                Voltar
+            </button>
+
+            <button
+                    type="submit"
+                    id="btnCadastrar"
+                    class="primary-button"
+            >
+                Criar cadastro da OCS
+            </button>
+
+        </div>
+
+    </form>
+
+</main>
+
+
+<script src="../js/cadastro-ocs.js"></script>
+
+</body>
+
+</html>

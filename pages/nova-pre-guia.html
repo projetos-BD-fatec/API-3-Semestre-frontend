@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+    <title>FUSEx - Nova solicitação</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../index.html" class="logo">
+                FuSEx
+            </a>
+            <a href="../index.html" class="back-button">
+                Voltar
+            </a>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <section class="page-header">
+            <h1>Nova solicitação</h1>
+            <p>
+                Preencha as informações abaixo para solicitar sua pré-guia.
+            </p>
+        </section>
+
+        <form id="request-form" class="request-form">
+            <section class="form-section">
+                <h2>1. Encaminhamento</h2>
+                <p class="form-description">
+                    Anexe o encaminhamento médico referente ao exame.
+                </p>
+                <label for="encaminhamento"
+                       class="file-upload">
+                    <span class="file-icon">
+                        📎
+                    </span>
+                    <span class="file-title">
+                        Anexar encaminhamento
+                    </span>
+                    <span class="file-description">
+                        PDF, JPG ou PNG
+                    </span>
+                </label>
+                <input
+                    type="file"
+                    id="encaminhamento"
+                    name="encaminhamento"
+                    accept=".pdf,.jpg,.jpeg,.png"
+                >
+                <div id="file-info" class="file-info"></div>
+                <div id="file-error" class="form-error"></div>
+            </section>
+
+            <section class="form-section">
+                <h2>2. Exames e clínicas</h2>
+                <p class="form-description">
+                    Adicione os exames solicitados e selecione a clínica onde deseja realizar cada um deles.
+                </p>
+
+                <div id="request-items"></div>
+                <button 
+                    type="button"
+                    id="add-item"
+                    class="add-item-button"
+                >
+                    + Adicionar exame
+                </button>    
+            </section>
+            <div id="form-error" class="form-error"></div>
+            <div class="form-actions">
+                <a href="../index.html" class="secondary-button">
+                    Cancelar
+                </a>
+                <button type="submit" class="primary-button">
+                    Enviar solicitação
+                </button>
+            </div>
+        </form>
+        <div id="confirmation" class="confirmation">
+            <div class="confirmation-content">
+                <h1>Confirmar solicitação</h1>
+                <div class="confirmation-section">
+                    <span class="confirmation-section-title">
+                        <h2>Exames e clínicas</h2>
+                    </span>
+                    <div id="confirmation-items"></div>
+                </div>
+                <div class="confirmation-item">
+                    <span>Encaminhamento</span>
+                    <strong id="confirmation-file"></strong>
+                </div>
+                <div class="confirmation-actions">
+                    <button type="button" id="cancel-confirmation" class="secondary-button">
+                        Voltar
+                    </button>
+
+                    <button type="button" id="confirm-submit" class="primary-button">
+                        Confirmar envio
+                    </button>
+
+                </div>
+            </div>
+        </div>
+        <div id="success" class="confirmation">
+            <div class="confirmation-content success-content">
+                <div class="success-icon">
+                    ✓
+                </div>
+                <h2>Solicitação enviada!</h2>
+                <p>
+                    Sua pré-guia foi enviada com sucesso e está
+                    aguardando análise.
+                </p>
+                <div class="confirmation-actions">
+                    <button
+                        type="button"
+                        id="new-request"
+                        class="secondary-button"
+                    >
+                        Nova solicitação
+                    </button>
+                    <button
+                        type="button"
+                        id="view-requests"
+                        class="primary-button"
+                    >
+                        Ver minhas solicitações
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    </main>
+    <script src="../js/api.js"></script>
+    <script src="../js/nova-pre-guia.js"></script>
+</body>
+</html>

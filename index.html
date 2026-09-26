@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>FUSEx - Início</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">
+                FUSEx
+            </a>
+            <button class="menu-button">
+                ☰
+            </button>
+        </div>
+    </header>
+
+    <main class="main-container">
+        <section class="welcome">
+            <h1>Olá, Lucas!</h1>
+            <p>
+                O que você deseja fazer?
+            </p>
+        </section>
+
+        <section class="actions">
+            <a href="pages/nova-pre-guia.html"
+               class="action-card">
+                <div class="action-icon">
+                    +
+                </div>
+                <div>
+                    <h2>Nova solicitação</h2>
+                    <p>
+                        Solicite uma nova pré-guia
+                    </p>
+                </div>
+            </a>
+
+            <a href="pages/pre-guias.html"
+               class="action-card">
+                <div class="action-icon">
+                    ≡
+                </div>
+                <div>
+                    <h2>Minhas solicitações</h2>
+                    <p>
+                        Acompanhe seus pedidos
+                    </p>
+                </div>
+            </a>
+        </section>
+
+        <!-- A idéia desse card aqui é mostrar apenas a solicitação mais recente, seja o status dela em análise, negado ou aprovado -->
+        <section class="recent">
+            <h2>Solicitação recente</h2>
+            <article class="request-card">
+                <div>
+                    <h3>Ressonância Magnética</h3>
+                    <p>OCS: Vivalle</p>
+                    <p>Data da solicitação: 11/09/2026</p>
+                </div>
+                <span class="status">
+                    Status: Aguardando análise
+                </span>
+            </article>
+        </section>
+    </main>
+</body>
+</html>
