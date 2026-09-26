@@ -568,7 +568,7 @@ async function loadClinics(
 
     try {
 
-        const response = await fetchAutenticado(`${API_URL}/exames`);
+        const response = await fetchAutenticado(`${API_URL}/prestadores?exameId=${examId}`);
 
 
         if (!response.ok) {
