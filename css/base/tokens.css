@@ -1,0 +1,61 @@
+/* =====================================================
+   Tokens de design (variáveis globais)
+===================================================== */
+
+:root {
+    color-scheme: light;
+
+    /* Superfícies */
+    --color-bg: #F4F8F7;
+    --color-surface: #FFFFFF;
+    --color-surface-muted: #EAF2F0;
+    --color-overlay: rgba(10, 26, 22, 0.55);
+
+    /* Texto */
+    --color-ink: #13211D;
+    --color-ink-soft: #57655F;
+    --color-ink-faint: #6C7873;
+
+    /* Marca — teal clínico + verde oliva discreto */
+    --color-primary: #0E5C52;
+    --color-primary-dark: #0A423A;
+    --color-primary-light: #E1F0EC;
+    --color-accent-olive: #6C6E4C;
+    --color-accent-olive-light: #EEEEE1;
+
+    /* Bordas / linhas */
+    --color-border: #DCE6E2;
+    --color-border-strong: #B9C9C3;
+
+    /* Estados */
+    --color-warning-bg: #FCF0D9;
+    --color-warning-text: #85560D;
+    --color-warning-border: #E3AE55;
+
+    --color-success-bg: #DEF0E8;
+    --color-success-text: #0E5C42;
+    --color-success-border: #63AE8C;
+
+    --color-danger-bg: #FBE8E5;
+    --color-danger-text: #8C3327;
+    --color-danger-border: #D6897C;
+
+    /* Forma */
+    --radius-sm: 8px;
+    --radius-md: 10px;
+    --radius-lg: 14px;
+
+    /* Elevação */
+    --shadow-sm: 0 1px 2px rgba(15, 40, 34, 0.07);
+    --shadow-card: 0 2px 4px rgba(15, 40, 34, 0.06),
+                   0 8px 18px -8px rgba(11, 55, 47, 0.22);
+    --shadow-md: 0 12px 28px -10px rgba(11, 55, 47, 0.28);
+
+    /* Camadas */
+    --z-dropdown: 10;
+    --z-modal: 100;
+
+    /* Tipografia */
+    --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif;
+    --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}

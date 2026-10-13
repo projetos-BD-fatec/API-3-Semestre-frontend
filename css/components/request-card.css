@@ -1,0 +1,146 @@
+/* =====================================================
+   Card de solicitação (pré-guia)
+   Usado na home (mais recente) e na lista de pré-guias.
+
+   Pode ser <article>, <a> ou <article role="button">.
+   Quando for <a> ou role="button", fica clicável.
+   A cor da borda esquerda acompanha o .status interno.
+===================================================== */
+
+/* Lista de cards (com espaçamento entre eles) */
+.request-list {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.request-card {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    width: 100%;
+    padding: 20px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-warning-border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-card);
+    color: inherit;
+    text-align: left;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* Cor da borda conforme o status */
+.request-card:has(.status.autorizada) {
+    border-left-color: var(--color-success-border);
+}
+
+.request-card:has(.status.negada) {
+    border-left-color: var(--color-danger-border);
+}
+
+/* Clicável */
+.request-card:is(a, [role="button"]) {
+    cursor: pointer;
+}
+
+.request-card:is(a, [role="button"]):hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+/* Cabeçalho do card */
+.request-card-header {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.request-card h3 {
+    margin-bottom: 4px;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+.request-card p {
+    color: var(--color-ink-soft);
+    font-size: 14px;
+}
+
+/* Lista de exames dentro do card */
+.request-card-items {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+.request-card-items-title {
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--color-border);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-ink-soft);
+}
+
+.request-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.request-item-exam {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+.request-item-provider {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-ink-soft);
+}
+
+.request-item-address {
+    font-size: 13px;
+    color: var(--color-ink-faint);
+    line-height: 1.45;
+}
+
+.request-item-value {
+    margin-top: 4px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+/* "+ N exames" quando o card mostra só parte da lista */
+.request-card-mais {
+    color: var(--color-ink-faint);
+    font-family: var(--font-mono);
+    font-size: 13px;
+}
+
+/* Chamada para abrir a ficha (só aparece em cards clicáveis) */
+.request-card-cta {
+    color: var(--color-primary);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.request-card-cta::after {
+    content: " →";
+}
+
+.request-card:hover .request-card-cta {
+    text-decoration: underline;
+}
+
+@media (min-width: 768px) {
+    .request-card-header {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+}

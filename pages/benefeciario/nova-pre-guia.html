@@ -6,7 +6,10 @@
     <meta name="viewport"
           content="width=device-width, initial-scale=1.0">
     <title>FUSEx - Nova solicitação</title>
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/main.css">
 </head>
 
 <body>
@@ -63,7 +66,7 @@
                     Adicione os exames solicitados e selecione a clínica onde deseja realizar cada um deles.
                 </p>
 
-                <div id="request-items"></div>
+                <div id="request-list" class="request-list"></div>
                 <button 
                     type="button"
                     id="add-item"
@@ -82,31 +85,6 @@
                 </button>
             </div>
         </form>
-        <div id="confirmation" class="confirmation">
-            <div class="confirmation-content">
-                <h1>Confirmar solicitação</h1>
-                <div class="confirmation-section">
-                    <span class="confirmation-section-title">
-                        <h2>Exames e clínicas</h2>
-                    </span>
-                    <div id="confirmation-items"></div>
-                </div>
-                <div class="confirmation-item">
-                    <span>Encaminhamento</span>
-                    <strong id="confirmation-file"></strong>
-                </div>
-                <div class="confirmation-actions">
-                    <button type="button" id="cancel-confirmation" class="secondary-button">
-                        Voltar
-                    </button>
-
-                    <button type="button" id="confirm-submit" class="primary-button">
-                        Confirmar envio
-                    </button>
-
-                </div>
-            </div>
-        </div>
         <div id="success" class="confirmation">
             <div class="confirmation-content success-content">
                 <div class="success-icon">
@@ -137,7 +115,9 @@
         </div>
     </div>
     </main>
-    <script src="../js/api.js"></script>
-    <script src="../js/nova-pre-guia.js"></script>
+    <script src="../../js/api.js"></script>
+    <script src="../../js/formatters.js"></script>
+    <script src="../../js/ficha-pre-guia.js"></script>
+    <script src="../../js/nova-pre-guia.js"></script>
 </body>
 </html>
