@@ -1,0 +1,33 @@
+/* =====================================================
+   Selo de status da pré-guia
+
+   Uso: <span class="status em_analise">Em análise</span>
+   Variantes: em_analise | autorizada | negada
+   Sem variante = visual de "em análise" (padrão).
+===================================================== */
+
+.status {
+    display: inline-flex;
+    flex-shrink: 0;
+    width: fit-content;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--color-warning-border);
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.status.autorizada {
+    background: var(--color-success-bg);
+    color: var(--color-success-text);
+    border-color: var(--color-success-border);
+}
+
+.status.negada {
+    background: var(--color-danger-bg);
+    color: var(--color-danger-text);
+    border-color: var(--color-danger-border);
+}

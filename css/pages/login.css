@@ -1,0 +1,203 @@
+/* =====================================================
+   Página: login (usuário e OCS)
+   Campos, senha e botões vêm de components/forms.css
+   e components/buttons.css.
+===================================================== */
+
+.login-page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, var(--color-bg) 0%, #EDF5F2 100%);
+}
+
+.login-main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: 52px 20px 72px;
+}
+
+.login-wrapper {
+    width: 100%;
+    max-width: 460px;
+}
+
+/* Introdução */
+.login-intro {
+    margin-bottom: 24px;
+}
+
+.login-badge {
+    display: inline-flex;
+    margin-bottom: 14px;
+    padding: 6px 10px;
+    border-radius: 20px;
+    background: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.login-intro h1 {
+    margin-bottom: 8px;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--color-ink);
+}
+
+.login-intro p {
+    color: var(--color-ink-soft);
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+/* Card */
+.login-card {
+    padding: 28px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-top: 4px solid var(--color-primary);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.login-card .form-field + .form-field {
+    margin-top: 20px;
+}
+
+/* Alternador usuário / OCS */
+.login-type-toggle {
+    display: flex;
+    margin-bottom: 24px;
+    padding: 4px;
+    background: var(--color-surface-muted);
+    border-radius: var(--radius-sm);
+}
+
+.login-type-btn {
+    flex: 1;
+    padding: 10px 12px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--color-ink-soft);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.login-type-btn.is-active {
+    background: var(--color-surface);
+    color: var(--color-primary-dark);
+    box-shadow: var(--shadow-sm);
+}
+
+.login-type-btn:not(.is-active):hover {
+    color: var(--color-ink);
+}
+
+/* Opções (manter conectado / esqueci a senha) */
+.login-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 18px;
+    margin-bottom: 22px;
+}
+
+.remember-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--color-ink-soft);
+    font-size: 13px;
+    cursor: pointer;
+}
+
+.remember-option input {
+    accent-color: var(--color-primary);
+}
+
+.login-link {
+    color: var(--color-primary);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.login-link:hover {
+    text-decoration: underline;
+}
+
+/* Botões do card */
+.login-submit {
+    width: 100%;
+}
+
+.login-register-button {
+    display: block;
+    width: 100%;
+}
+
+/* Divisor "ou" */
+.login-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 26px 0;
+}
+
+.login-divider::before,
+.login-divider::after {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: var(--color-border);
+}
+
+.login-divider span {
+    color: var(--color-ink-faint);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    text-transform: uppercase;
+}
+
+/* Cadastro */
+.login-register {
+    text-align: center;
+}
+
+.login-register p {
+    margin-bottom: 12px;
+    color: var(--color-ink-soft);
+    font-size: 14px;
+}
+
+/* Texto inferior */
+.login-support {
+    margin-top: 20px;
+    text-align: center;
+    color: var(--color-ink-faint);
+    font-size: 12px;
+}
+
+@media (max-width: 520px) {
+    .login-main {
+        padding: 34px 16px 50px;
+    }
+
+    .login-card {
+        padding: 22px 18px;
+    }
+
+    .login-intro h1 {
+        font-size: 27px;
+    }
+
+    .login-options {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}

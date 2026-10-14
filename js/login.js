@@ -285,7 +285,7 @@ formLoginUsuario.addEventListener("submit", async function (event) {
 
 
         window.location.href =
-            "../index.html";
+            "../beneficiario/inicio.html";
 
 
     } catch (erro) {
@@ -434,7 +434,7 @@ formLoginOcs.addEventListener("submit", async function (event) {
 
 
         window.location.href =
-            "painel-ocs.html";
+            "painel-ocs.html"; //Não existe ainda
 
 
     } catch (erro) {

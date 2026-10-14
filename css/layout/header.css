@@ -1,0 +1,75 @@
+/* =====================================================
+   Header (logo, botão de menu, botão voltar)
+===================================================== */
+
+.header {
+    background: var(--color-primary);
+    border-bottom: 1px solid var(--color-primary-dark);
+}
+
+.header-container {
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: 0.2px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.logo::before {
+    content: "";
+    width: 22px;
+    height: 22px;
+    flex-shrink: 0;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M12 2l7.5 3v5.5c0 5.4-3.3 9.4-7.5 11.5-4.2-2.1-7.5-6.1-7.5-11.5V5l7.5-3z'/%3E%3Cpath fill='%230E5C52' d='M10.8 6.8h2.4v4h4v2.4h-4v4h-2.4v-4h-4V10.8h4V6.8z'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+}
+
+.menu-button {
+    border: none;
+    background: rgba(255, 255, 255, 0.12);
+    color: #FFFFFF;
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    font-size: 20px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.15s ease;
+}
+
+.menu-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #FFFFFF;
+    padding: 8px 12px;
+    border-radius: var(--radius-sm);
+    transition: background 0.15s ease;
+}
+
+.back-button::before {
+    content: "←";
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.14);
+}

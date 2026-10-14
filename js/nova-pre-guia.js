@@ -1,4 +1,7 @@
-const API_URL = "http://localhost:8080";
+/* =====================================================
+   Página: nova solicitação de pré-guia
+   Depende de: api.js, formatters.js, ficha-pre-guia.js
+===================================================== */
 
 // ==============================
 // ELEMENTOS DO FORMULÁRIO
@@ -12,14 +15,11 @@ const fileUpload = document.querySelector(".file-upload");
 const form = document.getElementById("request-form");
 const formError = document.getElementById("form-error");
 
-const requestItems = document.getElementById("request-items");
+
+const requestItems = document.getElementById("request-list");
 const addItemButton = document.getElementById("add-item");
 
-// Confirmação
-const confirmation = document.getElementById("confirmation");
-const confirmationFile = document.getElementById("confirmation-file");
-const cancelConfirmation = document.getElementById("cancel-confirmation");
-const confirmSubmit = document.getElementById("confirm-submit");
+// Tela de sucesso
 const success = document.getElementById("success");
 const newRequest = document.getElementById("new-request");
 const viewRequests = document.getElementById("view-requests");
@@ -48,6 +48,10 @@ let items = [];
 
 let nextItemId = 1;
 
+// Dados do beneficiário (nome / PREC-CP) para a ficha de confirmação.
+// Começa a carregar assim que a página abre.
+const beneficiarioPromise = buscarBeneficiario();
+
 
 // ==============================
 // ITENS
@@ -57,6 +61,10 @@ function addItem() {
 
     const item = {
         id: nextItemId++,
+
+        // Objetos completos escolhidos (usados na ficha de confirmação)
+        exame: null,
+        prestador: null,
 
         exameId: null,
         exameNome: "",
@@ -77,7 +85,7 @@ function removeItem(itemId) {
 
     items = items.filter(function (item) {
         return item.id !== itemId;
-});
+    });
 
     renderItems();
 }
@@ -125,18 +133,18 @@ function renderItems() {
                 </h3>
 
                 ${items.length > 1
-                ? `
-                            <button
-                                type="button"
-                                class="remove-item-button"
-                                data-item-id="${item.id}"
-                                title="Remover exame"
-                            >
-                                ×
-                            </button>
-                        `
-                : ""
-            }
+                    ? `
+                        <button
+                            type="button"
+                            class="remove-item-button"
+                            data-item-id="${item.id}"
+                            title="Remover exame"
+                        >
+                            ×
+                        </button>
+                    `
+                    : ""
+                }
 
             </div>
 
@@ -158,7 +166,7 @@ function renderItems() {
                         class="exam-search"
                         placeholder="Pesquise por nome ou código TUSS"
                         autocomplete="off"
-                        value="${item.exameNome}"
+                        value="${escapeHtml(item.exameNome)}"
                     >
 
                     <input
@@ -183,10 +191,7 @@ function renderItems() {
                 </label>
 
                 <div
-                    class="search-select ${item.exameId
-                ? ""
-                : "disabled"
-            }"
+                    class="search-select ${item.exameId ? "" : "disabled"}"
                     data-type="clinic"
                     data-item-id="${item.id}"
                 >
@@ -195,22 +200,17 @@ function renderItems() {
                         type="text"
                         class="clinic-search"
                         placeholder="${item.exameId
-                ? "Pesquise por nome ou localização"
-                : "Selecione primeiro um exame"
-            }"
+                            ? "Pesquise por nome ou localização"
+                            : "Selecione primeiro um exame"}"
                         autocomplete="off"
-                        ${item.exameId
-                ? ""
-                : "disabled"
-            }
-                        value="${item.prestadorNome}"
+                        ${item.exameId ? "" : "disabled"}
+                        value="${escapeHtml(item.prestadorNome)}"
                     >
 
                     <input
                         type="hidden"
                         class="clinic-input"
-                        value="${item.prestadorId || ""
-            }"
+                        value="${item.prestadorId || ""}"
                     >
 
                     <div
@@ -298,9 +298,11 @@ function bindItemEvents() {
                         return;
                     }
 
+                    item.exame = null;
                     item.exameId = null;
                     item.exameNome = "";
 
+                    item.prestador = null;
                     item.prestadorId = null;
                     item.prestadorNome = "";
 
@@ -370,6 +372,7 @@ function bindItemEvents() {
                         return;
                     }
 
+                    item.prestador = null;
                     item.prestadorId = null;
                     item.prestadorNome = "";
 
@@ -491,11 +494,11 @@ function renderExamsForItem(
 
             option.innerHTML = `
                 <span class="search-option-main">
-                    ${exam.descExame}
+                    ${escapeHtml(exam.descExame)}
                 </span>
 
                 <span class="search-option-secondary">
-                    TUSS ${exam.codTuss}
+                    TUSS ${escapeHtml(exam.codTuss)}
                 </span>
             `;
 
@@ -527,9 +530,11 @@ function selectExamForItem(itemId, exam) {
     }
 
 
+    item.exame = exam;
     item.exameId = exam.idExame;
     item.exameNome = exam.descExame;
 
+    item.prestador = null;
     item.prestadorId = null;
     item.prestadorNome = "";
 
@@ -579,8 +584,15 @@ async function loadClinics(
         }
 
 
-        item.clinics =
-            await response.json();
+        const clinics = await response.json();
+
+        // Se o usuário trocou de exame enquanto a busca rodava,
+        // descarta o resultado antigo
+        if (item.exameId !== examId) {
+            return;
+        }
+
+        item.clinics = clinics;
 
 
     } catch (error) {
@@ -682,11 +694,11 @@ function renderClinicsForItem(
 
             option.innerHTML = `
                 <span class="search-option-main">
-                    ${name}
+                    ${escapeHtml(name)}
                 </span>
 
                 <span class="search-option-secondary">
-                    ${address}
+                    ${escapeHtml(address)}
                 </span>
             `;
 
@@ -715,6 +727,7 @@ function selectClinicForItem(itemId, clinic) {
     }
 
 
+    item.prestador = clinic;
     item.prestadorId = clinic.idPrestador;
 
     item.prestadorNome = clinic.nmFantasia || clinic.nmPrestador;
@@ -924,15 +937,10 @@ form.addEventListener(
         }
 
 
-        // --------------------------
-        // Confirmação
-        // --------------------------
-
-        confirmationFile.textContent = inputFile.files[0].name;
-        renderConfirmation();
-        confirmation.classList.add("show");
+        abrirConfirmacao();
     }
 );
+
 
 function clearForm() {
     inputFile.value = "";
@@ -952,161 +960,133 @@ function clearForm() {
     addItem();
 }
 
+
 // ==============================
-// CONFIRMAÇÃO
+// CONFIRMAÇÃO (ficha completa)
 // ==============================
 
-cancelConfirmation.addEventListener(
-    "click",
-    function () {
+/**
+ * Monta a ficha a partir do que o usuário escolheu na tela.
+ * Valor contratual só aparece se /prestadores devolver esse campo
+ * (senão a ficha mostra "—" até o backend incluir).
+ */
+function fichaDeRascunho(beneficiario, arquivo) {
 
-        confirmation.classList.remove(
-            "show"
+    return {
+        codigo: null,
+        dataSolicitacao: null,
+        status: null,
+
+        beneficiario: beneficiario,
+
+        arquivo: {
+            nome: arquivo.name,
+            obterUrl: async function () {
+                return URL.createObjectURL(arquivo);
+            }
+        },
+
+        itens: items.map(function (item) {
+
+            return {
+                codTuss: item.exame.codTuss,
+                nome: item.exame.descExame,
+                prestador: item.prestadorNome,
+                enderecoLinhas: buildAddressLines(item.prestador),
+                valor: item.prestador.valorContratual ?? item.prestador.valor ?? null,
+                status: null
+            };
+        })
+    };
+}
+
+
+async function abrirConfirmacao() {
+
+    const beneficiario = await beneficiarioPromise;
+    const arquivo = inputFile.files[0];
+
+    FichaPreGuia.abrir(
+        fichaDeRascunho(beneficiario, arquivo),
+        {
+            modo: "confirmar",
+            aoConfirmar: enviarSolicitacao
+        }
+    );
+}
+
+
+/**
+ * Envia a pré-guia. Se lançar erro, a ficha continua aberta
+ * e mostra a mensagem; se terminar bem, a ficha fecha sozinha.
+ */
+async function enviarSolicitacao() {
+
+    const arquivo = inputFile.files[0];
+
+    const dados = {
+        itens: items.map(function (item) {
+
+            return {
+                idExame: item.exameId,
+                idPrestador: item.prestadorId
+            };
+        })
+    };
+
+    const formData = new FormData();
+
+    formData.append("encaminhamento", arquivo);
+
+    formData.append(
+        "dados",
+        new Blob(
+            [JSON.stringify(dados)],
+            { type: "application/json" }
+        )
+    );
+
+    const response = await fetchAutenticado(
+        `${API_URL}/pre-guias`,
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    if (!response.ok) {
+        console.error("Erro da API:", await response.text());
+
+        throw new Error(
+            "Não foi possível enviar a solicitação. Tente novamente."
         );
     }
-);
+
+    const preGuia = await response.json();
+
+    console.log("Pré-guia criada:", preGuia);
+
+    clearForm();
+
+    success.classList.add("show");
+
+    return preGuia;
+}
 
 
-confirmSubmit.addEventListener(
-    "click",
-    async function () {
-
-        try {
-            confirmSubmit.disabled = true;
-            confirmSubmit.textContent = "Enviando...";
-            const arquivo = inputFile.files[0];
-            const dados = {
-                itens: items.map(
-                    function (item) {
-
-                        return {
-                            idExame: item.exameId,
-                            idPrestador: item.prestadorId
-                        };
-
-                    }
-                )
-
-            };
-
-            const formData = new FormData();
-
-            // --------------------------
-            // Arquivo
-            // --------------------------
-
-            formData.append("encaminhamento", arquivo);
-
-            // --------------------------
-            // Dados
-            // --------------------------
-
-            formData.append(
-                "dados",
-                new Blob(
-                    [
-                        JSON.stringify(dados)
-                    ],
-                    {
-                        type: "application/json"
-                    }
-                )
-            );
-
-
-            // --------------------------
-            // Envio
-            // --------------------------
-
-            const response =
-                await fetchAutenticado(
-                    `${API_URL}/pre-guias`,
-                    {
-                        method: "POST",
-                        body: formData
-                    }
-                );
-
-
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error("Erro da API:", errorText);
-
-                throw new Error(
-                    "Não foi possível enviar a solicitação."
-                );
-            }
-
-            const preGuia = await response.json();
-
-            console.log("Pré-guia criada:",preGuia);
-
-            // --------------------------
-            // Limpa o formulário
-            // --------------------------
-
-            clearForm();
-
-            // --------------------------
-            // Fecha confirmação
-            // --------------------------
-
-            confirmation.classList.remove("show");
-
-            // --------------------------
-            // Mostra sucesso
-            // --------------------------
-
-            success.classList.add("show");
-
-        } catch (error) {
-            console.error("Erro ao enviar solicitação:", error);
-            alert("Ocorreu um erro ao enviar a solicitação. Tente novamente.");
-
-        } finally {
-            confirmSubmit.disabled = false;
-            confirmSubmit.textContent = "Confirmar envio";
-        }
-
-    }
-);
+// ==============================
+// TELA DE SUCESSO
+// ==============================
 
 newRequest.addEventListener("click", function () {
-        success.classList.remove("show");
-    }
-);
+    success.classList.remove("show");
+});
 
-viewRequests.addEventListener("click",function () {
-        window.location.href = "../index.html";
-    }
-);
 
-function renderConfirmation() {
-    const confirmationItems = document.getElementById("confirmation-items");
+viewRequests.addEventListener("click", function () {
+    window.location.href = "pre-guias.html";
+});
 
-    confirmationItems.innerHTML = "";
-
-    items.forEach(function (item, index) {
-        const confirmationItem = document.createElement("div");
-        confirmationItem.classList.add("confirmation-request-item");
-
-        confirmationItem.innerHTML = `
-            <div class="confirmation-item-number">
-                Exame ${index + 1}
-            </div>
-
-            <div class="confirmation-item-exam">
-                ${item.exameNome}
-            </div>
-
-            <div class="confirmation-item-clinic">
-                ${item.prestadorNome}
-            </div>
-        `;
-
-        confirmationItems.appendChild(confirmationItem);
-    });
-}
 
 // ==============================
 // BOTÃO ADICIONAR
@@ -1114,9 +1094,8 @@ function renderConfirmation() {
 
 addItemButton.addEventListener("click", function () {
 
-        addItem();
-    }
-);
+    addItem();
+});
 
 
 // ==============================
