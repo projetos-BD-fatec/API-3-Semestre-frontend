@@ -285,7 +285,7 @@ formLoginUsuario.addEventListener("submit", async function (event) {
 
 
         window.location.href =
-            "../pages/beneficiario/inicio.html";
+            "../beneficiario/inicio.html";
 
 
     } catch (erro) {

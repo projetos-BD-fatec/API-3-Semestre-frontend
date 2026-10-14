@@ -15,7 +15,8 @@ const fileUpload = document.querySelector(".file-upload");
 const form = document.getElementById("request-form");
 const formError = document.getElementById("form-error");
 
-const requestItems = document.getElementById("request-items");
+
+const requestItems = document.getElementById("request-list");
 const addItemButton = document.getElementById("add-item");
 
 // Tela de sucesso
