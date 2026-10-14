@@ -106,3 +106,99 @@ async function obterUrlArquivoPreGuia(idPreGuia) {
 
     return URL.createObjectURL(await response.blob());
 }
+
+// ==============================
+// ESPELHO (OCS)
+// ==============================
+
+/**
+ * Lê a mensagem de erro do corpo (campo "message" do Spring).
+ * Se não houver, devolve a mensagem padrão informada.
+ */
+async function lerMensagemErro(response, padrao) {
+    try {
+        const dados = await response.json();
+
+        if (dados && typeof dados.message === "string" && dados.message.trim()) {
+            return dados.message;
+        }
+    } catch (error) {
+        // corpo vazio ou não-JSON: usa a mensagem padrão
+    }
+
+    return padrao;
+}
+
+/** Faz a chamada e devolve o JSON; em erro, lança Error com a mensagem. */
+async function requisitarEspelho(url, metodo, corpo, mensagemPadrao) {
+    const opcoes = { method: metodo };
+
+    if (corpo !== undefined) {
+        opcoes.headers = { "Content-Type": "application/json" };
+        opcoes.body = JSON.stringify(corpo);
+    }
+
+    const response = await fetchAutenticado(url, opcoes);
+
+    if (!response.ok) {
+        throw new Error(await lerMensagemErro(response, mensagemPadrao));
+    }
+
+    return response.json();
+}
+
+/** GET /catalogo-tuss?busca=texto (mínimo 2 caracteres, máx. 20 resultados) */
+function buscarCatalogoTuss(busca) {
+    return requisitarEspelho(
+        `${API_URL}/catalogo-tuss?busca=${encodeURIComponent(busca)}`,
+        "GET", undefined, "Não foi possível buscar no catálogo TUSS."
+    );
+}
+
+/** POST /guias/{idGuia}/espelho — abre o espelho ou devolve o existente */
+function abrirEspelho(idGuia) {
+    return requisitarEspelho(
+        `${API_URL}/guias/${idGuia}/espelho`,
+        "POST", undefined, "Não foi possível abrir o espelho desta guia."
+    );
+}
+
+/** GET /espelhos/{id} */
+function buscarEspelho(idEspelho) {
+    return requisitarEspelho(
+        `${API_URL}/espelhos/${idEspelho}`,
+        "GET", undefined, "Não foi possível carregar o espelho."
+    );
+}
+
+/** POST /espelhos/{id}/itens — dados: { codTuss, dataRealizacao, quantidade, valorUnitario } */
+function adicionarItemEspelho(idEspelho, dados) {
+    return requisitarEspelho(
+        `${API_URL}/espelhos/${idEspelho}/itens`,
+        "POST", dados, "Não foi possível adicionar o procedimento."
+    );
+}
+
+/** PUT /espelhos/{id}/itens/{idItem} */
+function atualizarItemEspelho(idEspelho, idItem, dados) {
+    return requisitarEspelho(
+        `${API_URL}/espelhos/${idEspelho}/itens/${idItem}`,
+        "PUT", dados, "Não foi possível salvar a alteração."
+    );
+}
+
+/** DELETE /espelhos/{id}/itens/{idItem} */
+function excluirItemEspelho(idEspelho, idItem) {
+    return requisitarEspelho(
+        `${API_URL}/espelhos/${idEspelho}/itens/${idItem}`,
+        "DELETE", undefined, "Não foi possível excluir o procedimento."
+    );
+}
+
+/** POST /espelhos/{id}/enviar */
+function enviarEspelho(idEspelho) {
+    return requisitarEspelho(
+        `${API_URL}/espelhos/${idEspelho}/enviar`,
+        "POST", undefined, "Não foi possível enviar o espelho."
+    );
+}

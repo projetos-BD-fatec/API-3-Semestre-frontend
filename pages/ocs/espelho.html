@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FUSEx - Espelho da guia</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">FUSEx</a>
+            <button class="menu-button">☰</button>
+        </div>
+    </header>
+
+    <main class="main-container">
+
+        <p id="espelho-carregando" class="espelho-aviso-pagina">Carregando espelho...</p>
+        <p id="espelho-erro-pagina" class="form-error" role="alert" hidden></p>
+
+        <div id="espelho-conteudo" hidden>
+
+            <!-- Cabeçalho -->
+            <section class="espelho-topo">
+                <div>
+                    <h1 id="beneficiario-nome">—</h1>
+                    <p class="espelho-guia">
+                        Guia <span id="codigo-guia" class="espelho-mono">—</span>
+                    </p>
+                </div>
+                <span id="status-espelho" class="espelho-status"></span>
+            </section>
+
+            <p id="aviso-enviado" class="espelho-banner" hidden></p>
+
+            <!-- Adicionar / editar item (só em RASCUNHO) -->
+            <section id="card-adicionar" class="espelho-card">
+                <h2 id="titulo-form-item">Adicionar procedimento</h2>
+
+                <div class="espelho-busca" id="area-busca">
+                    <label for="busca-tuss">Buscar por código TUSS ou descrição</label>
+                    <input type="search" id="busca-tuss" autocomplete="off"
+                           placeholder="Ex.: 40304361 ou hemograma">
+                    <p id="busca-dica" class="espelho-dica">Digite ao menos 2 caracteres.</p>
+                    <ul id="resultados-tuss" class="espelho-resultados" hidden></ul>
+                </div>
+
+                <div id="tuss-selecionado" class="espelho-selecionado" hidden>
+                    <div>
+                        <span id="tuss-sel-codigo" class="espelho-mono"></span>
+                        <span id="tuss-sel-descricao"></span>
+                    </div>
+                    <button type="button" id="btn-trocar-tuss" class="espelho-link">Trocar</button>
+                </div>
+
+                <form id="form-item" class="espelho-form" novalidate>
+                    <div class="espelho-campo">
+                        <label for="campo-data">Data de realização</label>
+                        <input type="date" id="campo-data" required>
+                    </div>
+
+                    <div class="espelho-campo">
+                        <label for="campo-quantidade">Quantidade</label>
+                        <input type="number" id="campo-quantidade" min="1" step="1" value="1" required>
+                    </div>
+
+                    <div class="espelho-campo">
+                        <label for="campo-valor">Valor unitário (R$)</label>
+                        <input type="number" id="campo-valor" min="0" step="0.01" placeholder="0,00" required>
+                    </div>
+
+                    <div class="espelho-form-acoes">
+                        <button type="button" id="btn-cancelar-edicao" class="secondary-button" hidden>
+                            Cancelar edição
+                        </button>
+                        <button type="submit" id="btn-salvar-item" class="primary-button">
+                            Adicionar
+                        </button>
+                    </div>
+                </form>
+
+                <p id="feedback-item" class="form-error" role="alert" hidden></p>
+            </section>
+
+            <!-- Itens -->
+            <section class="espelho-card">
+                <h2>Procedimentos realizados</h2>
+
+                <p id="lista-vazia" class="espelho-vazio" hidden>
+                    Nenhum procedimento adicionado. Busque um código TUSS acima para começar.
+                </p>
+
+                <div class="espelho-tabela-wrap" id="tabela-wrap">
+                    <table class="espelho-tabela">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Código TUSS</th>
+                                <th>Data</th>
+                                <th class="num">Qtd.</th>
+                                <th class="num">Valor unit.</th>
+                                <th class="num">Valor total</th>
+                                <th class="col-acoes"><span class="sr-only">Ações</span></th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-itens"></tbody>
+                    </table>
+                </div>
+
+                <div class="espelho-total">
+                    <span>Total geral</span>
+                    <strong id="total-geral">R$ 0,00</strong>
+                </div>
+            </section>
+
+            <p id="feedback-geral" class="form-error" role="alert" hidden></p>
+
+            <div class="espelho-rodape" id="rodape-enviar">
+                <button type="button" id="btn-enviar" class="primary-button">Enviar espelho</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- Confirmação de envio -->
+    <dialog id="dlg-enviar" class="espelho-dialog">
+        <h2>Enviar espelho ao FUSEx?</h2>
+        <p>
+            Depois de enviado, o espelho não pode mais ser alterado.
+            Confira os itens e valores antes de confirmar.
+        </p>
+        <p id="dlg-resumo" class="espelho-dialog-resumo"></p>
+        <p id="dlg-erro" class="form-error" role="alert" hidden></p>
+        <div class="espelho-dialog-acoes">
+            <button type="button" id="dlg-voltar" class="secondary-button">Voltar</button>
+            <button type="button" id="dlg-confirmar" class="primary-button">Confirmar envio</button>
+        </div>
+    </dialog>
+
+    <script src="../../js/api.js"></script>
+    <script src="../../js/formatters.js"></script>
+    <script src="../../js/espelho.js"></script>
+</body>
+
+</html>
