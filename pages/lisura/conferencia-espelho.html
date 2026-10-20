@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FUSEx - Conferência do espelho</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="index.html" class="logo">FUSEx</a>
+            <button class="menu-button">☰</button>
+        </div>
+    </header>
+
+    <main class="main-container lisura-container">
+
+        <p id="lisura-carregando" class="espelho-aviso-pagina">Carregando conferência...</p>
+        <p id="lisura-erro-pagina" class="form-error" role="alert" hidden></p>
+
+        <div id="lisura-conteudo" hidden>
+
+            <!-- Cabeçalho -->
+            <section class="espelho-topo">
+                <div>
+                    <p class="lisura-sobretitulo">Lisura · Conferência de valores</p>
+                    <h1 id="beneficiario-nome">—</h1>
+                    <p class="espelho-guia">
+                        Guia <span id="codigo-guia" class="espelho-mono">—</span>
+                        · <span id="prestador-nome">—</span>
+                    </p>
+                    <p id="enviado-em" class="lisura-enviado" hidden></p>
+                </div>
+                <span id="situacao-geral" class="lisura-selo"></span>
+            </section>
+
+            <!-- Resumo -->
+            <section class="lisura-resumo" aria-label="Resumo da conferência">
+                <div class="lisura-resumo-item">
+                    <span>Total cobrado (OCS)</span>
+                    <strong id="resumo-cobrado" class="espelho-mono">—</strong>
+                </div>
+                <div class="lisura-resumo-item">
+                    <span>Total contratual</span>
+                    <strong id="resumo-contratual" class="espelho-mono">—</strong>
+                </div>
+                <div class="lisura-resumo-item" id="resumo-diferenca-card">
+                    <span>Diferença</span>
+                    <strong id="resumo-diferenca" class="espelho-mono">—</strong>
+                </div>
+                <div class="lisura-resumo-item">
+                    <span>Itens com divergência</span>
+                    <strong id="resumo-divergentes" class="espelho-mono">—</strong>
+                </div>
+            </section>
+
+            <!-- Itens -->
+            <section class="espelho-card">
+                <div class="lisura-card-topo">
+                    <h2>Procedimentos do espelho</h2>
+
+                    <label class="lisura-filtro">
+                        <input type="checkbox" id="filtro-divergentes">
+                        Mostrar só divergências
+                    </label>
+                </div>
+
+                <ul class="lisura-legenda" aria-label="Legenda das cores">
+                    <li><span class="lisura-legenda-cor is-acima"></span>Cobrado acima do contrato</li>
+                    <li><span class="lisura-legenda-cor is-abaixo"></span>Cobrado abaixo do contrato ou sem valor contratual</li>
+                </ul>
+
+                <p id="lista-vazia" class="espelho-vazio" hidden></p>
+
+                <div class="espelho-tabela-wrap" id="tabela-wrap">
+                    <table class="espelho-tabela lisura-tabela">
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Código TUSS</th>
+                                <th>Data</th>
+                                <th class="num">Qtd.</th>
+                                <th class="num">Valor Cobrado (OCS)</th>
+                                <th class="num">Valor Contratual</th>
+                                <th class="num">Diferença</th>
+                                <th>Situação</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabela-itens"></tbody>
+                    </table>
+                </div>
+
+                <p class="espelho-dica">
+                    Valores por unidade. A diferença considera a quantidade
+                    (cobrado total − contratual total). Itens sem valor contratual
+                    não entram no total contratual nem na diferença.
+                </p>
+            </section>
+        </div>
+    </main>
+
+    <script src="../../js/api.js"></script>
+    <script src="../../js/formatters.js"></script>
+    <script src="../../js/conferencia-lisura.js"></script>
+</body>
+
+</html>

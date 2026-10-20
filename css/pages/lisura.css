@@ -1,0 +1,265 @@
+/* =====================================================
+   Página: conferência do espelho (Lisura)
+   Reaproveita as classes do espelho (espelho-topo, espelho-card,
+   espelho-tabela...) e acrescenta só o que é da comparação.
+   Cores: tokens de estado (danger = vermelho, warning = amarelo).
+===================================================== */
+
+/* A tabela tem 8 colunas: usa a mesma largura do header */
+.main-container.lisura-container {
+    max-width: 1100px;
+}
+
+.lisura-sobretitulo {
+    margin-bottom: 6px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--color-primary);
+}
+
+.lisura-enviado {
+    margin-top: 4px;
+    font-size: 13px;
+    color: var(--color-ink-faint);
+}
+
+/* Selo do topo (mesmo formato do .espelho-status) */
+.lisura-selo {
+    flex-shrink: 0;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border-strong);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.lisura-selo.is-conforme {
+    color: var(--color-success-text);
+    background: var(--color-success-bg);
+    border-color: var(--color-success-border);
+}
+
+.lisura-selo.is-divergente {
+    color: var(--color-danger-text);
+    background: var(--color-danger-bg);
+    border-color: var(--color-danger-border);
+}
+
+/* Resumo */
+.lisura-resumo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.lisura-resumo-item {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding: 14px 16px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.lisura-resumo-item span {
+    font-size: 13px;
+    color: var(--color-ink-soft);
+}
+
+.lisura-resumo-item strong {
+    font-size: 20px;
+    color: var(--color-ink);
+}
+
+.lisura-resumo-item.is-acima {
+    background: var(--color-danger-bg);
+    border-color: var(--color-danger-border);
+}
+
+.lisura-resumo-item.is-acima strong {
+    color: var(--color-danger-text);
+}
+
+.lisura-resumo-item.is-abaixo {
+    background: var(--color-warning-bg);
+    border-color: var(--color-warning-border);
+}
+
+.lisura-resumo-item.is-abaixo strong {
+    color: var(--color-warning-text);
+}
+
+/* Topo do card: título + filtro */
+.lisura-card-topo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 8px 16px;
+    margin-bottom: 10px;
+}
+
+.lisura-card-topo h2 {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+.espelho-card .lisura-filtro {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-ink-soft);
+    cursor: pointer;
+}
+
+.espelho-card .lisura-filtro input {
+    width: 16px;
+    height: 16px;
+    padding: 0;
+    accent-color: var(--color-primary);
+}
+
+/* Legenda */
+.lisura-legenda {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px 18px;
+    margin: 0 0 14px;
+    padding: 0;
+    list-style: none;
+    font-size: 13px;
+    color: var(--color-ink-soft);
+}
+
+.lisura-legenda li {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.lisura-legenda-cor {
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    border: 1px solid;
+}
+
+.lisura-legenda-cor.is-acima {
+    background: var(--color-danger-bg);
+    border-color: var(--color-danger-border);
+}
+
+.lisura-legenda-cor.is-abaixo {
+    background: var(--color-warning-bg);
+    border-color: var(--color-warning-border);
+}
+
+/* Linhas pintadas quando há diferença */
+.lisura-linha.is-acima td {
+    background: var(--color-danger-bg);
+}
+
+.lisura-linha.is-abaixo td,
+.lisura-linha.is-sem-contrato td {
+    background: var(--color-warning-bg);
+}
+
+.lisura-linha.is-acima td:first-child {
+    box-shadow: inset 4px 0 0 var(--color-danger-border);
+}
+
+.lisura-linha.is-abaixo td:first-child,
+.lisura-linha.is-sem-contrato td:first-child {
+    box-shadow: inset 4px 0 0 var(--color-warning-border);
+}
+
+.lisura-linha.is-acima .lisura-cobrado {
+    font-weight: 600;
+    color: var(--color-danger-text);
+}
+
+.lisura-linha.is-abaixo .lisura-cobrado {
+    font-weight: 600;
+    color: var(--color-warning-text);
+}
+
+/* Etiqueta de situação (mesmo formato do .status) */
+.lisura-tag {
+    display: inline-flex;
+    padding: 3px 10px;
+    border-radius: 20px;
+    border: 1px solid var(--color-border-strong);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.lisura-tag.is-conforme {
+    color: var(--color-success-text);
+    background: var(--color-success-bg);
+    border-color: var(--color-success-border);
+}
+
+.lisura-tag.is-acima {
+    color: var(--color-danger-text);
+    background: var(--color-surface);
+    border-color: var(--color-danger-border);
+}
+
+.lisura-tag.is-abaixo,
+.lisura-tag.is-sem-contrato {
+    color: var(--color-warning-text);
+    background: var(--color-surface);
+    border-color: var(--color-warning-border);
+}
+
+.lisura-tabela + .espelho-dica,
+.espelho-tabela-wrap + .espelho-dica {
+    margin-top: 14px;
+}
+
+/* Telas maiores */
+@media (min-width: 768px) {
+    .lisura-resumo {
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+/* Celular: cada linha vira um bloco (regras base em espelho.css) */
+@media (max-width: 640px) {
+    .lisura-linha.is-acima,
+    .lisura-linha.is-abaixo,
+    .lisura-linha.is-sem-contrato {
+        padding: 10px 12px;
+        border-radius: var(--radius-sm);
+        margin-bottom: 8px;
+    }
+
+    .lisura-linha.is-acima {
+        background: var(--color-danger-bg);
+        box-shadow: inset 4px 0 0 var(--color-danger-border);
+    }
+
+    .lisura-linha.is-abaixo,
+    .lisura-linha.is-sem-contrato {
+        background: var(--color-warning-bg);
+        box-shadow: inset 4px 0 0 var(--color-warning-border);
+    }
+
+    .lisura-tabela .lisura-linha td,
+    .lisura-tabela .lisura-linha td:first-child {
+        background: transparent;
+        box-shadow: none;
+    }
+}

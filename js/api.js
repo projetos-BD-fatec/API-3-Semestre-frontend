@@ -319,3 +319,20 @@ async function marcarProcedimentoComoRealizado(
         "Não foi possível confirmar a realização do procedimento."
     );
 }
+
+
+// ==============================
+// LISURA
+// ==============================
+
+/**
+ * GET /lisura/{guiaId}
+ * Itens do espelho enviado com o valor cobrado (OCS) e o valor contratual.
+ * situacao de cada item: CONFORME | ACIMA | ABAIXO | SEM_CONTRATO
+ */
+function buscarConferenciaLisura(idGuia) {
+    return requisitarEspelho(
+        `${API_URL}/lisura/${idGuia}`,
+        "GET", undefined, "Não foi possível carregar a conferência do espelho."
+    );
+}
