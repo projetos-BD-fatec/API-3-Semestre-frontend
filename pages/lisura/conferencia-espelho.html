@@ -56,9 +56,10 @@
                     <span>Diferença</span>
                     <strong id="resumo-diferenca" class="espelho-mono">—</strong>
                 </div>
-                <div class="lisura-resumo-item">
-                    <span>Itens com divergência</span>
-                    <strong id="resumo-divergentes" class="espelho-mono">—</strong>
+                <div class="lisura-resumo-item" id="resumo-final-card">
+                    <span>Valor final revisado</span>
+                    <strong id="resumo-final" class="espelho-mono">—</strong>
+                    <small id="resumo-pendentes" class="lisura-resumo-nota"></small>
                 </div>
             </section>
 
@@ -84,14 +85,13 @@
                     <table class="espelho-tabela lisura-tabela">
                         <thead>
                             <tr>
-                                <th>Descrição</th>
-                                <th>Código TUSS</th>
-                                <th>Data</th>
+                                <th>Procedimento</th>
                                 <th class="num">Qtd.</th>
                                 <th class="num">Valor Cobrado (OCS)</th>
                                 <th class="num">Valor Contratual</th>
                                 <th class="num">Diferença</th>
                                 <th>Situação</th>
+                                <th class="col-revisao">Valor final</th>
                             </tr>
                         </thead>
                         <tbody id="tabela-itens"></tbody>
@@ -102,8 +102,12 @@
                     Valores por unidade. A diferença considera a quantidade
                     (cobrado total − contratual total). Itens sem valor contratual
                     não entram no total contratual nem na diferença.
+                    Em cada item divergente, escolha acatar o valor contratual,
+                    manter o cobrado ou informar o valor ajustado.
                 </p>
             </section>
+
+            <p id="feedback-geral" class="form-error" role="alert" hidden></p>
         </div>
     </main>
 

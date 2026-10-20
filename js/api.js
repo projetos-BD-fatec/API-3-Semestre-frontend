@@ -336,3 +336,16 @@ function buscarConferenciaLisura(idGuia) {
         "GET", undefined, "Não foi possível carregar a conferência do espelho."
     );
 }
+
+/**
+ * PUT /lisura/{guiaId}/revisao
+ * itens: [{ idItem, decisao, valorAjustado }]
+ * decisao: ACATAR_CONTRATUAL | MANTER_COBRADO | VALOR_AJUSTADO
+ * Devolve a conferência atualizada (mesmo formato do GET).
+ */
+function salvarRevisaoLisura(idGuia, itens) {
+    return requisitarEspelho(
+        `${API_URL}/lisura/${idGuia}/revisao`,
+        "PUT", { itens: itens }, "Não foi possível salvar a revisão."
+    );
+}
