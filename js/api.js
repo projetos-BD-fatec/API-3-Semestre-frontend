@@ -202,3 +202,120 @@ function enviarEspelho(idEspelho) {
         "POST", undefined, "Não foi possível enviar o espelho."
     );
 }
+
+
+/* =====================================================
+   PRESTADOR — GUIAS OFICIAIS
+   Endpoints: /api/guias
+===================================================== */
+
+/**
+ * Executa requisições autenticadas às guias oficiais.
+ * Reutiliza o JWT e o tratamento de sessão do api.js.
+ */
+async function requisitarGuiaPrestador(
+    caminho,
+    metodo = "GET",
+    mensagemPadrao = "Não foi possível realizar a operação."
+) {
+    const response = await fetchAutenticado(
+        `${API_URL}/api/guias${caminho}`,
+        { method: metodo }
+    );
+
+    if (!response.ok) {
+        const mensagem = await lerMensagemErro(
+            response,
+            mensagemPadrao
+        );
+
+        const erro = new Error(mensagem);
+        erro.status = response.status;
+
+        throw erro;
+    }
+
+    if (response.status === 204) {
+        return null;
+    }
+
+    return response.json();
+}
+
+/**
+ * GET /api/guias
+ *
+ * Lista as guias oficiais do prestador autenticado.
+ *
+ * O parâmetro busca é opcional e permite pesquisar
+ * por nome do paciente ou código da guia.
+ */
+async function listarGuiasPrestador(busca = "") {
+    const termo = String(busca).trim();
+
+    const parametros = new URLSearchParams();
+
+    if (termo) {
+        parametros.set("busca", termo);
+    }
+
+    const query = parametros.toString();
+
+    return requisitarGuiaPrestador(
+        query ? `?${query}` : "",
+        "GET",
+        "Não foi possível carregar as guias oficiais."
+    );
+}
+
+/**
+ * GET /api/guias/{id}
+ *
+ * Retorna os detalhes da guia oficial,
+ * incluindo seus procedimentos.
+ */
+async function buscarDetalhesGuiaPrestador(idGuia) {
+    return requisitarGuiaPrestador(
+        `/${encodeURIComponent(idGuia)}`,
+        "GET",
+        "Não foi possível carregar os detalhes da guia."
+    );
+}
+
+/**
+ * PUT /api/guias/{id}/finalizar
+ *
+ * Marca a guia oficial como UTILIZADA.
+ *
+ * ATENÇÃO:
+ * Essa operação não marca os procedimentos como
+ * realizados. A confirmação de cada procedimento
+ * é independente.
+ */
+async function marcarGuiaComoUtilizada(idGuia) {
+    return requisitarGuiaPrestador(
+        `/${encodeURIComponent(idGuia)}/finalizar`,
+        "PUT",
+        "Não foi possível marcar a guia como utilizada."
+    );
+}
+
+/**
+ * PUT /api/guias/{idGuia}/procedimentos/{idItem}/finalizar
+ *
+ * Confirma a realização de um procedimento específico.
+ * O backend registra FL_REALIZADO = 'S'
+ * e a data/hora da confirmação.
+ */
+async function marcarProcedimentoComoRealizado(
+    idGuia,
+    idItem
+) {
+    return requisitarGuiaPrestador(
+        `/${encodeURIComponent(idGuia)}` +
+        `/procedimentos/${encodeURIComponent(idItem)}` +
+        "/finalizar",
+        "PUT",
+        "Não foi possível confirmar a realização do procedimento."
+    );
+}
