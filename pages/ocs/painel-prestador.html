@@ -1,0 +1,269 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>FUSEx - Painel do Prestador</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+
+<body class="prestador-page">
+
+<!-- CABEÇALHO -->
+<header class="header">
+    <div class="header-container">
+
+        <a href="painel-prestador.html" class="logo">
+            FUSEx
+        </a>
+
+        <div class="prestador-header-actions">
+                <span class="prestador-header-label">
+                    Área do Prestador
+                </span>
+
+            <button id="btn-sair"
+                    class="prestador-sair"
+                    type="button">
+                Sair
+            </button>
+        </div>
+
+    </div>
+</header>
+
+<main class="main-container prestador-container">
+
+    <!-- APRESENTAÇÃO -->
+    <section class="prestador-boas-vindas">
+
+        <div>
+                <span class="prestador-eyebrow">
+                    PORTAL DO PRESTADOR
+                </span>
+
+            <h1>Painel de atendimentos</h1>
+
+            <p>
+                Consulte as guias oficiais recebidas,
+                acompanhe os procedimentos e registre
+                os atendimentos realizados.
+            </p>
+        </div>
+
+        <button id="btn-atualizar"
+                class="secondary-button"
+                type="button">
+            Atualizar guias
+        </button>
+
+    </section>
+
+    <!-- INDICADORES -->
+    <section class="prestador-indicadores"
+             aria-label="Resumo dos atendimentos">
+
+        <article class="prestador-indicador">
+                <span class="prestador-indicador-label">
+                    Total de guias
+                </span>
+
+            <strong id="total-guias">
+                —
+            </strong>
+
+            <span class="prestador-indicador-info">
+                    Guias recebidas
+                </span>
+        </article>
+
+        <article class="prestador-indicador">
+                <span class="prestador-indicador-label">
+                    Guias ativas
+                </span>
+
+            <strong id="guias-ativas">
+                —
+            </strong>
+
+            <span class="prestador-indicador-info">
+                    Aguardando utilização
+                </span>
+        </article>
+
+        <article class="prestador-indicador">
+                <span class="prestador-indicador-label">
+                    Guias utilizadas
+                </span>
+
+            <strong id="guias-utilizadas">
+                —
+            </strong>
+
+            <span class="prestador-indicador-info">
+                    Atendimento iniciado
+                </span>
+        </article>
+
+        <article class="prestador-indicador">
+                <span class="prestador-indicador-label">
+                    Procedimentos pendentes
+                </span>
+
+            <strong id="procedimentos-pendentes">
+                —
+            </strong>
+
+            <span class="prestador-indicador-info">
+                    Ainda não realizados
+                </span>
+        </article>
+
+    </section>
+
+    <!-- LISTAGEM DE GUIAS -->
+    <section class="prestador-listagem">
+
+        <div class="prestador-secao-topo">
+
+            <div>
+                <h2>Guias oficiais</h2>
+
+                <p>
+                    Localize uma guia para visualizar
+                    seus procedimentos.
+                </p>
+            </div>
+
+            <span id="quantidade-resultados"
+                  class="prestador-contador">
+                    —
+                </span>
+
+        </div>
+
+        <!-- FILTROS -->
+        <div class="prestador-filtros">
+
+            <div class="prestador-busca">
+
+                <label for="busca-guias">
+                    Buscar guia
+                </label>
+
+                <input
+                        type="search"
+                        id="busca-guias"
+                        placeholder="Código da guia ou nome do paciente"
+                        autocomplete="off"
+                >
+
+            </div>
+
+            <div class="prestador-filtro-status">
+
+                <label for="filtro-status">
+                    Situação da guia
+                </label>
+
+                <select id="filtro-status">
+
+                    <option value="TODAS">
+                        Todas as guias
+                    </option>
+
+                    <option value="ATIVA">
+                        Ativas
+                    </option>
+
+                    <option value="UTILIZADA">
+                        Utilizadas
+                    </option>
+
+                    <option value="VENCIDA">
+                        Vencidas
+                    </option>
+
+                    <option value="CANCELADA">
+                        Canceladas
+                    </option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+        <!-- CARREGAMENTO -->
+        <div id="prestador-loading"
+             class="prestador-feedback"
+             role="status">
+
+            Carregando guias oficiais...
+
+        </div>
+
+        <!-- ERRO -->
+        <div id="prestador-erro"
+             class="prestador-feedback prestador-feedback-erro"
+             role="alert"
+             hidden>
+
+            <p id="prestador-erro-texto">
+                Não foi possível carregar as guias.
+            </p>
+
+            <button id="btn-tentar-novamente"
+                    type="button"
+                    class="secondary-button">
+                Tentar novamente
+            </button>
+
+        </div>
+
+        <!-- LISTA VAZIA -->
+        <div id="prestador-vazio"
+             class="prestador-feedback"
+             hidden>
+
+            <h3 id="prestador-vazio-titulo">
+                Nenhuma guia encontrada
+            </h3>
+
+            <p id="prestador-vazio-texto">
+                Ainda não existem guias para exibir.
+            </p>
+
+        </div>
+
+        <!-- CARDS GERADOS PELO JAVASCRIPT -->
+        <div id="lista-guias"
+             class="prestador-guias-lista"
+             aria-live="polite"
+             hidden>
+        </div>
+
+    </section>
+
+</main>
+
+<script src="../../js/api.js"></script>
+<script src="../../js/formatters.js"></script>
+<script src="../../js/painel-prestador.js"></script>
+
+</body>
+</html>
