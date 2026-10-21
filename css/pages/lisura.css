@@ -245,6 +245,31 @@
     color: var(--color-ink-faint);
 }
 
+/* Aviso: itens cobrados sem confirmação de realização na guia */
+.lisura-aviso {
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    border-left: 4px solid var(--color-warning-border);
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
+    border-radius: var(--radius-lg);
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.lisura-alerta-guia {
+    display: inline-block;
+    margin-top: 4px;
+    font-size: 12px;
+    font-style: normal;
+    font-weight: 600;
+    color: var(--color-warning-text);
+}
+
+.lisura-alerta-guia::before {
+    content: "⚠ ";
+}
+
 /* Card "Valor final revisado" */
 .lisura-resumo-nota {
     font-size: 12px;

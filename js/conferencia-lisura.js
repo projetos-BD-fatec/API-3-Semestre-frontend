@@ -21,6 +21,11 @@ const SITUACAO_ITEM = {
     SEM_CONTRATO: { label: "Sem valor contratual", classe: "is-sem-contrato" }
 };
 
+const PROCEDIMENTO_NA_GUIA = {
+    NAO_CONFIRMADO: "Realização não confirmada pela OCS",
+    FORA_DA_GUIA: "Procedimento fora da guia"
+};
+
 const DECISAO_LISURA = {
     ACATAR_CONTRATUAL: { opcao: "Acatar contratual", label: "Contratual acatado" },
     MANTER_COBRADO: { opcao: "Manter cobrado", label: "Cobrado mantido" },
@@ -45,6 +50,7 @@ const el = {
     prestador: document.getElementById("prestador-nome"),
     enviadoEm: document.getElementById("enviado-em"),
     situacaoGeral: document.getElementById("situacao-geral"),
+    avisoConfirmacao: document.getElementById("aviso-confirmacao"),
 
     resumoCobrado: document.getElementById("resumo-cobrado"),
     resumoContratual: document.getElementById("resumo-contratual"),
@@ -148,7 +154,7 @@ function renderizarCabecalho() {
     const pendentes = conferencia.itensPendentes || 0;
 
     el.beneficiario.textContent = conferencia.nomeBeneficiario || "—";
-    el.codigoGuia.textContent = conferencia.codigoGuia ?? "—";
+    el.codigoGuia.textContent = conferencia.codigoGuia || (conferencia.idGuia ? `#${conferencia.idGuia}` : "—");
     el.prestador.textContent = conferencia.nomePrestador || "—";
 
     const quando = formatarDataHora(conferencia.enviadoEm);
@@ -166,6 +172,15 @@ function renderizarCabecalho() {
 
     el.situacaoGeral.textContent = texto;
     el.situacaoGeral.className = "lisura-selo " + classe;
+
+    const naoConfirmados = conferencia.itensNaoConfirmados || 0;
+    mostrarMensagem(
+        el.avisoConfirmacao,
+        naoConfirmados > 0
+            ? `${naoConfirmados} procedimento(s) cobrado(s) sem confirmação de realização na guia. ` +
+              "Confira antes de definir o valor final."
+            : ""
+    );
 }
 
 function renderizarResumo() {
@@ -277,6 +292,9 @@ function renderizarTabela() {
                 <td data-rotulo="Procedimento" class="lisura-procedimento">
                     <span>${escapeHtml(item.descricao || "—")}</span>
                     <small><span class="espelho-mono">${escapeHtml(String(item.codTuss))}</span> · ${formatarData(item.dataRealizacao)}</small>
+                    ${PROCEDIMENTO_NA_GUIA[item.procedimentoNaGuia]
+                        ? `<em class="lisura-alerta-guia">${PROCEDIMENTO_NA_GUIA[item.procedimentoNaGuia]}</em>`
+                        : ""}
                 </td>
                 <td data-rotulo="Qtd." class="num">${item.quantidade}</td>
                 <td data-rotulo="Valor Cobrado (OCS)" class="num espelho-mono lisura-cobrado">${escapeHtml(formatCurrency(item.valorCobradoUnitario))}</td>
