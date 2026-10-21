@@ -349,3 +349,52 @@ function salvarRevisaoLisura(idGuia, itens) {
         "PUT", { itens: itens }, "Não foi possível salvar a revisão."
     );
 }
+
+/** GET /lisura — espelhos já enviados pelas OCS (mais recentes primeiro) */
+function listarEspelhosLisura() {
+    return requisitarEspelho(
+        `${API_URL}/lisura`,
+        "GET", undefined, "Não foi possível carregar os espelhos enviados."
+    );
+}
+
+
+// ==============================
+// PERFIS DO USUÁRIO LOGADO
+// ==============================
+
+/** Perfis que podem acessar a Lisura (mesma regra do backend). */
+const PERFIS_LISURA = ["FUSEX", "LISURA", "ADMIN"];
+
+/**
+ * Lê os perfis gravados no token do login (claim "perfis" do JWT).
+ * Serve só para mostrar/esconder botões: quem garante o acesso é o backend.
+ */
+function perfisDoUsuario() {
+    const token = localStorage.getItem("token");
+
+    if (!token || token.split(".").length !== 3) {
+        return [];
+    }
+
+    try {
+        const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+        const json = decodeURIComponent(
+            atob(base64).split("").map(function (c) {
+                return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join("")
+        );
+        const perfis = JSON.parse(json).perfis;
+
+        return Array.isArray(perfis) ? perfis.map(String) : [];
+
+    } catch (error) {
+        return [];
+    }
+}
+
+function temAcessoLisura() {
+    return perfisDoUsuario().some(function (perfil) {
+        return PERFIS_LISURA.includes(perfil.toUpperCase());
+    });
+}

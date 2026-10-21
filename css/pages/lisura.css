@@ -384,6 +384,55 @@
     font-size: 13px;
 }
 
+/* Botão "Lisura" na tela inicial (só para FUSEX / LISURA / ADMIN) */
+.action-card.action-card-lisura[hidden] {
+    display: none;
+}
+
+.actions .action-card.action-card-lisura {
+    border-left-color: var(--color-primary-dark);
+}
+
+.actions .action-card.action-card-lisura .action-icon {
+    background: var(--color-primary);
+    color: #FFFFFF;
+}
+
+/* Lista de espelhos enviados (pages/lisura/index.html) */
+.lisura-busca {
+    flex: 1;
+    min-width: 220px;
+    max-width: 420px;
+}
+
+.espelho-card .lisura-busca input {
+    padding: 8px 12px;
+    font-size: 14px;
+}
+
+.lisura-lista .lisura-alerta-guia {
+    display: block;
+}
+
+.lisura-botao-link {
+    display: inline-block;
+    text-decoration: none;
+    white-space: nowrap;
+}
+
+.lisura-voltar {
+    display: inline-block;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: none;
+}
+
+.lisura-voltar:hover {
+    text-decoration: underline;
+}
+
 /* Telas maiores */
 @media (min-width: 768px) {
     .lisura-resumo {
@@ -416,6 +465,19 @@
     .lisura-tabela .lisura-linha td:first-child {
         background: transparent;
         box-shadow: none;
+    }
+
+    /* Topo: selo vai para baixo do título */
+    .lisura-container .espelho-topo {
+        flex-wrap: wrap;
+    }
+
+    .lisura-situacao {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 4px;
+        text-align: right;
     }
 
     /* Revisão ocupa a largura toda no celular */
