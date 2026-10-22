@@ -321,9 +321,85 @@ async function marcarProcedimentoComoRealizado(
 }
 
 
+// ==============================
+// LISURA
+// ==============================
+
+/**
+ * GET /lisura/{guiaId}
+ * Itens do espelho enviado com o valor cobrado (OCS) e o valor contratual.
+ * situacao de cada item: CONFORME | ACIMA | ABAIXO | SEM_CONTRATO
+ */
+function buscarConferenciaLisura(idGuia) {
+    return requisitarEspelho(
+        `${API_URL}/lisura/${idGuia}`,
+        "GET", undefined, "Não foi possível carregar a conferência do espelho."
+    );
+}
+
+/**
+ * PUT /lisura/{guiaId}/revisao
+ * itens: [{ idItem, decisao, valorAjustado }]
+ * decisao: ACATAR_CONTRATUAL | MANTER_COBRADO | VALOR_AJUSTADO
+ * Devolve a conferência atualizada (mesmo formato do GET).
+ */
+function salvarRevisaoLisura(idGuia, itens) {
+    return requisitarEspelho(
+        `${API_URL}/lisura/${idGuia}/revisao`,
+        "PUT", { itens: itens }, "Não foi possível salvar a revisão."
+    );
+}
+
+/** GET /lisura — espelhos já enviados pelas OCS (mais recentes primeiro) */
+function listarEspelhosLisura() {
+    return requisitarEspelho(
+        `${API_URL}/lisura`,
+        "GET", undefined, "Não foi possível carregar os espelhos enviados."
+    );
+}
+
+
+// ==============================
+// PERFIS DO USUÁRIO LOGADO
+// ==============================
+
+/** Perfis que podem acessar a Lisura (mesma regra do backend). */
+const PERFIS_LISURA = ["FUSEX", "LISURA", "ADMIN"];
+
+/**
+ * Lê os perfis gravados no token do login (claim "perfis" do JWT).
+ * Serve só para mostrar/esconder botões: quem garante o acesso é o backend.
+ */
+function perfisDoUsuario() {
+    const token = localStorage.getItem("token");
+
+    if (!token || token.split(".").length !== 3) {
+        return [];
+    }
+
+    try {
+        const base64 = token.split(".")[1].replace(/-/g, "+").replace(/_/g, "/");
+        const json = decodeURIComponent(
+            atob(base64).split("").map(function (c) {
+                return "%" + ("00" + c.charCodeAt(0).toString(16)).slice(-2);
+            }).join("")
+        );
+        const perfis = JSON.parse(json).perfis;
+
+        return Array.isArray(perfis) ? perfis.map(String) : [];
+
+    } catch (error) {
+        return [];
+    }
+}
+
+function temAcessoLisura() {
+    return perfisDoUsuario().some(function (perfil) {
+        return PERFIS_LISURA.includes(perfil.toUpperCase());
+    });
+}
 /* =====================================================
    GUIA OFICIAL - RECUPERAR ARQUIVO PDF
-===================================================== */
 
 async function buscarArquivoGuiaOficial(idGuia) {
 
