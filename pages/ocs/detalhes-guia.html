@@ -1,0 +1,472 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>FUSEx - Detalhes da Guia</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+
+<body class="prestador-page detalhes-guia-page">
+
+<!-- CABEÇALHO -->
+
+<header class="header">
+    <div class="header-container">
+
+        <a href="painel-prestador.html" class="logo">
+            FUSEx
+        </a>
+
+        <div class="prestador-header-actions">
+
+                <span class="prestador-header-label">
+                    Área do Prestador
+                </span>
+
+            <button
+                    id="btn-sair"
+                    class="prestador-sair"
+                    type="button">
+                Sair
+            </button>
+
+        </div>
+
+    </div>
+</header>
+
+<main class="main-container prestador-container detalhes-container">
+
+    <!-- NAVEGAÇÃO -->
+
+    <nav class="detalhes-navegacao"
+         aria-label="Navegação">
+
+        <a href="painel-prestador.html"
+           class="detalhes-voltar">
+            &larr; Voltar ao painel
+        </a>
+
+    </nav>
+
+    <!-- CARREGAMENTO -->
+
+    <div id="detalhes-loading"
+         class="prestador-feedback"
+         role="status">
+
+        Carregando detalhes da guia...
+
+    </div>
+
+    <!-- ERRO -->
+
+    <div id="detalhes-erro"
+         class="prestador-feedback prestador-feedback-erro"
+         role="alert"
+         hidden>
+
+        <h2>Não foi possível carregar a guia</h2>
+
+        <p id="detalhes-erro-texto">
+            Verifique sua conexão e tente novamente.
+        </p>
+
+        <button
+                id="btn-tentar-novamente"
+                class="secondary-button"
+                type="button">
+            Tentar novamente
+        </button>
+
+    </div>
+
+    <!-- CONTEÚDO DA GUIA -->
+
+    <div id="detalhes-conteudo" hidden>
+
+        <!-- IDENTIFICAÇÃO -->
+
+        <section class="detalhes-identificacao">
+
+            <div class="detalhes-identificacao-principal">
+
+                    <span class="prestador-eyebrow">
+                        GUIA OFICIAL FUSEX
+                    </span>
+
+                <h1 id="detalhes-codigo-guia">
+                    —
+                </h1>
+
+                <p class="detalhes-subtitulo">
+                    Informações e acompanhamento dos
+                    procedimentos autorizados.
+                </p>
+
+            </div>
+
+            <span
+                    id="detalhes-status"
+                    class="prestador-guia-status"
+                    aria-label="Situação da guia">
+                    —
+                </span>
+
+        </section>
+
+        <!-- INFORMAÇÕES PRINCIPAIS -->
+
+        <section class="detalhes-informacoes"
+                 aria-label="Informações da guia">
+
+            <div class="detalhes-info-item">
+
+                    <span class="detalhes-info-label">
+                        Beneficiário
+                    </span>
+
+                <strong id="detalhes-paciente">
+                    —
+                </strong>
+
+            </div>
+
+            <div class="detalhes-info-item">
+
+                    <span class="detalhes-info-label">
+                        Número da pré-guia
+                    </span>
+
+                <strong id="detalhes-pre-guia">
+                    —
+                </strong>
+
+            </div>
+
+            <div class="detalhes-info-item">
+
+                    <span class="detalhes-info-label">
+                        Data de emissão
+                    </span>
+
+                <strong id="detalhes-data-upload">
+                    —
+                </strong>
+
+            </div>
+
+        </section>
+
+        <!-- UTILIZAÇÃO DA GUIA -->
+
+        <section class="detalhes-utilizacao"
+                 aria-labelledby="titulo-utilizacao">
+
+            <div class="detalhes-secao-cabecalho">
+
+                <div>
+
+                    <h2 id="titulo-utilizacao">
+                        Utilização da guia
+                    </h2>
+
+                    <p>
+                        Registre o uso da guia no início
+                        do atendimento.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="detalhes-utilizacao-corpo">
+
+                <div>
+
+                    <strong id="detalhes-utilizacao-titulo">
+                        Verificando situação...
+                    </strong>
+
+                    <p id="detalhes-utilizacao-descricao">
+                        Aguarde enquanto consultamos a guia.
+                    </p>
+
+                </div>
+
+                <button
+                        id="btn-marcar-utilizada"
+                        class="detalhes-btn-primario"
+                        type="button"
+                        hidden>
+                    Marcar como utilizada
+                </button>
+
+            </div>
+
+            <p id="detalhes-utilizacao-feedback"
+               class="detalhes-feedback"
+               role="status"
+               aria-live="polite"
+               hidden>
+            </p>
+
+
+            <!-- DOCUMENTO OFICIAL DA GUIA -->
+
+            <div class="detalhes-documento">
+
+                <div class="detalhes-documento-cabecalho">
+                    <div>
+                        <h3>Documento oficial</h3>
+                        <p>
+                            Guia enviada pelo funcionário FUSEX.
+                        </p>
+                    </div>
+                </div>
+
+                <div id="detalhes-documento-preview"
+                     class="detalhes-documento-preview">
+
+                    <p>
+                        Visualização do documento ainda não disponível.
+                    </p>
+
+                </div>
+
+                <div class="detalhes-documento-acoes">
+
+                    <button id="btn-visualizar-guia"
+                            class="detalhes-btn-primario"
+                            type="button"
+                            disabled>
+                        Visualizar guia
+                    </button>
+
+                    <button id="btn-baixar-guia"
+                            class="secondary-button"
+                            type="button"
+                            disabled>
+                        Baixar arquivo
+                    </button>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+        <!-- PROGRESSO DOS PROCEDIMENTOS -->
+
+        <section class="detalhes-progresso"
+                 aria-labelledby="titulo-progresso">
+
+            <div class="detalhes-progresso-topo">
+
+                <div>
+
+                    <h2 id="titulo-progresso">
+                        Progresso do atendimento
+                    </h2>
+
+                    <p>
+                        Acompanhe a realização
+                        dos procedimentos autorizados.
+                    </p>
+
+                </div>
+
+                <strong id="detalhes-progresso-contador">
+                    0 de 0
+                </strong>
+
+            </div>
+
+            <div
+                    id="detalhes-progresso-barra"
+                    class="detalhes-progresso-barra"
+                    role="progressbar"
+                    aria-label="Procedimentos realizados"
+                    aria-valuemin="0"
+                    aria-valuemax="100"
+                    aria-valuenow="0">
+
+                <div
+                        id="detalhes-progresso-preenchimento"
+                        class="detalhes-progresso-preenchimento"
+                        style="width: 0%;">
+                </div>
+
+            </div>
+
+            <p id="detalhes-progresso-percentual"
+               class="detalhes-progresso-percentual">
+                0% dos procedimentos realizados
+            </p>
+
+        </section>
+
+        <!-- PROCEDIMENTOS -->
+
+        <section class="detalhes-procedimentos"
+                 aria-labelledby="titulo-procedimentos">
+
+            <div class="detalhes-secao-cabecalho">
+
+                <div>
+
+                    <h2 id="titulo-procedimentos">
+                        Procedimentos autorizados
+                    </h2>
+
+                    <p>
+                        Confirme individualmente os
+                        procedimentos efetivamente realizados.
+                    </p>
+
+                </div>
+
+                <span
+                        id="detalhes-total-procedimentos"
+                        class="prestador-contador">
+                        —
+                    </span>
+
+            </div>
+
+            <!-- LISTA VAZIA -->
+
+            <div
+                    id="detalhes-procedimentos-vazio"
+                    class="prestador-feedback"
+                    hidden>
+
+                Nenhum procedimento encontrado
+                para esta guia.
+
+            </div>
+
+            <!-- CARDS GERADOS PELO JAVASCRIPT -->
+
+            <div
+                    id="detalhes-lista-procedimentos"
+                    class="detalhes-lista-procedimentos">
+            </div>
+
+        </section>
+
+        <!-- ESPELHO -->
+
+        <section class="detalhes-espelho"
+                 aria-labelledby="titulo-espelho">
+
+            <div class="detalhes-espelho-conteudo">
+
+                    <span class="prestador-eyebrow">
+                        REGISTRO DO ATENDIMENTO
+                    </span>
+
+                <h2 id="titulo-espelho">
+                    Espelho da guia
+                </h2>
+
+                <p>
+                    Registre os procedimentos, materiais
+                    e insumos utilizados no atendimento,
+                    incluindo quantidades e valores.
+                </p>
+
+                <p class="detalhes-espelho-observacao">
+                    O espelho poderá ser aberto após
+                    a guia ser marcada como utilizada.
+                </p>
+
+            </div>
+
+            <button
+                    id="btn-abrir-espelho"
+                    class="detalhes-btn-primario"
+                    type="button"
+                    disabled>
+
+                Abrir espelho &rarr;
+
+            </button>
+
+            <p id="detalhes-espelho-feedback"
+               class="detalhes-feedback"
+               role="status"
+               aria-live="polite"
+               hidden>
+            </p>
+
+        </section>
+
+    </div>
+
+</main>
+
+<!-- CONFIRMAÇÃO DE AÇÕES -->
+
+<dialog
+        id="detalhes-modal-confirmacao"
+        class="detalhes-modal"
+        aria-labelledby="detalhes-modal-titulo"
+        aria-describedby="detalhes-modal-descricao">
+
+    <div class="detalhes-modal-conteudo">
+
+        <h2 id="detalhes-modal-titulo">
+            Confirmar operação
+        </h2>
+
+        <p id="detalhes-modal-descricao">
+            Deseja continuar?
+        </p>
+
+        <div class="detalhes-modal-acoes">
+
+            <button
+                    id="detalhes-modal-cancelar"
+                    class="secondary-button"
+                    type="button">
+                Cancelar
+            </button>
+
+            <button
+                    id="detalhes-modal-confirmar"
+                    class="detalhes-btn-primario"
+                    type="button">
+                Confirmar
+            </button>
+
+        </div>
+
+    </div>
+
+</dialog>
+
+<!-- SCRIPTS -->
+
+<script src="../../js/api.js"></script>
+<script src="../../js/formatters.js"></script>
+<script src="../../js/detalhes-guia.js"></script>
+
+</body>
+</html>
