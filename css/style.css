@@ -1490,3 +1490,63 @@ a.request-card:has(.request-status.negada) {
         flex-direction: column;
     }
 }
+/* --- ESTILOS DA TELA DE FATURAS (SCRUM-48) --- */
+.container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 0 20px;
+    font-family: Arial, sans-serif;
+}
+
+.page-header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.page-header h2 { margin: 0 0 10px 0; color: #1a1a1a; }
+.page-header p { margin: 0; color: #666; }
+
+.card {
+    background-color: white;
+    border-radius: 8px;
+    padding: 30px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.05);
+    border-left: 5px solid #105a45; /* Linha verde lateral exigida no padrão */
+}
+
+.card-title h3 { margin: 0 0 5px 0; color: #1a1a1a; }
+.card-title p { margin: 0 0 20px 0; color: #666; font-size: 14px; }
+
+.filtros-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 25px;
+}
+
+.btn-filtro {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    background-color: transparent;
+    border-radius: 4px;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.btn-filtro.ativo {
+    background-color: #105a45;
+    color: white;
+    border-color: #105a45;
+}
+
+.item-fatura {
+    border: 1px solid #d1d5db;
+    padding: 15px;
+    border-radius: 6px;
+    margin-bottom: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
