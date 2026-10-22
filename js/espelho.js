@@ -520,6 +520,15 @@ el.dlgConfirmar.addEventListener("click", async function () {
 ================================ */
 
 async function iniciar() {
+    const botaoVoltarDetalhes = document.getElementById(
+        "btn-voltar-detalhes"
+    );
+
+    if (botaoVoltarDetalhes && idGuia && /^\d+$/.test(idGuia)) {
+        botaoVoltarDetalhes.href =
+            `detalhes-guia.html?idGuia=${encodeURIComponent(idGuia)}`;
+    }
+
     if (!idGuia || !/^\d+$/.test(idGuia)) {
         el.carregando.hidden = true;
         mostrarMensagem(

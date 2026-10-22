@@ -319,3 +319,38 @@ async function marcarProcedimentoComoRealizado(
         "Não foi possível confirmar a realização do procedimento."
     );
 }
+
+
+/* =====================================================
+   GUIA OFICIAL - RECUPERAR ARQUIVO PDF
+===================================================== */
+
+async function buscarArquivoGuiaOficial(idGuia) {
+
+    const resposta = await fetchAutenticado(
+        `${API_URL}/api/guias/${encodeURIComponent(idGuia)}/arquivo`,
+        { method: "GET" }
+    );
+
+    if (!resposta.ok) {
+
+        if (resposta.status === 403) {
+            throw new Error(
+                "Você não tem permissão para visualizar esta guia."
+            );
+        }
+
+        if (resposta.status === 404) {
+            throw new Error(
+                "O arquivo oficial desta guia não foi encontrado."
+            );
+        }
+
+        throw new Error(
+            "Não foi possível carregar o arquivo da guia."
+        );
+    }
+
+    return resposta.blob();
+}
+
