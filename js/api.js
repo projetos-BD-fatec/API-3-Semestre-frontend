@@ -400,6 +400,7 @@ function temAcessoLisura() {
 }
 /* =====================================================
    GUIA OFICIAL - RECUPERAR ARQUIVO PDF
+===================================================== */
 
 async function buscarArquivoGuiaOficial(idGuia) {
 
