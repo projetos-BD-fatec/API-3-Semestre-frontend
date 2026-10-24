@@ -294,6 +294,8 @@
 
 /* Diálogo de confirmação */
 .espelho-dialog {
+    /* o reset (* { margin: 0 }) tira o margin: auto que centraliza o <dialog> */
+    margin: auto;
     width: min(92vw, 440px);
     padding: 24px;
     color: var(--color-ink);

@@ -350,6 +350,18 @@ function salvarRevisaoLisura(idGuia, itens) {
     );
 }
 
+/**
+ * PATCH /lisura/{guiaId}/decisao
+ * decisao: APROVAR (guia -> LISURA_APROVADA) | RECUSAR (guia -> LISURA_RECUSADA)
+ * Devolve a conferência atualizada (mesmo formato do GET).
+ */
+function decidirLisura(idGuia, decisao) {
+    return requisitarEspelho(
+        `${API_URL}/lisura/${idGuia}/decisao`,
+        "PATCH", { decisao: decisao }, "Não foi possível registrar a decisão da Lisura."
+    );
+}
+
 /** GET /lisura — espelhos já enviados pelas OCS (mais recentes primeiro) */
 function listarEspelhosLisura() {
     return requisitarEspelho(

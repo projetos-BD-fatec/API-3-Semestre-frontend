@@ -100,7 +100,7 @@ function renderizar() {
     });
 
     if (espelhos.length === 0) {
-        mostrarMensagem(el.vazia, "Nenhum espelho foi enviado pelas OCS ainda.");
+        mostrarMensagem(el.vazia, "Nenhum espelho aguardando a Lisura.");
     } else if (visiveis.length === 0) {
         mostrarMensagem(el.vazia, "Nenhum espelho encontrado com esses filtros.");
     } else {
