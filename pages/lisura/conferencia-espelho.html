@@ -111,8 +111,28 @@
             </section>
 
             <p id="feedback-geral" class="form-error" role="alert" hidden></p>
+
+            <!-- Decisão final da Lisura -->
+            <p id="decisao-final" class="lisura-decisao-final" role="status" hidden></p>
+
+            <div class="espelho-rodape lisura-rodape" id="rodape-decisao" hidden>
+                <button type="button" id="btn-recusar" class="secondary-button lisura-botao-recusar">Recusar</button>
+                <button type="button" id="btn-confirmar" class="primary-button">Confirmar Lisura</button>
+            </div>
         </div>
     </main>
+
+    <!-- Confirmação da decisão -->
+    <dialog id="dlg-decisao" class="espelho-dialog">
+        <h2 id="dlg-titulo"></h2>
+        <p id="dlg-texto"></p>
+        <p id="dlg-resumo" class="espelho-dialog-resumo"></p>
+        <p id="dlg-erro" class="form-error" role="alert" hidden></p>
+        <div class="espelho-dialog-acoes">
+            <button type="button" id="dlg-voltar" class="secondary-button">Voltar</button>
+            <button type="button" id="dlg-confirmar" class="primary-button"></button>
+        </div>
+    </dialog>
 
     <script src="../../js/api.js"></script>
     <script src="../../js/formatters.js"></script>

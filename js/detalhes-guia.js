@@ -300,7 +300,9 @@ function renderizarStatus() {
         ATIVA: ["Ativa", "is-ativa"],
         UTILIZADA: ["Utilizada", "is-utilizada"],
         VENCIDA: ["Vencida", "is-vencida"],
-        CANCELADA: ["Cancelada", "is-cancelada"]
+        CANCELADA: ["Cancelada", "is-cancelada"],
+        LISURA_APROVADA: ["Lisura aprovada", "is-utilizada"],
+        LISURA_RECUSADA: ["Lisura recusada", "is-cancelada"]
     };
 
     const [texto, classe] =

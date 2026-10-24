@@ -10,7 +10,11 @@
    Em cada item divergente o analista pode acatar o valor contratual,
    manter o cobrado ou informar um valor ajustado (PUT /lisura/{guiaId}/revisao).
 
-   Depende de: api.js (buscarConferenciaLisura, salvarRevisaoLisura)
+   No rodapé, "Confirmar Lisura" e "Recusar" registram a decisão final
+   (PATCH /lisura/{guiaId}/decisao) e voltam para a fila. Depois da
+   decisão a tela fica só para consulta.
+
+   Depende de: api.js (buscarConferenciaLisura, salvarRevisaoLisura, decidirLisura)
    e formatters.js (escapeHtml, formatCurrency).
 ===================================================== */
 
@@ -32,6 +36,29 @@ const DECISAO_LISURA = {
     VALOR_AJUSTADO: { opcao: "Valor ajustado", label: "Valor ajustado" }
 };
 
+// Status da guia depois da decisão final do analista
+const STATUS_DECIDIDO = {
+    LISURA_APROVADA: { selo: "Lisura aprovada", texto: "Lisura aprovada para pagamento.", classe: "is-aprovada" },
+    LISURA_RECUSADA: { selo: "Lisura recusada", texto: "Lisura recusada (glosada).", classe: "is-recusada" }
+};
+
+const ACAO_DECISAO = {
+    APROVAR: {
+        titulo: "Confirmar a Lisura?",
+        texto: "A guia será aprovada para pagamento com o valor final revisado e sairá da fila.",
+        botao: "Confirmar Lisura",
+        enviando: "Confirmando..."
+    },
+    RECUSAR: {
+        titulo: "Recusar a Lisura?",
+        texto: "A guia será marcada como recusada (glosada) e sairá da fila.",
+        botao: "Recusar",
+        enviando: "Recusando..."
+    }
+};
+
+const FILA_LISURA_URL = "index.html";
+
 const idGuia = new URLSearchParams(window.location.search).get("idGuia");
 
 let conferencia = null;          // último LisuraEspelhoResponse
@@ -39,6 +66,7 @@ const rascunhos = new Map();     // idItem -> { decisao, valor } ainda não salv
 const editando = new Set();      // itens já revisados que o analista reabriu
 const salvandoItens = new Set(); // itens com PUT em andamento
 const errosItem = new Map();     // idItem -> mensagem de erro
+let acaoPendente = null;         // APROVAR | RECUSAR aguardando confirmação no diálogo
 
 const el = {
     carregando: document.getElementById("lisura-carregando"),
@@ -64,7 +92,20 @@ const el = {
     tabelaWrap: document.getElementById("tabela-wrap"),
     tabela: document.getElementById("tabela-itens"),
     listaVazia: document.getElementById("lista-vazia"),
-    feedbackGeral: document.getElementById("feedback-geral")
+    feedbackGeral: document.getElementById("feedback-geral"),
+
+    decisaoFinal: document.getElementById("decisao-final"),
+    rodapeDecisao: document.getElementById("rodape-decisao"),
+    btnConfirmar: document.getElementById("btn-confirmar"),
+    btnRecusar: document.getElementById("btn-recusar"),
+
+    dlg: document.getElementById("dlg-decisao"),
+    dlgTitulo: document.getElementById("dlg-titulo"),
+    dlgTexto: document.getElementById("dlg-texto"),
+    dlgResumo: document.getElementById("dlg-resumo"),
+    dlgErro: document.getElementById("dlg-erro"),
+    dlgVoltar: document.getElementById("dlg-voltar"),
+    dlgConfirmar: document.getElementById("dlg-confirmar")
 };
 
 
@@ -129,6 +170,11 @@ function temContrato(item) {
     return item.valorContratualUnitario !== null && item.valorContratualUnitario !== undefined;
 }
 
+/** Decisão final já registrada (aprovada ou recusada): tela só para consulta. */
+function statusDecidido() {
+    return STATUS_DECIDIDO[conferencia.statusGuia] || null;
+}
+
 function buscarItem(idItem) {
     return (conferencia.itens || []).find(function (i) {
         return i.idItem === idItem;
@@ -162,8 +208,12 @@ function renderizarCabecalho() {
 
     let texto = "Sem divergências";
     let classe = "is-conforme";
+    const decidido = statusDecidido();
 
-    if (pendentes > 0) {
+    if (decidido) {
+        texto = decidido.selo;
+        classe = decidido.classe;
+    } else if (pendentes > 0) {
         texto = `${pendentes} de ${divergentes} divergência(s) a revisar`;
         classe = "is-divergente";
     } else if (divergentes > 0) {
@@ -207,7 +257,9 @@ function celulaRevisao(item) {
         return `<span class="lisura-final-auto espelho-mono">${escapeHtml(formatCurrency(item.valorCobradoUnitario))}</span>`;
     }
 
-    if (item.decisao && !editando.has(item.idItem)) {
+    const somenteLeitura = statusDecidido() !== null;
+
+    if (item.decisao && (somenteLeitura || !editando.has(item.idItem))) {
         const decisao = DECISAO_LISURA[item.decisao] || { label: item.decisao };
         const quando = formatarDataHora(item.revisadoEm);
         const autor = [item.revisadoPor, quando].filter(Boolean).join(" · ");
@@ -217,9 +269,15 @@ function celulaRevisao(item) {
                 <strong class="espelho-mono">${escapeHtml(formatCurrency(item.valorFinalUnitario))}</strong>
                 <span class="lisura-decisao">${escapeHtml(decisao.label)}</span>
                 ${autor ? `<small>${escapeHtml(autor)}</small>` : ""}
-                <button type="button" class="espelho-link" data-acao="alterar" data-id="${item.idItem}">Alterar</button>
+                ${somenteLeitura
+                    ? ""
+                    : `<button type="button" class="espelho-link" data-acao="alterar" data-id="${item.idItem}">Alterar</button>`}
             </div>
         `;
+    }
+
+    if (somenteLeitura) {
+        return `<span class="lisura-decisao">Não revisado</span>`;
     }
 
     return formularioRevisao(item);
@@ -307,10 +365,31 @@ function renderizarTabela() {
     }).join("");
 }
 
+/** Rodapé com Confirmar/Recusar, ou a decisão já registrada. */
+function renderizarDecisao() {
+    const decidido = statusDecidido();
+
+    el.rodapeDecisao.hidden = decidido !== null;
+    el.decisaoFinal.className = "lisura-decisao-final " + (decidido ? decidido.classe : "");
+    mostrarMensagem(el.decisaoFinal, decidido ? decidido.texto : "");
+
+    if (decidido) {
+        return;
+    }
+
+    // Só confirma com todas as divergências revisadas (o backend valida também)
+    const pendentes = conferencia.itensPendentes || 0;
+    el.btnConfirmar.disabled = pendentes > 0;
+    el.btnConfirmar.title = pendentes > 0
+        ? `Revise os ${pendentes} item(ns) divergente(s) antes de confirmar.`
+        : "";
+}
+
 function renderizar() {
     renderizarCabecalho();
     renderizarResumo();
     renderizarTabela();
+    renderizarDecisao();
 }
 
 el.filtro.addEventListener("change", renderizarTabela);
@@ -466,6 +545,65 @@ async function salvarItem(idItem) {
         renderizarTabela();
     }
 }
+
+
+/* ===============================
+   DECISÃO FINAL (confirmar / recusar)
+================================ */
+
+function abrirDialogoDecisao(acao) {
+    const config = ACAO_DECISAO[acao];
+    acaoPendente = acao;
+
+    el.dlgTitulo.textContent = config.titulo;
+    el.dlgTexto.textContent = config.texto;
+    // Na recusa o valor final pode estar parcial: mostra só a guia
+    const guia = `Guia ${conferencia.codigoGuia || "#" + conferencia.idGuia}`;
+    el.dlgResumo.textContent = acao === "APROVAR"
+        ? `${guia} · Valor final: ${formatCurrency(conferencia.totalFinal || 0)}`
+        : guia;
+    el.dlgConfirmar.textContent = config.botao;
+    el.dlgConfirmar.classList.toggle("lisura-botao-recusar", acao === "RECUSAR");
+    mostrarMensagem(el.dlgErro, "");
+
+    el.dlg.showModal();
+}
+
+el.btnConfirmar.addEventListener("click", function () {
+    abrirDialogoDecisao("APROVAR");
+});
+
+el.btnRecusar.addEventListener("click", function () {
+    abrirDialogoDecisao("RECUSAR");
+});
+
+el.dlgVoltar.addEventListener("click", function () {
+    el.dlg.close();
+});
+
+el.dlgConfirmar.addEventListener("click", async function () {
+    const config = ACAO_DECISAO[acaoPendente];
+
+    mostrarMensagem(el.dlgErro, "");
+    el.dlgConfirmar.disabled = true;
+    el.dlgVoltar.disabled = true;
+    el.dlgConfirmar.textContent = config.enviando;
+
+    try {
+        await decidirLisura(idGuia, acaoPendente);
+
+        // Guia decidida sai da fila: volta para a lista de espelhos enviados
+        window.location.href = FILA_LISURA_URL;
+
+    } catch (error) {
+        console.error("Erro ao registrar decisão da Lisura:", error);
+        mostrarMensagem(el.dlgErro, tratarErro(error, "Não foi possível registrar a decisão da Lisura."));
+
+        el.dlgConfirmar.disabled = false;
+        el.dlgVoltar.disabled = false;
+        el.dlgConfirmar.textContent = config.botao;
+    }
+});
 
 
 /* ===============================

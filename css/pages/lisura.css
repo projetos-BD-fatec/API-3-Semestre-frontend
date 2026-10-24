@@ -507,3 +507,63 @@
         margin-bottom: 6px;
     }
 }
+
+/* Decisão final: rodapé com Confirmar / Recusar */
+.lisura-rodape {
+    gap: 12px;
+}
+
+.lisura-rodape button {
+    width: auto;
+    min-width: 160px;
+}
+
+.lisura-botao-recusar {
+    color: var(--color-danger-text);
+    border-color: var(--color-danger-border);
+}
+
+.lisura-botao-recusar:hover {
+    color: var(--color-danger-text);
+    border-color: var(--color-danger-text);
+    background: var(--color-danger-bg);
+}
+
+.espelho-dialog-acoes .primary-button.lisura-botao-recusar {
+    color: #FFFFFF;
+    background: var(--color-danger-text);
+}
+
+.lisura-selo.is-aprovada,
+.lisura-decisao-final.is-aprovada {
+    color: var(--color-success-text);
+    background: var(--color-success-bg);
+    border-color: var(--color-success-border);
+}
+
+.lisura-selo.is-recusada,
+.lisura-decisao-final.is-recusada {
+    color: var(--color-danger-text);
+    background: var(--color-danger-bg);
+    border-color: var(--color-danger-border);
+}
+
+/* Decisão já registrada: substitui os botões do rodapé */
+.lisura-decisao-final {
+    margin-bottom: 40px;
+    padding: 12px 16px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+@media (max-width: 640px) {
+    .lisura-rodape {
+        flex-direction: column-reverse;
+    }
+
+    .lisura-rodape button {
+        width: 100%;
+    }
+}
