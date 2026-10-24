@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUSEx - Minhas Faturas</title>
+
+    <!-- Importa o CSS global e o script da tela -->
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/faturas.js" defer></script>
+</head>
+<body>
+
+<!-- Cabeçalho -->
+<header class="header">
+    <div class="header-container">
+        <a href="../index.html" class="logo">
+            FUSEx
+        </a>
+        <button class="menu-button" type="button" aria-label="Abrir menu">
+            ☰
+        </button>
+    </div>
+</header>
+
+<!-- Conteúdo principal -->
+<main class="container">
+
+    <div class="page-header">
+        <h2>Acompanhamento de Faturas</h2>
+        <p>Consulte o histórico e o status das suas faturas no FUSEx.</p>
+    </div>
+
+    <!-- Card -->
+    <div class="card">
+        <div class="card-title">
+            <h3>Minhas Faturas</h3>
+            <p>Selecione o filtro abaixo para visualizar os registos.</p>
+        </div>
+
+        <!-- Botões de Filtro -->
+        <div class="filtros-container">
+            <button class="btn-filtro ativo" data-status="pendentes">Pendentes</button>
+            <button class="btn-filtro" data-status="utilizadas">Utilizadas</button>
+        </div>
+
+        <!-- Lista de Faturas -->
+        <div class="lista-faturas" id="listaFaturas">
+            <!-- O conteúdo será injetado aqui pelo faturas.js -->
+        </div>
+    </div>
+
+</main>
+
+</body>
+</html>

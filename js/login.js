@@ -173,7 +173,8 @@ campoCnpj.addEventListener("input", function () {
 ================================ */
 
 const LOGIN_URL_USUARIO = "http://localhost:8080/auth/login";
-const LOGIN_URL_OCS = "http://localhost:8080/ocs/login";
+const LOGIN_URL_OCS = "http://localhost:8080/prestador/login";
+
 
 
 /* ===============================
@@ -285,7 +286,7 @@ formLoginUsuario.addEventListener("submit", async function (event) {
 
 
         window.location.href =
-            "../index.html";
+            "../beneficiario/inicio.html";
 
 
     } catch (erro) {
@@ -434,7 +435,7 @@ formLoginOcs.addEventListener("submit", async function (event) {
 
 
         window.location.href =
-            "painel-ocs.html";
+            "../ocs/painel-prestador.html";
 
 
     } catch (erro) {

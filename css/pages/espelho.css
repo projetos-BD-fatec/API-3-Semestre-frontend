@@ -1,0 +1,417 @@
+/* =====================================================
+   Página: espelho da guia (OCS)
+   Usa as variáveis de cor/raio/sombra já definidas no projeto.
+===================================================== */
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+}
+
+.espelho-mono {
+    font-family: "IBM Plex Mono", monospace;
+}
+
+.espelho-aviso-pagina {
+    color: var(--color-ink-soft);
+}
+
+/* Topo */
+.espelho-topo {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.espelho-topo h1 {
+    margin-bottom: 4px;
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--color-ink);
+}
+
+.espelho-guia {
+    color: var(--color-ink-soft);
+    font-size: 15px;
+}
+
+.espelho-status {
+    flex-shrink: 0;
+    padding: 4px 12px;
+    border-radius: 999px;
+    border: 1px solid var(--color-border-strong);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.espelho-status.is-rascunho {
+    color: var(--color-ink-soft);
+    background: var(--color-surface);
+}
+
+.espelho-status.is-enviado {
+    color: var(--color-accent-olive);
+    background: var(--color-accent-olive-light);
+    border-color: var(--color-accent-olive);
+}
+
+.espelho-banner {
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    border-left: 4px solid var(--color-accent-olive);
+    background: var(--color-accent-olive-light);
+    color: var(--color-ink);
+    border-radius: var(--radius-lg);
+    font-size: 14px;
+}
+
+/* Cards */
+.espelho-card {
+    margin-bottom: 20px;
+    padding: 20px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+}
+
+.espelho-card > h2 {
+    margin-bottom: 14px;
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+/* Campos */
+.espelho-card label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-ink);
+}
+
+.espelho-card input {
+    width: 100%;
+    padding: 10px 12px;
+    font: inherit;
+    color: var(--color-ink);
+    background: #fff;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 6px;
+}
+
+.espelho-card input:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+}
+
+.espelho-dica {
+    margin-top: 6px;
+    font-size: 13px;
+    color: var(--color-ink-soft);
+}
+
+/* Resultados da busca */
+.espelho-resultados {
+    list-style: none;
+    margin: 8px 0 0;
+    padding: 0;
+    max-height: 280px;
+    overflow-y: auto;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+}
+
+.espelho-resultados li + li {
+    border-top: 1px solid var(--color-border);
+}
+
+.espelho-resultados button {
+    display: flex;
+    gap: 14px;
+    width: 100%;
+    padding: 10px 12px;
+    text-align: left;
+    font: inherit;
+    font-size: 14px;
+    color: var(--color-ink);
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+}
+
+.espelho-resultados button:hover,
+.espelho-resultados button:focus-visible {
+    background: var(--color-primary-light);
+}
+
+.espelho-resultados .espelho-mono {
+    flex-shrink: 0;
+    min-width: 88px;
+    color: var(--color-primary);
+}
+
+/* Procedimento selecionado */
+.espelho-selecionado {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding: 10px 14px;
+    background: var(--color-primary-light);
+    border-left: 4px solid var(--color-primary);
+    border-radius: 6px;
+    font-size: 14px;
+}
+
+.espelho-selecionado .espelho-mono {
+    margin-right: 10px;
+    font-weight: 600;
+    color: var(--color-primary);
+}
+
+/* Formulário */
+.espelho-form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+}
+
+.espelho-form-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: flex-end;
+}
+
+#feedback-item {
+    margin-top: 12px;
+}
+
+/* Botões de texto */
+.espelho-link {
+    padding: 4px 6px;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--color-primary);
+    background: none;
+    border: 0;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.espelho-link.is-perigo {
+    color: #b3261e;
+}
+
+.espelho-link:disabled {
+    opacity: 0.5;
+    cursor: default;
+}
+
+/* Tabela */
+.espelho-tabela-wrap {
+    overflow-x: auto;
+}
+
+.espelho-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.espelho-tabela th,
+.espelho-tabela td {
+    padding: 10px 12px;
+    text-align: left;
+    vertical-align: top;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.espelho-tabela th {
+    font-weight: 600;
+    color: var(--color-ink-soft);
+    white-space: nowrap;
+}
+
+.espelho-tabela .num {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.espelho-tabela .col-acoes {
+    white-space: nowrap;
+    text-align: right;
+}
+
+.espelho-tabela-wrap.sem-acoes .col-acoes {
+    display: none;
+}
+
+.espelho-vazio {
+    padding: 8px 0;
+    color: var(--color-ink-soft);
+    font-size: 14px;
+}
+
+/* Total */
+.espelho-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 2px solid var(--color-border-strong);
+    color: var(--color-ink);
+}
+
+.espelho-total strong {
+    font-family: "IBM Plex Mono", monospace;
+    font-size: 22px;
+}
+
+/* Rodapé */
+.espelho-rodape {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 40px;
+}
+
+.espelho-rodape button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* Diálogo de confirmação */
+.espelho-dialog {
+    /* o reset (* { margin: 0 }) tira o margin: auto que centraliza o <dialog> */
+    margin: auto;
+    width: min(92vw, 440px);
+    padding: 24px;
+    color: var(--color-ink);
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+}
+
+.espelho-dialog::backdrop {
+    background: rgba(0, 0, 0, 0.45);
+}
+
+.espelho-dialog h2 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.espelho-dialog p {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: var(--color-ink-soft);
+}
+
+.espelho-dialog .espelho-dialog-resumo {
+    font-family: "IBM Plex Mono", monospace;
+    color: var(--color-ink);
+}
+
+.espelho-dialog-acoes {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 16px;
+}
+
+/* Telas maiores */
+@media (min-width: 768px) {
+    .espelho-form {
+        grid-template-columns: 1fr 1fr 1fr;
+    }
+
+    .espelho-form-acoes {
+        grid-column: 1 / -1;
+    }
+}
+
+/* Celular: cada linha da tabela vira um bloco */
+@media (max-width: 640px) {
+    .espelho-tabela thead {
+        display: none;
+    }
+
+    .espelho-tabela,
+    .espelho-tabela tbody,
+    .espelho-tabela tr,
+    .espelho-tabela td {
+        display: block;
+        width: 100%;
+    }
+
+    .espelho-tabela tr {
+        padding: 10px 0;
+        border-bottom: 1px solid var(--color-border-strong);
+    }
+
+    .espelho-tabela td {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 4px 0;
+        border: 0;
+        text-align: right;
+    }
+
+    .espelho-tabela td[data-rotulo]::before {
+        content: attr(data-rotulo);
+        color: var(--color-ink-soft);
+        text-align: left;
+    }
+
+    .espelho-tabela td.col-acoes {
+        justify-content: flex-end;
+    }
+
+    .espelho-tabela-wrap.sem-acoes td.col-acoes {
+        display: none;
+    }
+}
+
+
+/* Navegação - voltar aos detalhes da guia */
+
+.espelho-voltar {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 24px;
+
+    color: var(--color-primary);
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+
+    transition: opacity 0.2s ease;
+}
+
+.espelho-voltar:hover {
+    opacity: 0.75;
+    text-decoration: underline;
+}
+
+.espelho-voltar:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 3px;
+    border-radius: 4px;
+}
+

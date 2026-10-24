@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FUSEx - Lisura</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-container">
+            <a href="../beneficiario/inicio.html" class="logo">FUSEx</a>
+            <a href="../beneficiario/inicio.html" class="back-button">Início</a>
+        </div>
+    </header>
+
+    <main class="main-container lisura-container">
+
+        <section class="espelho-topo">
+            <div>
+                <p class="lisura-sobretitulo">Lisura · Conferência de valores</p>
+                <h1>Espelhos enviados</h1>
+                <p class="espelho-guia">
+                    Espelhos que as OCS já enviaram ao FUSEX e aguardam a Lisura. Abra um
+                    para comparar o valor cobrado com o valor do contrato e confirmar ou recusar.
+                </p>
+            </div>
+            <span id="selo-pendentes" class="lisura-selo" hidden></span>
+        </section>
+
+        <p id="lista-carregando" class="espelho-aviso-pagina">Carregando espelhos...</p>
+        <p id="lista-erro" class="form-error" role="alert" hidden></p>
+
+        <section id="lista-conteudo" class="espelho-card" hidden>
+            <div class="lisura-card-topo">
+                <div class="lisura-busca">
+                    <label for="busca-espelho" class="sr-only">Buscar</label>
+                    <input type="search" id="busca-espelho" autocomplete="off"
+                           placeholder="Buscar por guia, beneficiário ou OCS">
+                </div>
+
+                <label class="lisura-filtro">
+                    <input type="checkbox" id="filtro-pendentes">
+                    Só com revisão pendente
+                </label>
+            </div>
+
+            <p id="lista-vazia" class="espelho-vazio" hidden></p>
+
+            <div class="espelho-tabela-wrap" id="tabela-wrap">
+                <table class="espelho-tabela lisura-tabela lisura-lista">
+                    <thead>
+                        <tr>
+                            <th>Guia</th>
+                            <th>Beneficiário</th>
+                            <th>OCS</th>
+                            <th class="num">Itens</th>
+                            <th class="num">Total cobrado</th>
+                            <th>Situação</th>
+                            <th class="col-acoes"><span class="sr-only">Ações</span></th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-espelhos"></tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="../../js/api.js"></script>
+    <script src="../../js/formatters.js"></script>
+    <script src="../../js/lisura-lista.js"></script>
+</body>
+
+</html>

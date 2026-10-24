@@ -1,0 +1,72 @@
+/* =====================================================
+   Upload de arquivo (encaminhamento)
+===================================================== */
+
+/* O input real fica escondido; o <label> faz o papel de botão */
+input[type="file"] {
+    display: none;
+}
+
+.file-upload {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 150px;
+    border: 2px dashed var(--color-border-strong);
+    border-radius: var(--radius-md);
+    padding: 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.file-upload:hover {
+    border-color: var(--color-primary);
+    background: var(--color-primary-light);
+}
+
+.file-upload.has-error {
+    border-color: var(--color-danger-border);
+    background: var(--color-danger-bg);
+}
+
+.file-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    margin-bottom: 12px;
+    border-radius: 50%;
+    background: var(--color-primary-light);
+    font-size: 24px;
+}
+
+.file-title {
+    font-weight: 600;
+    margin-bottom: 4px;
+    color: var(--color-ink);
+}
+
+.file-description {
+    color: var(--color-ink-faint);
+    font-family: var(--font-mono);
+    font-size: 12px;
+}
+
+.file-info {
+    margin-top: 12px;
+    padding: 10px 12px;
+    background: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 13px;
+    word-break: break-word;
+}
+
+/* Esconde a caixa quando não há arquivo selecionado */
+.file-info:empty {
+    display: none;
+}
