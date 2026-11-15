@@ -195,11 +195,39 @@ function excluirItemEspelho(idEspelho, idItem) {
     );
 }
 
-/** POST /espelhos/{id}/enviar */
-function enviarEspelho(idEspelho) {
+/**
+ * POST /espelhos/{id}/salvar
+ * Conclui o espelho SEM enviar ao FUSEx: status SALVO, em posse da OCS.
+ */
+function salvarEspelho(idEspelho) {
     return requisitarEspelho(
-        `${API_URL}/espelhos/${idEspelho}/enviar`,
-        "POST", undefined, "Não foi possível enviar o espelho."
+        `${API_URL}/espelhos/${idEspelho}/salvar`,
+        "POST", undefined, "Não foi possível salvar o espelho."
+    );
+}
+
+/**
+ * GET /espelhos/salvos
+ * Espelhos salvos da OCS logada, ainda não enviados ao FUSEx.
+ * Cada item: { idEspelho, idGuia, codigoGuia, nomeBeneficiario, precCp,
+ *              salvoEm, quantidadeItens, valorTotal }
+ */
+function listarEspelhosSalvos() {
+    return requisitarEspelho(
+        `${API_URL}/espelhos/salvos`,
+        "GET", undefined, "Não foi possível carregar os espelhos salvos."
+    );
+}
+
+/**
+ * POST /espelhos/enviar-lote
+ * Envia ao FUSEx os espelhos salvos escolhidos (tudo ou nada).
+ * Devolve { totalEnviados, valorTotal, enviadoEm, idsEspelho }.
+ */
+function enviarEspelhosEmLote(idsEspelho) {
+    return requisitarEspelho(
+        `${API_URL}/espelhos/enviar-lote`,
+        "POST", { idsEspelho: idsEspelho }, "Não foi possível enviar os espelhos."
     );
 }
 

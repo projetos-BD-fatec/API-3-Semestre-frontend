@@ -1,6 +1,10 @@
 /* =====================================================
    Página: espelho da guia (OCS)
 
+   Fluxo do espelho: RASCUNHO -> SALVO -> ENVIADO.
+   Aqui a OCS preenche e SALVA o espelho (ele continua com ela).
+   O envio ao FUSEx é feito em lote, na tela "Espelhos salvos".
+
    Recebe o código da guia pela URL:  espelho.html?idGuia=123
    Depende de: api.js (funções do espelho) e formatters.js
    (escapeHtml, formatCurrency).
@@ -26,7 +30,7 @@ const el = {
     beneficiario: document.getElementById("beneficiario-nome"),
     codigoGuia: document.getElementById("codigo-guia"),
     status: document.getElementById("status-espelho"),
-    avisoEnviado: document.getElementById("aviso-enviado"),
+    aviso: document.getElementById("aviso-status"),
 
     cardAdicionar: document.getElementById("card-adicionar"),
     tituloForm: document.getElementById("titulo-form-item"),
@@ -53,14 +57,8 @@ const el = {
     total: document.getElementById("total-geral"),
 
     feedbackGeral: document.getElementById("feedback-geral"),
-    rodape: document.getElementById("rodape-enviar"),
-    btnEnviar: document.getElementById("btn-enviar"),
-
-    dlg: document.getElementById("dlg-enviar"),
-    dlgResumo: document.getElementById("dlg-resumo"),
-    dlgErro: document.getElementById("dlg-erro"),
-    dlgVoltar: document.getElementById("dlg-voltar"),
-    dlgConfirmar: document.getElementById("dlg-confirmar")
+    rodape: document.getElementById("rodape-salvar"),
+    btnSalvarEspelho: document.getElementById("btn-salvar-espelho")
 };
 
 
@@ -113,27 +111,42 @@ function somenteLeitura() {
 
 function renderizar() {
     const enviado = somenteLeitura();
+    const salvo = espelho.status === "SALVO";
     const itens = espelho.itens || [];
 
     el.beneficiario.textContent = espelho.nomeBeneficiario || "—";
     el.codigoGuia.textContent = espelho.codigoGuia;
 
-    el.status.textContent = enviado ? "Enviado" : "Rascunho";
-    el.status.className = "espelho-status " + (enviado ? "is-enviado" : "is-rascunho");
+    const rotulo = enviado ? "Enviado" : salvo ? "Salvo" : "Rascunho";
+    const classe = enviado ? "is-enviado" : salvo ? "is-salvo" : "is-rascunho";
+
+    el.status.textContent = rotulo;
+    el.status.className = "espelho-status " + classe;
 
     if (enviado) {
         const quando = formatarDataHora(espelho.enviadoEm);
-        el.avisoEnviado.textContent =
+        el.aviso.textContent =
             "Este espelho foi enviado ao FUSEx" +
             (quando ? ` em ${quando}` : "") +
             " e não pode mais ser alterado.";
-        el.avisoEnviado.hidden = false;
+        el.aviso.hidden = false;
+    } else if (salvo) {
+        const quando = formatarDataHora(espelho.salvoEm);
+        el.aviso.textContent =
+            "Espelho salvo" +
+            (quando ? ` em ${quando}` : "") +
+            ". Ele continua com você e só será enviado ao FUSEx quando você o enviar " +
+            "pela tela \"Espelhos salvos\". Enquanto isso, ainda pode ser alterado.";
+        el.aviso.hidden = false;
     } else {
-        el.avisoEnviado.hidden = true;
+        el.aviso.hidden = true;
     }
 
     el.cardAdicionar.hidden = enviado;
     el.rodape.hidden = enviado;
+
+    // Salvar só faz sentido enquanto for rascunho
+    el.btnSalvarEspelho.hidden = salvo;
 
     // Tabela
     el.listaVazia.hidden = itens.length > 0;
@@ -166,9 +179,9 @@ function renderizar() {
 
     el.total.textContent = formatCurrency(espelho.valorTotal || 0);
 
-    el.btnEnviar.disabled = itens.length === 0;
-    el.btnEnviar.title = itens.length === 0
-        ? "Adicione ao menos um procedimento para enviar."
+    el.btnSalvarEspelho.disabled = itens.length === 0;
+    el.btnSalvarEspelho.title = itens.length === 0
+        ? "Adicione ao menos um procedimento para salvar."
         : "";
 }
 
@@ -470,47 +483,36 @@ el.tabela.addEventListener("click", async function (event) {
 
 
 /* ===============================
-   ENVIAR (com confirmação)
+   SALVAR ESPELHO (não envia ao FUSEx)
 ================================ */
 
-el.btnEnviar.addEventListener("click", function () {
+el.btnSalvarEspelho.addEventListener("click", async function () {
+    if (salvando) {
+        return;
+    }
+
     mostrarMensagem(el.feedbackGeral, "");
-    mostrarMensagem(el.dlgErro, "");
 
-    const qtd = espelho.itens.length;
-    el.dlgResumo.textContent =
-        `${qtd} procedimento(s) · total ${formatCurrency(espelho.valorTotal || 0)}`;
-
-    el.dlg.showModal();
-});
-
-el.dlgVoltar.addEventListener("click", function () {
-    el.dlg.close();
-});
-
-el.dlgConfirmar.addEventListener("click", async function () {
-    mostrarMensagem(el.dlgErro, "");
-
-    el.dlgConfirmar.disabled = true;
-    el.dlgVoltar.disabled = true;
-    el.dlgConfirmar.textContent = "Enviando...";
+    salvando = true;
+    const textoOriginal = el.btnSalvarEspelho.textContent;
+    el.btnSalvarEspelho.disabled = true;
+    el.btnSalvarEspelho.textContent = "Salvando...";
 
     try {
-        espelho = await enviarEspelho(espelho.idEspelho);
+        espelho = await salvarEspelho(espelho.idEspelho);
 
         resetarFormulario();
-        el.dlg.close();
         renderizar();
         window.scrollTo({ top: 0, behavior: "smooth" });
 
     } catch (error) {
-        console.error("Erro ao enviar espelho:", error);
-        mostrarMensagem(el.dlgErro, tratarErro(error, "Não foi possível enviar o espelho."));
+        console.error("Erro ao salvar espelho:", error);
+        mostrarMensagem(el.feedbackGeral, tratarErro(error, "Não foi possível salvar o espelho."));
 
     } finally {
-        el.dlgConfirmar.disabled = false;
-        el.dlgVoltar.disabled = false;
-        el.dlgConfirmar.textContent = "Confirmar envio";
+        salvando = false;
+        el.btnSalvarEspelho.textContent = textoOriginal;
+        el.btnSalvarEspelho.disabled = !espelho || (espelho.itens || []).length === 0;
     }
 });
 

@@ -47,9 +47,9 @@
                 <span id="status-espelho" class="espelho-status"></span>
             </section>
 
-            <p id="aviso-enviado" class="espelho-banner" hidden></p>
+            <p id="aviso-status" class="espelho-banner" hidden></p>
 
-            <!-- Adicionar / editar item (só em RASCUNHO) -->
+            <!-- Adicionar / editar item (RASCUNHO e SALVO; some depois de enviado) -->
             <section id="card-adicionar" class="espelho-card">
                 <h2 id="titulo-form-item">Adicionar procedimento</h2>
 
@@ -131,26 +131,14 @@
 
             <p id="feedback-geral" class="form-error" role="alert" hidden></p>
 
-            <div class="espelho-rodape" id="rodape-enviar">
-                <button type="button" id="btn-enviar" class="primary-button">Enviar espelho</button>
+            <div class="espelho-rodape" id="rodape-salvar">
+                <a href="espelhos-salvos.html" class="secondary-button espelho-rodape-link">
+                    Ver espelhos salvos
+                </a>
+                <button type="button" id="btn-salvar-espelho" class="primary-button">Salvar espelho</button>
             </div>
         </div>
     </main>
-
-    <!-- Confirmação de envio -->
-    <dialog id="dlg-enviar" class="espelho-dialog">
-        <h2>Enviar espelho ao FUSEx?</h2>
-        <p>
-            Depois de enviado, o espelho não pode mais ser alterado.
-            Confira os itens e valores antes de confirmar.
-        </p>
-        <p id="dlg-resumo" class="espelho-dialog-resumo"></p>
-        <p id="dlg-erro" class="form-error" role="alert" hidden></p>
-        <div class="espelho-dialog-acoes">
-            <button type="button" id="dlg-voltar" class="secondary-button">Voltar</button>
-            <button type="button" id="dlg-confirmar" class="primary-button">Confirmar envio</button>
-        </div>
-    </dialog>
 
     <script src="../../js/api.js"></script>
     <script src="../../js/formatters.js"></script>
