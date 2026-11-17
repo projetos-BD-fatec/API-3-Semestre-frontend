@@ -84,6 +84,23 @@
     line-height: 1.6;
 }
 
+.prestador-boas-vindas-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.prestador-link-salvos {
+    display: inline-block;
+    flex-shrink: 0;
+    width: auto;
+    min-width: 150px;
+    padding: 11px 18px;
+    font-size: 14px;
+    text-decoration: none;
+}
+
 .prestador-boas-vindas .secondary-button {
     flex-shrink: 0;
     width: auto;
