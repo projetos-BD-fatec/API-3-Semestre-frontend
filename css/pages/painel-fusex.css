@@ -1,0 +1,554 @@
+
+/* =====================================================
+   PAINEL DO COLABORADOR FUSEX
+===================================================== */
+
+.fusex-container {
+    max-width: 1360px;
+    padding-top: 44px;
+    padding-bottom: 64px;
+}
+
+.fusex-container [hidden] {
+    display: none !important;
+}
+
+.fusex-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.fusex-sobretitulo {
+    font: 600 12px var(--font-mono);
+    letter-spacing: 0.12em;
+    color: var(--color-primary);
+    margin-bottom: 12px;
+}
+
+.fusex-topo h1 {
+    font-size: clamp(26px, 3vw, 36px);
+    color: var(--color-ink);
+    margin-bottom: 8px;
+}
+
+.fusex-descricao,
+.fusex-secao-topo p {
+    color: var(--color-ink-soft);
+    line-height: 1.6;
+}
+
+.fusex-topo-acoes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.fusex-botao {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 46px;
+    padding: 10px 18px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background: white;
+    color: var(--color-primary);
+    font: 600 14px var(--font-sans);
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.fusex-botao:hover,
+.fusex-voltar:hover {
+    background: var(--color-primary-light);
+}
+
+.fusex-botao-principal {
+    color: white;
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+}
+
+.fusex-botao-principal:hover {
+    background: var(--color-primary-dark);
+}
+
+.fusex-botao:disabled {
+    opacity: 0.6;
+    cursor: wait;
+}
+
+/* Indicadores */
+
+.fusex-indicadores {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 30px;
+}
+
+.fusex-indicador {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 24px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-sm);
+    border-top: 3px solid var(--color-primary);
+}
+
+.fusex-indicador:nth-child(2) {
+    border-top-color: var(--color-warning-border);
+}
+
+.fusex-indicador:nth-child(3) {
+    border-top-color: var(--color-success-border);
+}
+
+.fusex-indicador:nth-child(4) {
+    border-top-color: var(--color-danger-border);
+}
+
+.fusex-indicador span {
+    color: var(--color-ink-soft);
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.fusex-indicador strong {
+    color: var(--color-ink);
+    font: 600 34px var(--font-mono);
+}
+
+.fusex-indicador small {
+    color: var(--color-ink-soft);
+    font-size: 12px;
+}
+
+/* Cards */
+
+.fusex-card {
+    padding: 28px;
+    margin-bottom: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-sm);
+}
+
+.fusex-secao-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.fusex-secao-topo h2 {
+    font-size: 22px;
+    margin-bottom: 6px;
+}
+
+.fusex-contador {
+    padding: 7px 13px;
+    border-radius: 99px;
+    background: var(--color-surface-muted);
+    color: var(--color-primary);
+    font: 600 12px var(--font-mono);
+    white-space: nowrap;
+}
+
+/* Busca */
+
+.fusex-filtros {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 240px;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.fusex-filtros label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-ink);
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.fusex-filtros input,
+.fusex-filtros select {
+    width: 100%;
+    min-height: 46px;
+    padding: 10px 14px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background: white;
+    color: var(--color-ink);
+    font: inherit;
+}
+
+/* Tabela */
+
+.fusex-tabela-wrap {
+    overflow-x: auto;
+}
+
+.fusex-tabela {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.fusex-tabela th {
+    padding: 14px 16px;
+    background: var(--color-bg);
+    color: var(--color-ink-soft);
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.fusex-tabela td {
+    padding: 18px 16px;
+    border-bottom: 1px solid var(--color-border);
+    vertical-align: middle;
+}
+
+.fusex-tabela tbody tr:hover {
+    background: #F8FBFA;
+}
+
+.fusex-codigo {
+    font: 600 14px var(--font-mono);
+    color: var(--color-primary);
+}
+
+.fusex-secundario {
+    display: block;
+    margin-top: 5px;
+    color: var(--color-ink-soft);
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+.fusex-destaque {
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+.fusex-etiqueta {
+    display: inline-block;
+    padding: 6px 11px;
+    border-radius: 99px;
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.fusex-etiqueta.em_analise {
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
+}
+
+.fusex-etiqueta.autorizada {
+    background: var(--color-success-bg);
+    color: var(--color-success-text);
+}
+
+.fusex-etiqueta.negada {
+    background: var(--color-danger-bg);
+    color: var(--color-danger-text);
+}
+
+.fusex-etiqueta.propria {
+    background: var(--color-surface-muted);
+    color: var(--color-primary);
+}
+
+.fusex-botao-linha {
+    padding: 9px 13px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 8px;
+    background: white;
+    color: var(--color-primary);
+    font: 600 13px var(--font-sans);
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.fusex-botao-linha:hover {
+    background: var(--color-primary-light);
+}
+
+.fusex-mensagem {
+    padding: 36px 12px;
+    text-align: center;
+    color: var(--color-ink-soft);
+}
+
+.fusex-erro {
+    color: var(--color-danger-text);
+}
+
+/* Detalhes */
+
+.fusex-detalhes {
+    margin-top: 24px;
+}
+
+.fusex-voltar {
+    margin-bottom: 20px;
+    padding: 8px 0;
+    background: transparent;
+    border: 0;
+    color: var(--color-primary);
+    font: 600 14px var(--font-sans);
+    cursor: pointer;
+}
+
+.fusex-detalhe-topo {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 24px;
+}
+
+.fusex-detalhe-topo h2 {
+    font-size: 26px;
+}
+
+.fusex-detalhe-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    margin-bottom: 24px;
+}
+
+.fusex-campo {
+    padding: 16px;
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+}
+
+.fusex-campo small {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--color-ink-soft);
+}
+
+.fusex-campo strong {
+    color: var(--color-ink);
+}
+
+.fusex-itens {
+    list-style: none;
+    padding: 0;
+    margin: 16px 0 24px;
+}
+
+.fusex-itens li {
+    padding: 18px;
+    margin-bottom: 10px;
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-primary);
+    border-radius: var(--radius-sm);
+}
+
+.fusex-aviso {
+    padding: 16px;
+    margin-top: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface-muted);
+    color: var(--color-ink-soft);
+    line-height: 1.6;
+}
+
+.fusex-aviso.propria {
+    background: var(--color-warning-bg);
+    border-color: var(--color-warning-border);
+    color: var(--color-warning-text);
+}
+
+@media (max-width: 900px) {
+    .fusex-indicadores {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 640px) {
+    .fusex-container {
+        padding-top: 24px;
+    }
+
+    .fusex-indicadores {
+        gap: 10px;
+    }
+
+    .fusex-indicador,
+    .fusex-card {
+        padding: 16px;
+    }
+
+    .fusex-indicador strong {
+        font-size: 26px;
+    }
+
+    .fusex-filtros,
+    .fusex-detalhe-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .fusex-topo-acoes,
+    .fusex-topo-acoes > * {
+        width: 100%;
+    }
+}
+
+/* ==========================================
+   ÁREA DE ENCAMINHAMENTO
+========================================== */
+
+.fusex-encaminhamento-box {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-top: 24px;
+    padding: 20px;
+    border: 1px solid #d9e4df;
+    border-radius: 16px;
+    background: #f8fbfa;
+}
+
+.fusex-encaminhamento-texto h3 {
+    margin: 0 0 6px;
+    font-size: 1.1rem;
+}
+
+.fusex-encaminhamento-texto p {
+    margin: 0;
+}
+
+/* ==========================================
+   ÁREA DE DECISÃO
+========================================== */
+
+.fusex-area-decisao {
+    margin-top: 24px;
+    padding: 24px;
+    border: 1px solid #d9e4df;
+    border-radius: 16px;
+    background: #fcfdfd;
+}
+
+.fusex-area-decisao-topo {
+    margin-bottom: 18px;
+}
+
+.fusex-area-decisao-topo h3 {
+    margin: 0 0 8px;
+    font-size: 1.75rem;
+    line-height: 1.2;
+    color: #0f1720;
+}
+
+.fusex-area-decisao-topo p {
+    margin: 0;
+    color: #44525c;
+    line-height: 1.5;
+}
+
+.fusex-botoes-decisao {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+}
+
+/* ==========================================
+   FORMULÁRIO DE RECUSA
+========================================== */
+
+.fusex-form-recusa {
+    margin-top: 8px;
+    padding: 18px;
+    border: 1px solid #e2ebe7;
+    border-radius: 14px;
+    background: #ffffff;
+}
+
+.fusex-label-recusa {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: #0f1720;
+}
+
+.fusex-textarea-recusa {
+    width: 100%;
+    min-height: 120px;
+    padding: 14px 16px;
+    border: 1px solid #c7d4cf;
+    border-radius: 12px;
+    font: inherit;
+    line-height: 1.5;
+    color: #1b2a33;
+    background: #ffffff;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.fusex-textarea-recusa:focus {
+    outline: none;
+    border-color: #0d6b63;
+    box-shadow: 0 0 0 3px rgba(13, 107, 99, 0.12);
+}
+
+.fusex-form-recusa-acoes {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 14px;
+}
+
+.fusex-mensagem-decisao {
+    margin-top: 14px;
+    font-size: 0.95rem;
+    color: #8a2d1f;
+}
+
+/* ==========================================
+   RESPONSIVO
+========================================== */
+
+@media (max-width: 768px) {
+    .fusex-area-decisao {
+        padding: 18px;
+    }
+
+    .fusex-botoes-decisao {
+        flex-direction: column;
+    }
+
+    .fusex-botoes-decisao .fusex-botao {
+        width: 100%;
+    }
+
+    .fusex-form-recusa-acoes {
+        justify-content: stretch;
+    }
+
+    .fusex-form-recusa-acoes .fusex-botao {
+        width: 100%;
+    }
+}

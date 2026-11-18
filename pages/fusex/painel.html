@@ -1,0 +1,200 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>FUSEx — Painel do colaborador</title>
+
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com"
+          crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+
+<body>
+<header class="header">
+    <div class="header-container">
+        <a href="../beneficiario/inicio.html" class="logo">
+            FUSEx
+        </a>
+
+        <a href="../beneficiario/inicio.html"
+           class="back-button">
+            Voltar ao início
+        </a>
+    </div>
+</header>
+
+<main class="main-container fusex-container">
+
+    <!-- Cabeçalho -->
+    <section class="fusex-topo">
+        <div>
+            <p class="fusex-sobretitulo">
+                ÁREA INTERNA · FUSEX
+            </p>
+
+            <h1>Gestão de pré-guias</h1>
+
+            <p class="fusex-descricao">
+                Acompanhe as solicitações recebidas dos
+                beneficiários e consulte seus procedimentos.
+            </p>
+        </div>
+
+        <div class="fusex-topo-acoes">
+            <a href="../lisura/index.html"
+               id="btn-lisura"
+               class="fusex-botao"
+               hidden>
+                Acessar Lisura
+            </a>
+
+            <button type="button"
+                    class="fusex-botao fusex-botao-principal"
+                    id="btn-atualizar">
+                Atualizar solicitações
+            </button>
+        </div>
+    </section>
+
+    <!-- Indicadores -->
+    <section class="fusex-indicadores"
+             aria-label="Resumo de solicitações">
+
+        <article class="fusex-indicador">
+            <span>Total de solicitações</span>
+            <strong id="total-solicitacoes">—</strong>
+            <small>Solicitações recebidas</small>
+        </article>
+
+        <article class="fusex-indicador">
+            <span>Em análise</span>
+            <strong id="total-analise">—</strong>
+            <small>Aguardando decisão</small>
+        </article>
+
+        <article class="fusex-indicador">
+            <span>Autorizadas</span>
+            <strong id="total-autorizadas">—</strong>
+            <small>Solicitações aprovadas</small>
+        </article>
+
+        <article class="fusex-indicador">
+            <span>Negadas</span>
+            <strong id="total-negadas">—</strong>
+            <small>Solicitações recusadas</small>
+        </article>
+
+    </section>
+
+    <!-- Lista -->
+    <section class="fusex-card">
+
+        <div class="fusex-secao-topo">
+            <div>
+                <h2>Solicitações recebidas</h2>
+                <p>
+                    Consulte as pré-guias de todos os
+                    beneficiários.
+                </p>
+            </div>
+
+            <span id="contador-resultados"
+                  class="fusex-contador">
+                    —
+                </span>
+        </div>
+
+        <div class="fusex-filtros">
+            <div>
+                <label for="busca-solicitacao">
+                    Buscar solicitação
+                </label>
+
+                <input type="search"
+                       id="busca-solicitacao"
+                       placeholder="Código, beneficiário, exame ou OCS">
+            </div>
+
+            <div>
+                <label for="filtro-status">
+                    Situação
+                </label>
+
+                <select id="filtro-status">
+                    <option value="">Todas</option>
+                    <option value="EM_ANALISE">Em análise</option>
+                    <option value="AUTORIZADA">Autorizadas</option>
+                    <option value="NEGADA">Negadas</option>
+                </select>
+            </div>
+        </div>
+
+        <p id="lista-carregando"
+           class="fusex-mensagem">
+            Carregando solicitações...
+        </p>
+
+        <p id="lista-erro"
+           class="fusex-mensagem fusex-erro"
+           role="alert"
+           hidden></p>
+
+        <p id="lista-vazia"
+           class="fusex-mensagem"
+           hidden>
+            Nenhuma solicitação encontrada.
+        </p>
+
+        <div id="tabela-container"
+             class="fusex-tabela-wrap"
+             hidden>
+
+            <table class="fusex-tabela">
+                <thead>
+                <tr>
+                    <th>Solicitação</th>
+                    <th>Beneficiário</th>
+                    <th>Procedimentos e OCS</th>
+                    <th>Situação</th>
+                    <th>Ação</th>
+                </tr>
+                </thead>
+
+                <tbody id="tabela-solicitacoes"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Detalhes da solicitação -->
+    <section id="detalhes-solicitacao"
+             class="fusex-card fusex-detalhes"
+             hidden>
+
+        <button type="button"
+                class="fusex-voltar"
+                id="btn-fechar-detalhes">
+            ← Voltar às solicitações
+        </button>
+
+        <div id="conteudo-detalhes"></div>
+    </section>
+
+</main>
+
+<script src="../../js/api.js"></script>
+<script src="../../js/formatters.js"></script>
+<script src="../../js/painel-fusex.js"></script>
+</body>
+</html>

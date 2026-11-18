@@ -471,3 +471,84 @@ async function buscarArquivoGuiaOficial(idGuia) {
     return resposta.blob();
 }
 
+
+/* =====================================================
+   COLABORADOR FUSEX — PRÉ-GUIAS
+===================================================== */
+
+// Lista todas as solicitações para colaboradores autorizados
+async function listarPreGuiasFusex() {
+    const resposta = await fetchAutenticado(
+        `${API_URL}/pre-guias/fusex`
+    );
+
+    if (!resposta.ok) {
+        if (resposta.status === 403) {
+            throw new Error(
+                "Você não tem permissão para consultar as solicitações."
+            );
+        }
+
+        throw new Error(
+            "Não foi possível carregar as solicitações."
+        );
+    }
+
+    return resposta.json();
+}
+
+// Recupera o encaminhamento de uma pré-guia
+async function obterArquivoPreGuiaFusex(idPreGuia) {
+    const resposta = await fetchAutenticado(
+        `${API_URL}/pre-guias/fusex/${encodeURIComponent(idPreGuia)}/arquivo`
+    );
+
+    if (!resposta.ok) {
+        throw new Error(
+            resposta.status === 404
+                ? "Encaminhamento não encontrado."
+                : "Não foi possível abrir o encaminhamento."
+        );
+    }
+
+    return URL.createObjectURL(await resposta.blob());
+}
+
+
+/* =====================================================
+   FUSEX — DECISÃO DE PRÉ-GUIAS
+===================================================== */
+
+async function decidirPreGuia(idPreGuia, decisao, motivoRecusa = "") {
+
+    const resposta = await fetchAutenticado(
+        `${API_URL}/pre-guias/fusex/${encodeURIComponent(idPreGuia)}/decisao`,
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                decisao,
+                motivoRecusa
+            })
+        }
+    );
+
+    if (!resposta.ok) {
+        const mensagens = {
+            400: "Verifique a decisão e a justificativa.",
+            401: "Sua sessão expirou.",
+            403: "Você não pode analisar esta solicitação.",
+            404: "Pré-guia não encontrada.",
+            409: "Esta solicitação já foi analisada."
+        };
+
+        throw new Error(
+            mensagens[resposta.status]
+            || "Não foi possível registrar a decisão."
+        );
+    }
+
+    return resposta.json();
+}
