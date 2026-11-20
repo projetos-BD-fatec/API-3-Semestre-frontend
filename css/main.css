@@ -24,6 +24,7 @@
 @import url("components/modal.css");
 @import url("components/ficha.css");
 @import url("components/empty-state.css");
+@import url("components/timeline.css");
 
 /* Páginas */
 @import url("pages/home.css");
@@ -34,3 +35,4 @@
 @import url("pages/painel-prestador.css");
 @import url("pages/lisura.css");
 @import url("pages/detalhes-guia.css");
+@import url("pages/acompanhamento.css");
