@@ -1,0 +1,323 @@
+/* =====================================================
+   Página: Acompanhamento do fluxo (US17)
+
+   Lista das guias à esquerda, linha do tempo da guia
+   escolhida à direita. Em tela estreita uma cai embaixo
+   da outra.
+===================================================== */
+
+/* Tela larga, como a da Lisura: a lista tem cinco colunas e nao
+   cabe nos 720px do container padrao - era o que empurrava a
+   tabela para o scroll horizontal. */
+.main-container.acompanhamento-container {
+    max-width: 1100px;
+}
+
+.acompanhamento-sobretitulo {
+    margin: 0 0 4px;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-primary);
+}
+
+.acompanhamento-layout {
+    display: grid;
+    /* A lista manda: precisa de espaco para as cinco colunas.
+       O painel tem largura minima para a linha do tempo nao
+       espremer os rotulos das etapas. */
+    grid-template-columns: minmax(0, 1.55fr) minmax(330px, 1fr);
+    align-items: start;
+    gap: 24px;
+    margin-top: 24px;
+}
+
+@media (max-width: 900px) {
+    .acompanhamento-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ---------- filtros ---------- */
+
+.acompanhamento-filtros {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: end;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.acompanhamento-campo {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 180px;
+    flex: 1;
+}
+
+.acompanhamento-campo label {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-ink-soft);
+}
+
+.acompanhamento-campo select,
+.acompanhamento-campo input {
+    padding: 9px 12px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background: var(--color-surface);
+    font-family: inherit;
+    font-size: 14px;
+    color: var(--color-ink);
+}
+
+.acompanhamento-campo select:focus-visible,
+.acompanhamento-campo input:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+}
+
+/* ---------- lista ---------- */
+
+.acompanhamento-tabela tr.is-selecionada {
+    background: var(--color-primary-light);
+}
+
+/* Selo da etapa na lista: número + nome, para a ordem do
+   fluxo ficar visível sem precisar abrir a guia. */
+.etapa-selo {
+    display: inline-flex;
+    width: fit-content;
+    padding: 4px 10px;
+    border: 1px solid var(--color-border-strong);
+    border-radius: 20px;
+    background: var(--color-surface-muted);
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-ink-soft);
+    white-space: nowrap;
+}
+
+.btn-link {
+    padding: 4px 6px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: none;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--color-primary);
+    cursor: pointer;
+}
+
+.btn-link:hover {
+    background: var(--color-primary-light);
+    text-decoration: underline;
+}
+
+.btn-link:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+}
+
+/* ---------- painel do fluxo ---------- */
+
+.acompanhamento-painel {
+    position: sticky;
+    top: 20px;
+    padding: 20px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-card);
+}
+
+@media (max-width: 900px) {
+    .acompanhamento-painel {
+        position: static;
+    }
+}
+
+.acompanhamento-painel-topo {
+    margin-bottom: 20px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.acompanhamento-painel-topo h2 {
+    margin: 0;
+    font-size: 18px;
+    color: var(--color-ink);
+}
+
+.acompanhamento-painel-sub {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--color-ink-soft);
+}
+
+.acompanhamento-painel-acoes {
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid var(--color-border);
+}
+
+.acompanhamento-vazio {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 220px;
+    padding: 32px 24px;
+    border: 1px dashed var(--color-border-strong);
+    border-radius: var(--radius-lg);
+    background: var(--color-surface);
+    text-align: center;
+    font-size: 14px;
+    color: var(--color-ink-faint);
+}
+
+/* =====================================================
+   Liquidação — bloco do painel (US16 / SCRUM-64)
+===================================================== */
+
+.liquidacao-titulo {
+    margin: 0 0 4px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+.liquidacao-intro {
+    margin: 0 0 14px;
+    font-size: 13px;
+    color: var(--color-ink-soft);
+}
+
+.liquidacao-comprovante {
+    margin: 0 0 14px;
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--color-success-text);
+}
+
+/* Motivo de não poder liquidar: a tela diz o que falta, em vez de
+   só esconder o botão. */
+.liquidacao-impedimento {
+    margin: 0;
+    padding: 10px 12px;
+    border: 1px solid var(--color-warning-border);
+    border-radius: var(--radius-sm);
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
+    font-size: 13px;
+    line-height: 1.45;
+}
+
+.acompanhamento-painel-acoes .primary-button,
+.acompanhamento-painel-acoes .secondary-button {
+    width: 100%;
+}
+
+
+/* =====================================================
+   Modal de revisão da liquidação
+
+   Usa o .confirmation do projeto; aqui só a largura extra
+   que a tabela exige e o que é próprio destas linhas.
+===================================================== */
+
+/* A caixa padrão tem 460px — não cabe cobrado, aprovado e glosa. */
+.confirmation-content.revisao-content {
+    max-width: 760px;
+}
+
+/* Contexto da guia: pares rótulo/valor que respondem
+   "de quem é esta guia e de onde vieram estes valores". */
+.revisao-contexto {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px 20px;
+    margin: 0 0 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.revisao-contexto dt {
+    margin-bottom: 2px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-ink-faint);
+}
+
+.revisao-contexto dd {
+    margin: 0;
+    font-size: 14px;
+    color: var(--color-ink);
+}
+
+.revisao-procedencia {
+    margin: 0 0 16px;
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--color-ink-soft);
+}
+
+/* ---------- tabela ---------- */
+
+.revisao-cod {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-ink);
+}
+
+.revisao-desc {
+    display: block;
+    margin-top: 2px;
+    font-size: 13px;
+    line-height: 1.35;
+    color: var(--color-ink);
+}
+
+.revisao-data {
+    display: block;
+    margin-top: 3px;
+    font-size: 11px;
+    color: var(--color-ink-faint);
+}
+
+/* A decisão fica sob o valor aprovado: é a explicação dele. */
+.revisao-decisao {
+    display: block;
+    margin-top: 2px;
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-ink-soft);
+}
+
+.revisao-conforme {
+    color: var(--color-ink-faint);
+}
+
+.revisao-glosa {
+    color: var(--color-danger-text);
+}
+
+.revisao-tabela tfoot td {
+    border-top: 1px solid var(--color-border-strong);
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+/* O valor que será liquidado é o número que decide a tela. */
+.revisao-total {
+    font-size: 15px;
+    color: var(--color-primary);
+}
