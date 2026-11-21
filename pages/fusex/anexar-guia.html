@@ -1,0 +1,161 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>FUSEx — Emissão de guia oficial</title>
+
+    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet"
+          href="../../css/pages/anexar-guia-fusex.css">
+</head>
+
+<body>
+
+<header class="header">
+    <div class="header-container">
+        <a href="painel.html" class="logo">FUSEx</a>
+
+        <a href="painel.html" class="back-button">
+            Voltar ao painel
+        </a>
+    </div>
+</header>
+
+<main class="main-container emissao-container">
+
+    <section class="emissao-topo">
+        <p class="fusex-sobretitulo">
+            GESTÃO DE PRÉ-GUIAS / EMISSÃO
+        </p>
+
+        <h1>Anexar guia oficial</h1>
+
+        <p>
+            Confira os dados da solicitação e anexe
+            o documento oficial emitido pelo SIRE.
+        </p>
+    </section>
+
+    <p id="emissao-carregando">
+        Carregando solicitação...
+    </p>
+
+    <p id="emissao-erro"
+       class="emissao-erro"
+       role="alert"
+       hidden></p>
+
+    <!-- Dados da pré-guia -->
+    <section id="emissao-dados"
+             class="emissao-card"
+             hidden>
+    </section>
+
+    <!-- Upload -->
+    <section id="emissao-upload"
+             class="emissao-card"
+             hidden>
+
+        <h2>Guia oficial emitida pelo SIRE</h2>
+
+        <p class="emissao-descricao">
+            Anexe o PDF correspondente à solicitação
+            autorizada.
+        </p>
+
+        <form id="form-emitir-guia">
+
+            <label class="emissao-arquivo"
+                   for="arquivo-guia">
+
+                <span class="emissao-arquivo-icone">
+                    ↑
+                </span>
+
+                <strong>Selecionar arquivo PDF</strong>
+
+                <small>Formato PDF · Até 10 MB</small>
+
+                <input type="file"
+                       id="arquivo-guia"
+                       accept=".pdf,application/pdf"
+                       required>
+            </label>
+
+            <p id="nome-arquivo"
+               class="emissao-nome-arquivo"
+               aria-live="polite"></p>
+
+            <p id="erro-upload"
+               class="emissao-erro"
+               role="alert"
+               hidden></p>
+
+            <div class="emissao-aviso">
+                O código da guia será gerado automaticamente
+                pelo FusexFlow após a confirmação do envio.
+            </div>
+
+            <div class="emissao-acoes">
+                <a href="painel.html"
+                   class="fusex-botao">
+                    Voltar
+                </a>
+
+                <button type="submit"
+                        id="btn-emitir"
+                        class="fusex-botao fusex-botao-principal">
+                    Emitir guia oficial
+                </button>
+            </div>
+
+        </form>
+    </section>
+
+    <!-- Confirmação -->
+    <section id="emissao-sucesso"
+             class="emissao-card"
+             hidden>
+
+        <div class="emissao-sucesso-icone">✓</div>
+
+        <h2>Guia oficial registrada</h2>
+
+        <p>
+            Código de identificação da guia:
+        </p>
+
+        <strong id="codigo-guia-emitida"
+                class="emissao-codigo">
+        </strong>
+
+        <p id="status-guia-emitida"></p>
+
+        <div class="emissao-acoes">
+
+            <a href="painel.html"
+               class="fusex-botao">
+                Voltar às solicitações
+            </a>
+
+            <a id="btn-acompanhar-guias"
+               class="fusex-botao fusex-botao-principal"
+               hidden>
+                Acompanhar guias emitidas
+            </a>
+
+        </div>
+    </section>
+
+</main>
+
+<script src="../../js/api.js"></script>
+<script src="../../js/formatters.js"></script>
+<script src="../../js/anexar-guia-fusex.js"></script>
+
+</body>
+</html>

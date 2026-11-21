@@ -552,3 +552,62 @@ async function decidirPreGuia(idPreGuia, decisao, motivoRecusa = "") {
 
     return resposta.json();
 }
+
+
+/* =====================================================
+   FUSEX — EMISSAO DE GUIA OFICIAL
+===================================================== */
+
+async function emitirGuiaOficial(idPreGuia, arquivo) {
+
+    const formData = new FormData();
+
+    formData.append("file", arquivo);
+    formData.append("solicitacaoId", idPreGuia);
+
+    const resposta = await fetchAutenticado(
+        `${API_URL}/api/guias/upload`,
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    if (!resposta.ok) {
+
+        const mensagens = {
+            400: "Verifique o PDF e os dados da solicitação.",
+            401: "Sua sessão expirou.",
+            403: "Você não possui permissão para emitir esta guia.",
+            404: "A solicitação não foi encontrada.",
+            409: "A guia já foi emitida ou a solicitação não está apta para emissão.",
+            413: "O arquivo ultrapassa o tamanho permitido."
+        };
+
+        throw new Error(
+            mensagens[resposta.status]
+            || "Não foi possível emitir a guia oficial."
+        );
+    }
+
+    return resposta.json();
+}
+
+/* =====================================================
+   FUSEX — EXIBIR GUIA OFICIAL
+===================================================== */
+
+
+async function obterPdfGuiaOficial(idGuiaOficial) {
+    const resposta = await fetchAutenticado(
+        `${API_URL}/api/guias/${encodeURIComponent(idGuiaOficial)}/arquivo`
+    );
+
+    if (!resposta.ok) {
+        throw new Error(
+            "Não foi possível visualizar o PDF da guia."
+        );
+    }
+
+    return URL.createObjectURL(await resposta.blob());
+}

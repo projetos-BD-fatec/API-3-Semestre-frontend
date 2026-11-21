@@ -451,6 +451,106 @@ function renderizarDetalhes(idPreGuia) {
        MONTAGEM DO HTML COMPLETO
     ----------------------------------------- */
 
+
+/* =========================================
+   EMISSAO DA GUIA OFICIAL
+========================================= */
+
+
+/* =====================================================
+   GUIA OFICIAL — EMISSÃO E VISUALIZAÇÃO DO PDF
+===================================================== */
+
+let areaEmissao = "";
+
+
+if (solicitacao.idGuiaOficial != null) {
+
+    areaEmissao = `
+        <section class="fusex-area-decisao">
+
+            <h3>Guia oficial emitida</h3>
+
+            <p>
+                Esta solicitação já possui uma
+                guia oficial vinculada.
+            </p>
+
+            <p>
+                <strong>Código:</strong>
+                ${textoSeguro(solicitacao.codigoGuia)}
+            </p>
+
+            <p>
+                <strong>Situação da guia:</strong>
+                ${textoSeguro(solicitacao.statusGuiaOficial)}
+            </p>
+
+            <div class="fusex-documento-oficial">
+
+                <div class="fusex-documento-icone">
+                    📄
+                </div>
+
+                <div class="fusex-documento-info">
+                    <strong>Guia oficial — SIRE</strong>
+
+                    <span class="fusex-secundario">
+                        PDF anexado pelo colaborador FUSEx.
+                    </span>
+                </div>
+
+                <button
+                    type="button"
+                    id="btn-visualizar-guia"
+                    class="fusex-botao fusex-botao-principal">
+                    Visualizar PDF da guia
+                </button>
+
+            </div>
+
+            <p
+                id="erro-visualizar-guia"
+                class="fusex-erro"
+                role="alert"
+                hidden>
+            </p>
+
+        </section>
+    `;
+
+} else if (
+    solicitacao.status === "AUTORIZADA"
+    && solicitacao.solicitacaoPropria === false
+    && itens.length > 0
+    && itens.every(item => item.status === "AUTORIZADA")
+) {
+
+    areaEmissao = `
+        <section class="fusex-area-decisao">
+
+            <h3>Emissão da guia oficial</h3>
+
+            <p>
+                Esta pré-guia foi autorizada e está
+                aguardando a anexação do PDF emitido pelo SIRE.
+            </p>
+
+            <a
+                href="anexar-guia.html?idPreGuia=${encodeURIComponent(
+                    solicitacao.idPreGuia
+                )}"
+                class="fusex-botao fusex-botao-principal">
+
+                Anexar guia oficial
+            </a>
+
+        </section>
+    `;
+}
+
+
+
     fusex.conteudoDetalhes.innerHTML = `
 
         <div class="fusex-detalhe-topo">
@@ -567,6 +667,8 @@ function renderizarDetalhes(idPreGuia) {
         <!-- Histórico -->
         ${historicoDecisao}
 
+        ${areaEmissao}
+
     `;
 
     fusex.detalhes.hidden = false;
@@ -682,6 +784,26 @@ function renderizarDetalhes(idPreGuia) {
         );
     }
 
+
+/* =========================================
+   EVENTO: VISUALIZAR PDF DA GUIA
+========================================= */
+
+const botaoVisualizarGuia = document.getElementById(
+    "btn-visualizar-guia"
+);
+
+if (botaoVisualizarGuia) {
+
+    botaoVisualizarGuia.addEventListener("click", () => {
+
+        visualizarPdfGuiaOficial(
+            solicitacao.idGuiaOficial
+        );
+    });
+}
+
+
     fusex.detalhes.scrollIntoView({
         behavior: "smooth",
         block: "start"
@@ -691,6 +813,7 @@ function renderizarDetalhes(idPreGuia) {
 /* =====================================================
    REGISTRAR DECISÃO NO BACKEND
 ===================================================== */
+
 
 async function registrarDecisaoNaTela(
     idPreGuia,
@@ -710,7 +833,6 @@ async function registrarDecisaoNaTela(
         .map(id => document.getElementById(id))
         .filter(Boolean);
 
-    // Evita cliques repetidos durante a requisição
     botoes.forEach(botao => {
         botao.disabled = true;
     });
@@ -726,14 +848,21 @@ async function registrarDecisaoNaTela(
             motivoRecusa
         );
 
-        // Atualiza a lista e os indicadores
+        // Se autorizada, abre a tela de emissão.
+        if (decisao === "AUTORIZADA") {
+
+            window.location.href =
+                `anexar-guia.html?idPreGuia=${encodeURIComponent(idPreGuia)}`;
+
+            return;
+        }
+
+        // Se negada, retorna à listagem.
         await carregarSolicitacoes();
 
-        const resultado = decisao === "AUTORIZADA"
-            ? "Pré-guia autorizada com sucesso."
-            : "Pré-guia negada. Justificativa registrada.";
-
-        alert(resultado);
+        alert(
+            "Pré-guia negada. Justificativa registrada."
+        );
 
     } catch (erro) {
 
@@ -751,6 +880,87 @@ async function registrarDecisaoNaTela(
         });
     }
 }
+
+
+
+/* =====================================================
+   VISUALIZAR PDF DA GUIA OFICIAL
+===================================================== */
+
+async function visualizarPdfGuiaOficial(idGuiaOficial) {
+
+    const botao = document.getElementById(
+        "btn-visualizar-guia"
+    );
+
+    const erro = document.getElementById(
+        "erro-visualizar-guia"
+    );
+
+    erro.hidden = true;
+    botao.disabled = true;
+    botao.textContent = "Abrindo PDF...";
+
+    // Abre uma aba durante o clique.
+    // Isso evita que o navegador bloqueie a nova aba.
+    const novaAba = window.open(
+        "about:blank",
+        "_blank"
+    );
+
+    try {
+
+        const url = await obterPdfGuiaOficial(
+            idGuiaOficial
+        );
+
+        if (novaAba) {
+
+            novaAba.location.replace(url);
+
+        } else {
+
+            // Alternativa caso a nova aba seja bloqueada
+            const link = document.createElement("a");
+
+            link.href = url;
+            link.target = "_blank";
+            link.rel = "noopener noreferrer";
+
+            document.body.appendChild(link);
+            link.click();
+            link.remove();
+        }
+
+        // Libera a URL temporária após a abertura
+        setTimeout(() => {
+            URL.revokeObjectURL(url);
+        }, 60000);
+
+    } catch (error) {
+
+        console.error(
+            "Erro ao abrir a guia oficial:",
+            error
+        );
+
+        if (novaAba) {
+            novaAba.close();
+        }
+
+        erro.textContent =
+            error.message
+            || "Não foi possível visualizar a guia oficial.";
+
+        erro.hidden = false;
+
+    } finally {
+
+        botao.disabled = false;
+        botao.textContent = "Visualizar PDF da guia";
+    }
+}
+
 
 /* =====================================================
    VISUALIZAR ENCAMINHAMENTO
