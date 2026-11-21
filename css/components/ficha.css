@@ -330,3 +330,9 @@ body.modal-aberto {
         align-items: stretch;
     }
 }
+
+/* Informações administrativas visíveis ao beneficiário na ficha. */
+.ficha-secao-recusa { padding: 18px; margin-top: 18px; background: var(--color-danger-bg); border: 1px solid var(--color-danger-border); border-radius: var(--radius-md); }
+.ficha-secao-recusa h3 { color: var(--color-danger-text); }
+.ficha-motivo-recusa { color: var(--color-ink); font-size: 14px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+.ficha-secao-guia .ficha-arquivo { margin-top: 10px; }
