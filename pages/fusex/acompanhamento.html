@@ -10,119 +10,120 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../css/main.css">
+    <link rel="stylesheet" href="../../css/main.css?v=2"
+    <link rel="stylesheet" href="../../css/pages/acompanhamento.css?v=2">
 </head>
 
 <body>
-    <header class="header">
-        <div class="header-container">
-            <a href="../beneficiario/inicio.html" class="logo">FUSEx</a>
-            <a href="../beneficiario/inicio.html" class="back-button">Início</a>
+<header class="header">
+    <div class="header-container">
+        <a href="../beneficiario/inicio.html" class="logo">FUSEx</a>
+        <a href="../beneficiario/inicio.html" class="back-button">Início</a>
+    </div>
+</header>
+
+<main class="main-container acompanhamento-container">
+
+    <section class="espelho-topo">
+        <div>
+            <p class="acompanhamento-sobretitulo">Acompanhamento do fluxo</p>
+            <h1>Status das guias</h1>
+            <p class="espelho-guia">
+                Em que etapa cada guia está, da solicitação à liquidação.
+                Escolha uma guia para ver as etapas já concluídas e a data de cada uma.
+            </p>
         </div>
-    </header>
+    </section>
 
-    <main class="main-container acompanhamento-container">
+    <p id="lista-carregando" class="espelho-aviso-pagina">Carregando guias...</p>
+    <p id="lista-erro" class="form-error" role="alert" hidden></p>
 
-        <section class="espelho-topo">
-            <div>
-                <p class="acompanhamento-sobretitulo">Acompanhamento do fluxo</p>
-                <h1>Status das guias</h1>
-                <p class="espelho-guia">
-                    Em que etapa cada guia está, da solicitação à liquidação.
-                    Escolha uma guia para ver as etapas já concluídas e a data de cada uma.
-                </p>
+    <div class="acompanhamento-layout">
+
+        <!-- lista de guias -->
+        <section id="lista-conteudo" class="espelho-card" hidden>
+
+            <div class="acompanhamento-filtros">
+                <div class="acompanhamento-campo">
+                    <label for="filtro-etapa">Etapa do fluxo</label>
+                    <select id="filtro-etapa"></select>
+                </div>
+
+                <div class="acompanhamento-campo">
+                    <label for="busca-guia">Buscar</label>
+                    <input type="search" id="busca-guia" autocomplete="off"
+                           placeholder="Código da guia ou beneficiário">
+                </div>
+            </div>
+
+            <p id="lista-vazia" class="espelho-vazio" hidden></p>
+
+            <div class="espelho-tabela-wrap">
+                <table class="espelho-tabela acompanhamento-tabela">
+                    <thead>
+                    <tr>
+                        <th>Guia</th>
+                        <th>Beneficiário</th>
+                        <th>Etapa atual</th>
+                        <th>Atualizado em</th>
+                        <th class="col-acoes"><span class="sr-only">Ações</span></th>
+                    </tr>
+                    </thead>
+                    <tbody id="tabela-guias"></tbody>
+                </table>
             </div>
         </section>
 
-        <p id="lista-carregando" class="espelho-aviso-pagina">Carregando guias...</p>
-        <p id="lista-erro" class="form-error" role="alert" hidden></p>
+        <!-- linha do tempo da guia escolhida -->
+        <div>
+            <p id="painel-vazio" class="acompanhamento-vazio">
+                Escolha uma guia na lista para ver o fluxo dela.
+            </p>
 
-        <div class="acompanhamento-layout">
+            <p id="painel-erro" class="form-error" role="alert" hidden></p>
 
-            <!-- lista de guias -->
-            <section id="lista-conteudo" class="espelho-card" hidden>
-
-                <div class="acompanhamento-filtros">
-                    <div class="acompanhamento-campo">
-                        <label for="filtro-etapa">Etapa do fluxo</label>
-                        <select id="filtro-etapa"></select>
-                    </div>
-
-                    <div class="acompanhamento-campo">
-                        <label for="busca-guia">Buscar</label>
-                        <input type="search" id="busca-guia" autocomplete="off"
-                               placeholder="Código da guia ou beneficiário">
-                    </div>
+            <section id="painel-fluxo" class="acompanhamento-painel" hidden>
+                <div class="acompanhamento-painel-topo">
+                    <h2 id="painel-titulo"></h2>
+                    <p id="painel-subtitulo" class="acompanhamento-painel-sub"></p>
                 </div>
 
-                <p id="lista-vazia" class="espelho-vazio" hidden></p>
+                <ol class="timeline" id="timeline"></ol>
 
-                <div class="espelho-tabela-wrap">
-                    <table class="espelho-tabela acompanhamento-tabela">
-                        <thead>
-                            <tr>
-                                <th>Guia</th>
-                                <th>Beneficiário</th>
-                                <th>Etapa atual</th>
-                                <th>Atualizado em</th>
-                                <th class="col-acoes"><span class="sr-only">Ações</span></th>
-                            </tr>
-                        </thead>
-                        <tbody id="tabela-guias"></tbody>
-                    </table>
-                </div>
+                <!-- Revisão da liquidação (US16 / SCRUM-64): o resumo dos
+                     valores aprovados e, só depois dele, a confirmação. -->
+                <div class="acompanhamento-painel-acoes" id="bloco-liquidacao" hidden></div>
             </section>
-
-            <!-- linha do tempo da guia escolhida -->
-            <div>
-                <p id="painel-vazio" class="acompanhamento-vazio">
-                    Escolha uma guia na lista para ver o fluxo dela.
-                </p>
-
-                <p id="painel-erro" class="form-error" role="alert" hidden></p>
-
-                <section id="painel-fluxo" class="acompanhamento-painel" hidden>
-                    <div class="acompanhamento-painel-topo">
-                        <h2 id="painel-titulo"></h2>
-                        <p id="painel-subtitulo" class="acompanhamento-painel-sub"></p>
-                    </div>
-
-                    <ol class="timeline" id="timeline"></ol>
-
-                    <!-- Revisão da liquidação (US16 / SCRUM-64): o resumo dos
-                         valores aprovados e, só depois dele, a confirmação. -->
-                    <div class="acompanhamento-painel-acoes" id="bloco-liquidacao" hidden></div>
-                </section>
-            </div>
-        </div>
-    </main>
-
-    <!-- Revisão da liquidação (US16 / SCRUM-64).
-         Em modal porque é momento de decisão e precisa de espaço: a
-         tabela tem cobrado, aprovado, diferença e a decisão da Lisura,
-         e isso não cabe na coluna lateral. -->
-    <div class="confirmation" id="modal-revisao" role="dialog" aria-modal="true"
-         aria-labelledby="revisao-titulo">
-        <div class="confirmation-content revisao-content">
-            <h2 id="revisao-titulo">Revisar e liquidar</h2>
-            <div id="revisao-corpo"></div>
-
-            <p id="revisao-erro" class="form-error" role="alert" hidden></p>
-
-            <div class="confirmation-actions">
-                <button type="button" id="revisao-cancelar" class="secondary-button">
-                    Cancelar
-                </button>
-                <button type="button" id="revisao-confirmar" class="primary-button">
-                    Confirmar liquidação
-                </button>
-            </div>
         </div>
     </div>
+</main>
 
-    <script src="../../js/api.js"></script>
-    <script src="../../js/formatters.js"></script>
-    <script src="../../js/acompanhamento.js"></script>
+<!-- Revisão da liquidação (US16 / SCRUM-64).
+     Em modal porque é momento de decisão e precisa de espaço: a
+     tabela tem cobrado, aprovado, diferença e a decisão da Lisura,
+     e isso não cabe na coluna lateral. -->
+<div class="confirmation" id="modal-revisao" role="dialog" aria-modal="true"
+     aria-labelledby="revisao-titulo">
+    <div class="confirmation-content revisao-content">
+        <h2 id="revisao-titulo">Revisar e liquidar</h2>
+        <div id="revisao-corpo"></div>
+
+        <p id="revisao-erro" class="form-error" role="alert" hidden></p>
+
+        <div class="confirmation-actions">
+            <button type="button" id="revisao-cancelar" class="secondary-button">
+                Cancelar
+            </button>
+            <button type="button" id="revisao-confirmar" class="primary-button">
+                Confirmar liquidação
+            </button>
+        </div>
+    </div>
+</div>
+
+<script src="../../js/api.js"></script>
+<script src="../../js/formatters.js"></script>
+<script src="../../js/acompanhamento.js"></script>
 </body>
 
 </html>

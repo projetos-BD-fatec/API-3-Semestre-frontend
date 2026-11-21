@@ -257,6 +257,24 @@ const FichaPreGuia = (function () {
                         </dl>
                     </section>
 
+                    ${!rascunho && ficha.status === "NEGADA" ? `
+                        <section class="ficha-secao ficha-secao-recusa">
+                            <h3>Motivo da recusa</h3>
+                            <p class="ficha-motivo-recusa">${escapeHtml(ficha.motivoRecusa || "Não foi informado um motivo para a recusa.")}</p>
+                        </section>
+                    ` : ""}
+
+                    ${!rascunho && ficha.guiaOficial ? `
+                        <section class="ficha-secao ficha-secao-guia">
+                            <h3>Guia oficial emitida</h3>
+                            <div class="ficha-arquivo">
+                                <span class="ficha-arquivo-nome">${escapeHtml(ficha.guiaOficial.codigo || "Guia oficial")}</span>
+                                <button type="button" class="ficha-botao-arquivo"
+                                        data-acao="ver-guia-oficial">Visualizar PDF da guia</button>
+                            </div>
+                        </section>
+                    ` : ""}
+
                     <section class="ficha-secao">
                         <h3>Encaminhamento</h3>
                         ${arquivoHtml}
@@ -397,6 +415,13 @@ const FichaPreGuia = (function () {
             });
         }
 
+        const botaoGuia = overlay.querySelector('[data-acao="ver-guia-oficial"]');
+        if (botaoGuia && ficha.guiaOficial) {
+            botaoGuia.addEventListener("click", function () {
+                visualizarArquivo(botaoGuia, ficha.guiaOficial);
+            });
+        }
+
         const botaoConfirmar = overlay.querySelector('[data-acao="confirmar"]');
 
         if (botaoConfirmar) {
@@ -468,6 +493,15 @@ function fichaDePreGuiaApi(preGuia, beneficiario) {
         codigo: codigoSolicitacao(preGuia.idPreGuia),
         dataSolicitacao: preGuia.criadoEm,
         status: preGuia.status,
+        motivoRecusa: preGuia.motivoRecusa ?? null,
+        guiaOficial: preGuia.status === "AUTORIZADA" && preGuia.idGuiaOficial != null
+            ? {
+                codigo: preGuia.codigoGuia,
+                obterUrl: function () {
+                    return obterPdfGuiaOficial(preGuia.idGuiaOficial);
+                }
+            }
+            : null,
 
         beneficiario: {
             nome: daPreGuia.nome ?? doUsuario.nome,
