@@ -474,7 +474,6 @@ async function buscarArquivoGuiaOficial(idGuia) {
 
 /* =====================================================
    COLABORADOR FUSEX — PRÉ-GUIAS
-===================================================== */
 
 // Lista todas as solicitações para colaboradores autorizados
 async function listarPreGuiasFusex() {
@@ -517,7 +516,6 @@ async function obterArquivoPreGuiaFusex(idPreGuia) {
 
 /* =====================================================
    FUSEX — DECISÃO DE PRÉ-GUIAS
-===================================================== */
 
 async function decidirPreGuia(idPreGuia, decisao, motivoRecusa = "") {
 
@@ -556,7 +554,6 @@ async function decidirPreGuia(idPreGuia, decisao, motivoRecusa = "") {
 
 /* =====================================================
    FUSEX — EMISSAO DE GUIA OFICIAL
-===================================================== */
 
 async function emitirGuiaOficial(idPreGuia, arquivo) {
 
@@ -595,7 +592,6 @@ async function emitirGuiaOficial(idPreGuia, arquivo) {
 
 /* =====================================================
    FUSEX — EXIBIR GUIA OFICIAL
-===================================================== */
 
 
 async function obterPdfGuiaOficial(idGuiaOficial) {
@@ -610,4 +606,68 @@ async function obterPdfGuiaOficial(idGuiaOficial) {
     }
 
     return URL.createObjectURL(await resposta.blob());
+// ==============================
+// ACOMPANHAMENTO DO FLUXO (US17)
+// ==============================
+
+/** Etapas do fluxo, na ordem, para montar o filtro da listagem. */
+const ETAPAS_FLUXO = [
+    { valor: "SOLICITACAO", rotulo: "Solicitação" },
+    { valor: "EMISSAO", rotulo: "Emissão" },
+    { valor: "REALIZACAO", rotulo: "Realização" },
+    { valor: "FATURAMENTO", rotulo: "Faturamento" },
+    { valor: "LISURA", rotulo: "Lisura" },
+    { valor: "LIQUIDACAO", rotulo: "Liquidação" }
+];
+
+/**
+ * GET /acompanhamento[?etapa=ETAPA]
+ * Guias com a etapa do fluxo em que cada uma está.
+ * etapa vazia = todas.
+ */
+function listarAcompanhamento(etapa) {
+    const filtro = etapa
+        ? `?etapa=${encodeURIComponent(etapa)}`
+        : "";
+
+    return requisitarEspelho(
+        `${API_URL}/acompanhamento${filtro}`,
+        "GET", undefined, "Não foi possível carregar o acompanhamento das guias."
+    );
+}
+
+/**
+ * GET /acompanhamento/{idGuia}
+ * Linha do tempo da guia: as seis etapas, com data nas já concluídas.
+ */
+function buscarAcompanhamentoGuia(idGuia) {
+    return requisitarEspelho(
+        `${API_URL}/acompanhamento/${encodeURIComponent(idGuia)}`,
+        "GET", undefined, "Não foi possível carregar o fluxo desta guia."
+    );
+}
+
+/**
+ * GET /liquidacao/{idGuia}
+ * Resumo dos valores aprovados: itens com valor cobrado e aprovado,
+ * totais, e se a liquidação pode ser confirmada agora (campo impedimento
+ * diz o motivo quando não pode).
+ */
+function buscarResumoLiquidacao(idGuia) {
+    return requisitarEspelho(
+        `${API_URL}/liquidacao/${encodeURIComponent(idGuia)}`,
+        "GET", undefined, "Não foi possível carregar os valores desta guia."
+    );
+}
+
+/**
+ * PATCH /liquidacao/{idGuia}
+ * Confirma a liquidação. Devolve o resumo atualizado, com data,
+ * responsável e valor registrados.
+ */
+function liquidarGuia(idGuia) {
+    return requisitarEspelho(
+        `${API_URL}/liquidacao/${encodeURIComponent(idGuia)}`,
+        "PATCH", undefined, "Não foi possível registrar a liquidação."
+    );
 }

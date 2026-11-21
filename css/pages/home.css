@@ -149,3 +149,17 @@
     }
 }
 
+
+/* Linha das ferramentas internas do FUSEx.
+   Mesmos valores da secao "Solicitacao recente", para nao introduzir
+   um tratamento visual novo: e so posicionamento. */
+.actions-fusex {
+    margin-top: 32px;
+}
+
+.actions-fusex > h2 {
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-ink);
+}

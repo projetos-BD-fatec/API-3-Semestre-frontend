@@ -1,0 +1,220 @@
+/* =====================================================
+   Linha do tempo do fluxo da guia (US17 / SCRUM-66)
+
+   Mostra as seis etapas do processo, da solicitação à
+   liquidação, sempre todas: as concluídas com data e as
+   que ainda faltam em cinza, para o responsável pelo
+   FUSEx ver de relance onde a guia parou.
+
+   Uso:
+   <ol class="timeline">
+     <li class="timeline-etapa is-concluida">...</li>
+     <li class="timeline-etapa is-atual">...</li>
+     <li class="timeline-etapa">...</li>
+   </ol>
+
+   Modificadores da etapa:
+     is-concluida  — já aconteceu
+     is-atual      — etapa mais avançada concluída
+     is-recusada   — etapa concluída com resultado negativo
+   Sem modificador = etapa pendente.
+===================================================== */
+
+.timeline {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+/* ---------- etapa ---------- */
+
+.timeline-etapa {
+    position: relative;
+    display: grid;
+    grid-template-columns: 26px 1fr;
+    column-gap: 14px;
+    padding-bottom: 16px;
+}
+
+.timeline-etapa:last-child {
+    padding-bottom: 0;
+}
+
+/* Linha que liga uma etapa à seguinte.
+   Fica atrás do marcador e não é desenhada na última etapa. */
+.timeline-etapa::before {
+    content: "";
+    position: absolute;
+    top: 24px;
+    bottom: 0;
+    left: 12px;
+    width: 2px;
+    background: var(--color-border);
+}
+
+.timeline-etapa:last-child::before {
+    display: none;
+}
+
+/* O trecho de linha só fica "aceso" quando a etapa seguinte
+   também já aconteceu — daí o seletor olhar o irmão. */
+.timeline-etapa.is-concluida:has(+ .timeline-etapa.is-concluida)::before {
+    background: var(--color-primary);
+}
+
+/* ---------- marcador ---------- */
+
+.timeline-marcador {
+    position: relative;
+    z-index: 1;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 2px solid var(--color-border-strong);
+    background: var(--color-surface);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--color-ink-faint);
+}
+
+.is-concluida > .timeline-marcador {
+    border-color: var(--color-primary);
+    background: var(--color-primary);
+    color: #FFFFFF;
+}
+
+.is-atual > .timeline-marcador {
+    box-shadow: 0 0 0 4px var(--color-primary-light);
+}
+
+.is-recusada > .timeline-marcador {
+    border-color: var(--color-danger-border);
+    background: var(--color-danger-text);
+    color: #FFFFFF;
+}
+
+.is-recusada.is-atual > .timeline-marcador {
+    box-shadow: 0 0 0 4px var(--color-danger-bg);
+}
+
+/* ---------- conteúdo ---------- */
+
+.timeline-conteudo {
+    padding-top: 2px;
+    min-width: 0;
+}
+
+/* Título e data dividem a mesma linha: a data é a informação que
+   acompanha o nome da etapa, não um parágrafo à parte. */
+.timeline-cabecalho {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 4px 10px;
+}
+
+.timeline-titulo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 8px;
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--color-ink-soft);
+}
+
+.is-concluida .timeline-titulo {
+    color: var(--color-ink);
+}
+
+.timeline-selo-atual {
+    padding: 2px 8px;
+    border-radius: 20px;
+    background: var(--color-primary-light);
+    color: var(--color-primary-dark);
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.is-recusada .timeline-selo-atual {
+    background: var(--color-danger-bg);
+    color: var(--color-danger-text);
+}
+
+.timeline-data {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--color-ink-soft);
+    white-space: nowrap;
+}
+
+.timeline-pendente {
+    margin: 2px 0 0;
+    font-size: 13px;
+    font-style: italic;
+    color: var(--color-ink-faint);
+}
+
+.timeline-detalhe {
+    margin: 2px 0 0;
+    font-size: 13px;
+    line-height: 1.45;
+    color: var(--color-ink-soft);
+}
+
+/* Segue a observação na mesma linha, separado por um ponto. */
+.timeline-responsavel {
+    color: var(--color-ink-faint);
+}
+
+.timeline-responsavel::before {
+    content: " · ";
+}
+
+/* A carga inicial estimou a data de algumas etapas antigas;
+   a tela precisa dizer isso em vez de fingir precisão. */
+.timeline-estimada {
+    display: inline-block;
+    margin-left: 4px;
+    padding: 0 5px;
+    border: 1px solid var(--color-warning-border);
+    border-radius: 20px;
+    background: var(--color-warning-bg);
+    color: var(--color-warning-text);
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+/* ---------- telas estreitas ---------- */
+
+@media (max-width: 520px) {
+    .timeline-etapa {
+        grid-template-columns: 24px 1fr;
+        column-gap: 12px;
+        padding-bottom: 22px;
+    }
+
+    .timeline-etapa::before {
+        top: 22px;
+        left: 11px;
+    }
+
+    .timeline-marcador {
+        width: 24px;
+        height: 24px;
+        font-size: 11px;
+    }
+}
