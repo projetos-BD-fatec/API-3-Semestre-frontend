@@ -141,7 +141,9 @@ async function requisitarEspelho(url, metodo, corpo, mensagemPadrao) {
     const response = await fetchAutenticado(url, opcoes);
 
     if (!response.ok) {
-        throw new Error(await lerMensagemErro(response, mensagemPadrao));
+        const erro = new Error(await lerMensagemErro(response, mensagemPadrao));
+        erro.status = response.status;   // quem chama pode reagir (ex.: 409 = conflito de estado)
+        throw erro;
     }
 
     return response.json();
@@ -228,6 +230,46 @@ function enviarEspelhosEmLote(idsEspelho) {
     return requisitarEspelho(
         `${API_URL}/espelhos/enviar-lote`,
         "POST", { idsEspelho: idsEspelho }, "Não foi possível enviar os espelhos."
+    );
+}
+
+
+/* =====================================================
+   ASSINATURA DO BENEFICIÁRIO NA GUIA UTILIZADA
+===================================================== */
+
+/**
+ * POST /api/guias/{id}/assinatura/solicitar   (OCS)
+ * Gera um código de 6 dígitos que aparece SÓ no app do beneficiário.
+ * Devolve { expiraEm, validadeMinutos } — o código não vem para a OCS.
+ */
+function solicitarAssinaturaGuia(idGuia) {
+    return requisitarEspelho(
+        `${API_URL}/api/guias/${encodeURIComponent(idGuia)}/assinatura/solicitar`,
+        "POST", undefined, "Não foi possível gerar o código de assinatura."
+    );
+}
+
+/**
+ * POST /api/guias/{id}/assinatura/confirmar   (OCS)
+ * Informa o código que o beneficiário disse. Devolve { idGuia, dataAssinatura }.
+ */
+function confirmarAssinaturaGuia(idGuia, codigo) {
+    return requisitarEspelho(
+        `${API_URL}/api/guias/${encodeURIComponent(idGuia)}/assinatura/confirmar`,
+        "POST", { codigo: codigo }, "Não foi possível confirmar a assinatura."
+    );
+}
+
+/**
+ * GET /api/beneficiario/assinaturas-pendentes   (beneficiário)
+ * Guias dele aguardando assinatura, com o código vigente:
+ * { idGuia, codigoGuia, nomePrestador, procedimentos[], codigo, expiraEm, segundosRestantes }
+ */
+function listarAssinaturasPendentes() {
+    return requisitarEspelho(
+        `${API_URL}/api/beneficiario/assinaturas-pendentes`,
+        "GET", undefined, "Não foi possível carregar as guias para assinar."
     );
 }
 
