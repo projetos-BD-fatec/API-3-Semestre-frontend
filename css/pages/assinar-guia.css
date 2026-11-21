@@ -1,0 +1,76 @@
+/* =====================================================
+   Página: assinar guia (beneficiário)
+===================================================== */
+
+.assinar-alerta {
+    margin-bottom: 20px;
+    padding: 12px 14px;
+    background: var(--color-warning-bg);
+    border: 1px solid var(--color-warning-border);
+    border-radius: var(--radius-sm);
+    color: var(--color-warning-text);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.assinar-nota {
+    color: var(--color-ink-soft);
+    font-size: 14px;
+    text-align: center;
+}
+
+.assinar-card {
+    margin-bottom: 16px;
+    padding: 22px;
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+}
+
+.assinar-guia {
+    margin-bottom: 18px;
+    color: var(--color-ink);
+    font-weight: 600;
+    overflow-wrap: anywhere;
+}
+
+.assinar-mono {
+    font-family: var(--font-mono);
+}
+
+.assinar-rotulo {
+    margin-bottom: 4px;
+    color: var(--color-ink-soft);
+    font-size: 13px;
+}
+
+.assinar-codigo {
+    margin-bottom: 6px;
+    color: var(--color-primary);
+    font-family: var(--font-mono);
+    font-size: 44px;
+    font-weight: 600;
+    letter-spacing: 6px;
+    line-height: 1.1;
+}
+
+.assinar-tempo {
+    margin-bottom: 20px;
+    color: var(--color-ink-soft);
+    font-size: 14px;
+}
+
+.assinar-procedimentos {
+    padding-left: 18px;
+    color: var(--color-ink);
+    font-size: 14px;
+    line-height: 1.6;
+}
+
+@media (max-width: 380px) {
+    .assinar-codigo {
+        font-size: 36px;
+        letter-spacing: 4px;
+    }
+}

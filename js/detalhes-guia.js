@@ -17,6 +17,7 @@ let guiaAtual = null;
 let operacaoEmAndamento = false;
 let urlArquivoGuia = null;
 let arquivoGuiaAtual = null;
+let temporizadorAssinatura = null;
 
 
 /* =====================================================
@@ -33,6 +34,7 @@ const detalhes = {
     paciente: document.getElementById("detalhes-paciente"),
     preGuia: document.getElementById("detalhes-pre-guia"),
     dataUpload: document.getElementById("detalhes-data-upload"),
+    validade: document.getElementById("detalhes-validade"),
     status: document.getElementById("detalhes-status"),
 
     utilizacaoTitulo: document.getElementById("detalhes-utilizacao-titulo"),
@@ -51,6 +53,19 @@ const detalhes = {
     totalProcedimentos: document.getElementById("detalhes-total-procedimentos"),
     listaProcedimentos: document.getElementById("detalhes-lista-procedimentos"),
     procedimentosVazio: document.getElementById("detalhes-procedimentos-vazio"),
+
+    assinatura: document.getElementById("detalhes-assinatura"),
+    assinaturaSelo: document.getElementById("assinatura-selo"),
+    assinaturaSemCodigo: document.getElementById("assinatura-sem-codigo"),
+    assinaturaComCodigo: document.getElementById("assinatura-com-codigo"),
+    assinaturaAssinada: document.getElementById("assinatura-assinada"),
+    assinaturaAssinadaEm: document.getElementById("assinatura-assinada-em"),
+    assinaturaExpira: document.getElementById("assinatura-expira"),
+    assinaturaCodigo: document.getElementById("assinatura-codigo"),
+    assinaturaFeedback: document.getElementById("detalhes-assinatura-feedback"),
+    btnSolicitarCodigo: document.getElementById("btn-solicitar-codigo"),
+    btnNovoCodigo: document.getElementById("btn-novo-codigo"),
+    btnConfirmarAssinatura: document.getElementById("btn-confirmar-assinatura"),
 
     btnEspelho: document.getElementById("btn-abrir-espelho"),
     espelhoFeedback: document.getElementById("detalhes-espelho-feedback"),
@@ -85,6 +100,23 @@ function iniciarDetalhesGuia() {
         "click",
         abrirTelaEspelho
     );
+
+    detalhes.btnSolicitarCodigo.addEventListener("click", solicitarCodigoAssinatura);
+    detalhes.btnNovoCodigo.addEventListener("click", solicitarCodigoAssinatura);
+    detalhes.btnConfirmarAssinatura.addEventListener("click", confirmarAssinatura);
+
+    // Só dígitos no campo do código; Enter confirma
+    detalhes.assinaturaCodigo.addEventListener("input", () => {
+        detalhes.assinaturaCodigo.value =
+            detalhes.assinaturaCodigo.value.replace(/\D/g, "").slice(0, 6);
+    });
+
+    detalhes.assinaturaCodigo.addEventListener("keydown", event => {
+        if (event.key === "Enter") {
+            event.preventDefault();
+            confirmarAssinatura();
+        }
+    });
 
 
 /* Visualizar o PDF em outra aba */
@@ -207,13 +239,23 @@ function guiaEstaUtilizada() {
     return statusGuiaAtual() === "UTILIZADA";
 }
 
+function guiaEstaAssinada() {
+    return Boolean(guiaAtual?.dataAssinatura);
+}
+
 function atualizarBotoes() {
 
     const bloqueado = operacaoEmAndamento;
 
     detalhes.btnUtilizar.disabled = bloqueado;
+
+    // O espelho só abre com a guia utilizada E assinada pelo beneficiário
     detalhes.btnEspelho.disabled =
-        bloqueado || !guiaAtual || !guiaEstaUtilizada();
+        bloqueado || !guiaAtual || !guiaEstaUtilizada() || !guiaEstaAssinada();
+
+    detalhes.btnSolicitarCodigo.disabled = bloqueado;
+    detalhes.btnNovoCodigo.disabled = bloqueado;
+    detalhes.btnConfirmarAssinatura.disabled = bloqueado;
 
     detalhes.listaProcedimentos
         .querySelectorAll("[data-confirmar-procedimento]")
@@ -280,8 +322,10 @@ function renderizarDetalhes() {
     detalhes.dataUpload.textContent =
         formatarDataGuia(guiaAtual.dataUpload);
 
+    renderizarValidade();
     renderizarStatus();
     renderizarUtilizacao();
+    renderizarAssinatura();
     renderizarProgresso();
     renderizarProcedimentos();
 
@@ -315,6 +359,29 @@ function renderizarStatus() {
 }
 
 /* =====================================================
+   VALIDADE DA GUIA
+===================================================== */
+
+function renderizarValidade() {
+
+    const status = statusGuiaAtual();
+    const data = formatarDataGuia(guiaAtual.dataValidade);
+
+    let texto = "";
+
+    if (guiaAtual.dataValidade) {
+        if (status === "VENCIDA") {
+            texto = `Venceu em ${data}`;
+        } else if (status === "ATIVA") {
+            texto = `Válida até ${data}`;
+        }
+    }
+
+    detalhes.validade.textContent = texto || "\u00a0";
+    detalhes.validade.classList.toggle("is-vencida", status === "VENCIDA");
+}
+
+/* =====================================================
    UTILIZAÇÃO DA GUIA
 ===================================================== */
 
@@ -341,6 +408,19 @@ function renderizarUtilizacao() {
         detalhes.utilizacaoDescricao.textContent =
             "Confirme a utilização quando o atendimento for iniciado.";
 
+    } else if (status === "VENCIDA") {
+
+        detalhes.utilizacaoTitulo.textContent =
+            "Guia vencida";
+
+        detalhes.utilizacaoDescricao.textContent =
+            "Esta guia venceu" +
+            (guiaAtual.dataValidade
+                ? ` em ${formatarDataGuia(guiaAtual.dataValidade)}`
+                : "") +
+            " e não pode mais ser utilizada. Oriente o beneficiário " +
+            "a solicitar uma nova guia.";
+
     } else {
 
         detalhes.utilizacaoTitulo.textContent =
@@ -348,6 +428,206 @@ function renderizarUtilizacao() {
 
         detalhes.utilizacaoDescricao.textContent =
             "A situação atual desta guia não permite registrar sua utilização.";
+    }
+}
+
+
+/* =====================================================
+   ASSINATURA DO BENEFICIÁRIO
+   Fluxo: a OCS gera um código -> ele aparece só no app do
+   beneficiário -> o beneficiário diz o código -> a OCS digita.
+===================================================== */
+
+function renderizarAssinatura() {
+
+    pararTemporizadorAssinatura();
+
+    const assinada = guiaEstaAssinada();
+
+    // Só faz sentido depois que a guia foi utilizada
+    const visivel = assinada || guiaEstaUtilizada();
+
+    mostrar(detalhes.assinatura, visivel);
+
+    if (!visivel) {
+        return;
+    }
+
+    const segundos = guiaAtual.assinaturaCodigoSegundosRestantes;
+    const temCodigo = !assinada && Number.isFinite(segundos) && segundos > 0;
+
+    mostrar(detalhes.assinaturaSemCodigo, !assinada && !temCodigo);
+    mostrar(detalhes.assinaturaComCodigo, temCodigo);
+    mostrar(detalhes.assinaturaAssinada, assinada);
+
+    detalhes.assinaturaSelo.textContent = assinada ? "Assinada" : "Pendente";
+    detalhes.assinaturaSelo.className =
+        "prestador-guia-status " + (assinada ? "is-utilizada" : "is-ativa");
+
+    if (assinada) {
+        detalhes.assinaturaAssinadaEm.textContent =
+            `Assinada em ${formatarDataHoraGuia(guiaAtual.dataAssinatura)}. ` +
+            "O espelho já pode ser aberto.";
+    }
+
+    if (temCodigo) {
+        iniciarTemporizadorAssinatura(segundos);
+    }
+
+    // Lembrete junto do botão do espelho
+    mostrarFeedback(
+        detalhes.espelhoFeedback,
+        guiaEstaUtilizada() && !assinada
+            ? "Colete a assinatura do beneficiário para liberar o espelho."
+            : ""
+    );
+}
+
+function pararTemporizadorAssinatura() {
+    if (temporizadorAssinatura) {
+        clearInterval(temporizadorAssinatura);
+        temporizadorAssinatura = null;
+    }
+}
+
+function iniciarTemporizadorAssinatura(segundosIniciais) {
+
+    let restante = segundosIniciais;
+
+    const atualizar = () => {
+
+        if (restante <= 0) {
+            guiaAtual.assinaturaCodigoSegundosRestantes = null;
+            renderizarAssinatura();
+
+            mostrarFeedback(
+                detalhes.assinaturaFeedback,
+                "O código expirou. Gere um novo código.",
+                true
+            );
+            return;
+        }
+
+        const minutos = Math.floor(restante / 60);
+        const segundos = String(restante % 60).padStart(2, "0");
+
+        detalhes.assinaturaExpira.textContent =
+            `O código expira em ${minutos}:${segundos}.`;
+
+        restante--;
+    };
+
+    atualizar();
+
+    // atualizar() pode ter encerrado o ciclo (código já expirado)
+    if (restante >= 0 && guiaAtual.assinaturaCodigoSegundosRestantes) {
+        temporizadorAssinatura = setInterval(atualizar, 1000);
+    }
+}
+
+async function solicitarCodigoAssinatura() {
+
+    if (!guiaAtual || operacaoEmAndamento) {
+        return;
+    }
+
+    mostrarFeedback(detalhes.assinaturaFeedback, "");
+
+    operacaoEmAndamento = true;
+    atualizarBotoes();
+
+    try {
+        const resposta = await solicitarAssinaturaGuia(idGuia);
+
+        guiaAtual.assinaturaCodigoSegundosRestantes =
+            Number(resposta.validadeMinutos) * 60;
+
+        renderizarAssinatura();
+
+        mostrarFeedback(
+            detalhes.assinaturaFeedback,
+            "Código gerado. Ele já aparece no aplicativo do beneficiário, " +
+            "na opção Assinar guia."
+        );
+
+        detalhes.assinaturaCodigo.value = "";
+        detalhes.assinaturaCodigo.focus();
+
+    } catch (erro) {
+
+        console.error("Erro ao gerar código de assinatura:", erro);
+
+        mostrarFeedback(
+            detalhes.assinaturaFeedback,
+            erro.message || "Não foi possível gerar o código.",
+            true
+        );
+
+    } finally {
+        operacaoEmAndamento = false;
+        atualizarBotoes();
+    }
+}
+
+async function confirmarAssinatura() {
+
+    if (!guiaAtual || operacaoEmAndamento) {
+        return;
+    }
+
+    const codigo = detalhes.assinaturaCodigo.value.replace(/\D/g, "");
+
+    if (codigo.length !== 6) {
+        mostrarFeedback(
+            detalhes.assinaturaFeedback,
+            "Digite os 6 dígitos do código mostrado no aplicativo do beneficiário.",
+            true
+        );
+        detalhes.assinaturaCodigo.focus();
+        return;
+    }
+
+    mostrarFeedback(detalhes.assinaturaFeedback, "");
+
+    operacaoEmAndamento = true;
+    atualizarBotoes();
+
+    try {
+        await confirmarAssinaturaGuia(idGuia, codigo);
+
+        operacaoEmAndamento = false;
+
+        await carregarDetalhesGuia();
+
+        mostrarFeedback(
+            detalhes.assinaturaFeedback,
+            "Assinatura confirmada. O espelho já pode ser aberto."
+        );
+
+    } catch (erro) {
+
+        console.error("Erro ao confirmar assinatura:", erro);
+
+        operacaoEmAndamento = false;
+
+        // 400 = código errado (pode tentar de novo); 409 = código expirou,
+        // foi bloqueado ou a guia já foi assinada: recarrega a situação.
+        if (erro.status === 409) {
+            await carregarDetalhesGuia();
+        }
+
+        mostrarFeedback(
+            detalhes.assinaturaFeedback,
+            erro.message || "Não foi possível confirmar a assinatura.",
+            true
+        );
+
+        detalhes.assinaturaCodigo.value = "";
+        detalhes.assinaturaCodigo.focus();
+
+    } finally {
+        operacaoEmAndamento = false;
+        atualizarBotoes();
     }
 }
 
@@ -625,7 +905,20 @@ function solicitarUtilizacaoGuia() {
                 "Guia marcada como utilizada com sucesso."
             );
 
+            // Já gera o código para o beneficiário assinar. Se falhar,
+            // a OCS pode gerar manualmente pelo botão da seção de assinatura.
+            try {
+                await solicitarAssinaturaGuia(idGuia);
+            } catch (erro) {
+                console.error("Erro ao gerar código de assinatura:", erro);
+            }
+
             await carregarDetalhesGuia();
+
+            detalhes.assinatura.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
         }
     );
 }

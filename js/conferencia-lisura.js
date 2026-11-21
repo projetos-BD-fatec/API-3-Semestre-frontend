@@ -204,7 +204,12 @@ function renderizarCabecalho() {
     el.prestador.textContent = conferencia.nomePrestador || "—";
 
     const quando = formatarDataHora(conferencia.enviadoEm);
-    mostrarMensagem(el.enviadoEm, quando ? `Espelho enviado pela OCS em ${quando}` : "");
+    const assinadaEm = formatarDataHora(conferencia.guiaAssinadaEm);
+    const assinatura = assinadaEm
+        ? `Guia assinada pelo beneficiário em ${assinadaEm}`
+        : "Sem assinatura do beneficiário registrada";
+
+    mostrarMensagem(el.enviadoEm, quando ? `Espelho enviado pela OCS em ${quando} · ${assinatura}` : "");
 
     let texto = "Sem divergências";
     let classe = "is-conforme";
