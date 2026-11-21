@@ -474,6 +474,7 @@ async function buscarArquivoGuiaOficial(idGuia) {
 
 /* =====================================================
    COLABORADOR FUSEX — PRÉ-GUIAS
+===================================================== */
 
 // Lista todas as solicitações para colaboradores autorizados
 async function listarPreGuiasFusex() {
@@ -516,6 +517,7 @@ async function obterArquivoPreGuiaFusex(idPreGuia) {
 
 /* =====================================================
    FUSEX — DECISÃO DE PRÉ-GUIAS
+===================================================== */
 
 async function decidirPreGuia(idPreGuia, decisao, motivoRecusa = "") {
 
@@ -553,7 +555,8 @@ async function decidirPreGuia(idPreGuia, decisao, motivoRecusa = "") {
 
 
 /* =====================================================
-   FUSEX — EMISSAO DE GUIA OFICIAL
+   FUSEX — EMISSÃO DE GUIA OFICIAL
+===================================================== */
 
 async function emitirGuiaOficial(idPreGuia, arquivo) {
 
@@ -590,22 +593,37 @@ async function emitirGuiaOficial(idPreGuia, arquivo) {
     return resposta.json();
 }
 
+
 /* =====================================================
    FUSEX — EXIBIR GUIA OFICIAL
-
+===================================================== */
 
 async function obterPdfGuiaOficial(idGuiaOficial) {
+
     const resposta = await fetchAutenticado(
         `${API_URL}/api/guias/${encodeURIComponent(idGuiaOficial)}/arquivo`
     );
 
     if (!resposta.ok) {
+
+        const mensagens = {
+            401: "Sua sessão expirou.",
+            403: "Você não tem permissão para visualizar esta guia.",
+            404: "O PDF da guia oficial não foi encontrado."
+        };
+
         throw new Error(
-            "Não foi possível visualizar o PDF da guia."
+            mensagens[resposta.status]
+            || "Não foi possível visualizar o PDF da guia."
         );
     }
 
-    return URL.createObjectURL(await resposta.blob());
+    return URL.createObjectURL(
+        await resposta.blob()
+    );
+}
+
+
 // ==============================
 // ACOMPANHAMENTO DO FLUXO (US17)
 // ==============================
