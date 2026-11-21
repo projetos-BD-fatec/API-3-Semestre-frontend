@@ -158,34 +158,34 @@ form.addEventListener("submit", async function (event) {
         );
 
 
-        if (!response.ok) {
+    if (!response.ok) {
 
-            let mensagemErro =
-                "Não foi possível realizar o cadastro.";
+        let mensagemErro =
+            `Não foi possível realizar o cadastro (HTTP ${response.status}).`;
 
+        const texto = await response.text();
+
+        if (texto.trim()) {
 
             try {
 
-                const dadosErro =
-                    await response.json();
+                const dadosErro = JSON.parse(texto);
 
                 mensagemErro =
-                    dadosErro.message ||
-                    mensagemErro;
+                    dadosErro.message
+                    || dadosErro.detail
+                    || dadosErro.error
+                    || mensagemErro;
 
             } catch {
 
-                const texto =
-                    await response.text();
-
-                if (texto) {
-                    mensagemErro = texto;
-                }
+                mensagemErro = texto;
             }
-
-
-            throw new Error(mensagemErro);
         }
+
+        throw new Error(mensagemErro);
+    }
+
 
 
         mostrarSucesso(
