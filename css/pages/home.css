@@ -93,12 +93,82 @@
     color: var(--color-ink);
 }
 
+
+/* =========================================
+   CARDS RESPONSIVOS DA PÁGINA INICIAL
+========================================= */
+
+.actions {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 16px;
+}
+
+/* Preserva os cards ocultos por permissão */
+.actions .action-card[hidden] {
+    display: none !important;
+}
+
+.action-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    min-width: 0;
+    min-height: 120px;
+    padding: 24px;
+}
+
+.action-card > div:last-child {
+    min-width: 0;
+    flex: 1;
+}
+
+.action-card h2 {
+    font-size: 17px;
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+.action-card p {
+    font-size: 14px;
+    line-height: 1.55;
+}
+
+/* Tablet e desktop: duas colunas */
 @media (min-width: 768px) {
     .actions {
-        flex-direction: row;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
+}
 
+/* Celular: uma coluna */
+@media (max-width: 767px) {
     .action-card {
-        flex: 1;
+        min-height: 105px;
+        padding: 18px;
     }
+}
+
+
+/* Linha das ferramentas internas do FUSEx.
+   Mesmos valores da secao "Solicitacao recente", para nao introduzir
+   um tratamento visual novo: e so posicionamento. */
+.actions-fusex {
+    margin-top: 32px;
+}
+
+.actions-fusex > h2 {
+    margin-bottom: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--color-ink);
+}
+
+/* Separação clara entre ferramentas do beneficiário e área interna. */
+.actions-fusex { margin-top: 44px; }
+.actions-fusex > h2 { margin: 0 0 18px; font-size: 20px; line-height: 1.35; }
+.actions-internas { row-gap: 18px; column-gap: 18px; }
+.recent { margin-top: 44px; }
+@media (min-width: 1100px) {
+    .actions-internas { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
