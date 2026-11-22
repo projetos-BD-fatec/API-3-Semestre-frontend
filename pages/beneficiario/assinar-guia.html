@@ -1,0 +1,59 @@
+<!-- O beneficiário vê aqui o código para assinar a guia que acabou de utilizar na OCS -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FUSEx - Assinar guia</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+<body>
+
+<header class="header">
+    <div class="header-container">
+        <a href="inicio.html" class="logo">FUSEx</a>
+        <a href="inicio.html" class="back-button">Voltar</a>
+    </div>
+</header>
+
+<main class="main-container">
+
+    <section class="page-header">
+        <h1>Assinar guia</h1>
+        <p>
+            Depois que o atendimento é feito, a clínica pede a sua assinatura.
+            O código aparece aqui: diga-o à clínica para confirmar que
+            você utilizou a guia.
+        </p>
+    </section>
+
+    <p class="assinar-alerta" role="note">
+        Informe o código <strong>somente na clínica, depois de ser atendido</strong>.
+        Nunca o envie por mensagem nem o diga por telefone.
+    </p>
+
+    <p id="assinar-erro" class="form-error" role="alert" hidden></p>
+
+    <div id="assinar-lista" aria-live="polite"></div>
+
+    <div class="empty-state" id="assinar-vazio">
+        <h2>Nenhuma guia para assinar</h2>
+        <p>
+            Quando a clínica pedir a sua assinatura, o código aparecerá aqui
+            automaticamente. Esta tela se atualiza sozinha.
+        </p>
+    </div>
+
+    <p id="assinar-carregando" class="assinar-nota">Carregando...</p>
+
+</main>
+
+<script src="../../js/api.js"></script>
+<script src="../../js/formatters.js"></script>
+<script src="../../js/assinar-guia.js"></script>
+
+</body>
+</html>

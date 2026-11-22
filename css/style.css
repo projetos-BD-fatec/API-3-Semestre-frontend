@@ -101,23 +101,33 @@ label:focus-within {
 }
 
 .logo {
-    font-size: 20px;
-    font-weight: 700;
-    color: #FFFFFF;
-    letter-spacing: 0.2px;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
+    /* Logo oficial do FUSEx (versão com texto branco para o header teal).
+       O texto "FUSEx" continua no HTML para leitores de tela, mas fica oculto. */
+    display: inline-block;
+    flex-shrink: 0;
+    height: 48px;
+    aspect-ratio: 378 / 144;
+    background: url("../assets/img/fusex-logo-header.png") no-repeat left center / contain;
+    font-size: 0;
+    color: transparent;
+    overflow: hidden;
+    transition: opacity 0.15s ease;
 }
 
-.logo::before {
-    content: "";
-    width: 22px;
-    height: 22px;
-    flex-shrink: 0;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath fill='white' d='M12 2l7.5 3v5.5c0 5.4-3.3 9.4-7.5 11.5-4.2-2.1-7.5-6.1-7.5-11.5V5l7.5-3z'/%3E%3Cpath fill='%230E5C52' d='M10.8 6.8h2.4v4h4v2.4h-4v4h-2.4v-4h-4V10.8h4V6.8z'/%3E%3C/svg%3E");
-    background-size: contain;
-    background-repeat: no-repeat;
+.logo:hover {
+    opacity: 0.9;
+}
+
+.logo:focus-visible {
+    outline: 2px solid #FFFFFF;
+    outline-offset: 4px;
+    border-radius: 4px;
+}
+
+@media (max-width: 480px) {
+    .logo {
+        height: 40px;
+    }
 }
 
 .menu-button {
@@ -1490,6 +1500,45 @@ a.request-card:has(.request-status.negada) {
         flex-direction: column;
     }
 }
+
+/* ===============================
+   MENU DROPDOWN
+================================ */
+
+.menu-dropdown {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    min-width: 160px;
+    background: #FFFFFF;
+    border-radius: var(--radius-sm);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    padding: 6px;
+    z-index: 1000;
+}
+
+.menu-dropdown[hidden] {
+    display: none;
+}
+
+.menu-dropdown-item {
+    display: block;
+    width: 100%;
+    border: none;
+    background: transparent;
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #1F2937;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+}
+
+.menu-dropdown-item:hover {
+    background: #F3F4F6;
+}
+
 /* --- ESTILOS DA TELA DE FATURAS (SCRUM-48) --- */
 .container {
     max-width: 700px;

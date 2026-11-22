@@ -55,6 +55,12 @@
     background: var(--color-surface);
 }
 
+.espelho-status.is-salvo {
+    color: var(--color-warning-text);
+    background: var(--color-warning-bg);
+    border-color: var(--color-warning-border);
+}
+
 .espelho-status.is-enviado {
     color: var(--color-accent-olive);
     background: var(--color-accent-olive-light);
@@ -284,7 +290,22 @@
 .espelho-rodape {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
     margin-bottom: 40px;
+}
+
+.espelho-rodape .primary-button,
+.espelho-rodape .secondary-button {
+    width: auto;
+    min-width: 170px;
+    padding: 11px 20px;
+    font-size: 15px;
+}
+
+.espelho-rodape-link {
+    text-decoration: none;
 }
 
 .espelho-rodape button:disabled {

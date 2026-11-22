@@ -169,6 +169,10 @@
                     —
                 </strong>
 
+                <small id="detalhes-validade" class="detalhes-info-nota">
+                    &nbsp;
+                </small>
+
             </div>
 
         </section>
@@ -269,6 +273,113 @@
 
             </div>
 
+
+        </section>
+
+        <!-- ASSINATURA DO BENEFICIÁRIO -->
+
+        <section id="detalhes-assinatura"
+                 class="detalhes-assinatura"
+                 aria-labelledby="titulo-assinatura"
+                 hidden>
+
+            <div class="detalhes-secao-cabecalho">
+
+                <div>
+                    <h2 id="titulo-assinatura">
+                        Assinatura do beneficiário
+                    </h2>
+
+                    <p>
+                        O beneficiário confirma que utilizou a guia
+                        informando o código exibido no aplicativo dele.
+                        O espelho só pode ser aberto depois da assinatura.
+                    </p>
+                </div>
+
+                <span id="assinatura-selo"
+                      class="prestador-guia-status"
+                      aria-label="Situação da assinatura">
+                    —
+                </span>
+
+            </div>
+
+            <!-- Ainda não há código -->
+            <div id="assinatura-sem-codigo" class="detalhes-assinatura-corpo" hidden>
+
+                <div>
+                    <strong>Aguardando a assinatura do beneficiário</strong>
+
+                    <p>
+                        Peça ao beneficiário para abrir o FUSEx no celular
+                        e tocar em <b>Assinar guia</b>. Depois gere o código
+                        aqui &mdash; ele aparecerá só no aparelho dele.
+                    </p>
+                </div>
+
+                <button id="btn-solicitar-codigo"
+                        class="detalhes-btn-primario"
+                        type="button">
+                    Gerar código
+                </button>
+
+            </div>
+
+            <!-- Código gerado: a OCS digita o que o beneficiário disser -->
+            <div id="assinatura-com-codigo" class="detalhes-assinatura-corpo" hidden>
+
+                <div class="detalhes-assinatura-digitar">
+
+                    <strong>Digite o código mostrado no aplicativo do beneficiário</strong>
+
+                    <p id="assinatura-expira">&nbsp;</p>
+
+                    <div class="detalhes-assinatura-form">
+
+                        <input id="assinatura-codigo"
+                               class="detalhes-assinatura-input"
+                               type="text"
+                               inputmode="numeric"
+                               autocomplete="off"
+                               maxlength="6"
+                               placeholder="000000"
+                               aria-label="Código de 6 dígitos">
+
+                        <button id="btn-confirmar-assinatura"
+                                class="detalhes-btn-primario"
+                                type="button">
+                            Confirmar assinatura
+                        </button>
+
+                        <button id="btn-novo-codigo"
+                                class="secondary-button"
+                                type="button">
+                            Gerar novo código
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+            <!-- Assinada -->
+            <div id="assinatura-assinada" class="detalhes-assinatura-corpo" hidden>
+
+                <div>
+                    <strong>Guia assinada pelo beneficiário</strong>
+                    <p id="assinatura-assinada-em">—</p>
+                </div>
+
+            </div>
+
+            <p id="detalhes-assinatura-feedback"
+               class="detalhes-feedback"
+               role="status"
+               aria-live="polite"
+               hidden>
+            </p>
 
         </section>
 
@@ -393,8 +504,8 @@
                 </p>
 
                 <p class="detalhes-espelho-observacao">
-                    O espelho poderá ser aberto após
-                    a guia ser marcada como utilizada.
+                    O espelho poderá ser aberto após a guia ser marcada
+                    como utilizada e assinada pelo beneficiário.
                 </p>
 
             </div>

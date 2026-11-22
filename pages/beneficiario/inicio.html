@@ -16,53 +16,82 @@
 </head>
 
 <body>
-    <header class="header">
-        <div class="header-container">
-            <a href="index.html" class="logo">
-                FUSEx
+<header class="header">
+    <div class="header-container">
+        <a href="index.html" class="logo">
+            FUSEx
+        </a>
+        <button class="menu-button">
+            ☰
+        </button>
+    </div>
+</header>
+
+<main class="main-container">
+    <section class="welcome">
+        <h1 id="welcome-title">Olá!</h1>
+        <p>
+            O que você deseja fazer?
+        </p>
+    </section>
+
+    <section class="actions">
+        <a href="nova-pre-guia.html"
+           class="action-card">
+            <div class="action-icon">
+                +
+            </div>
+            <div>
+                <h2>Nova solicitação</h2>
+                <p>
+                    Solicite uma nova pré-guia
+                </p>
+            </div>
+        </a>
+
+        <a href="pre-guias.html"
+           class="action-card">
+            <div class="action-icon">
+                ≡
+            </div>
+            <div>
+                <h2>Minhas solicitações</h2>
+                <p>
+                    Acompanhe seus pedidos
+                </p>
+            </div>
+        </a>
+
+        <a href="assinar-guia.html"
+           class="action-card">
+            <div class="action-icon">
+                ✍
+            </div>
+            <div>
+                <h2>Assinar guia</h2>
+                <p>
+                    Confirme a guia que você utilizou na clínica
+                </p>
+            </div>
+        </a>
+    </section>
+
+    <!-- Ferramentas internas do FUSEx em linha propria.
+         Na mesma linha das acoes do beneficiario, quatro cards com
+         flex:1 ficavam estreitos demais e o texto quebrava.
+         A secao so aparece se ao menos uma delas estiver liberada. -->
+    <section class="actions-fusex" id="area-interna" hidden>
+        <h2>Área do FUSEx</h2>
+
+        <div class="actions actions-internas">
+            <!-- Apenas FUSEX / ADMIN -->
+            <a href="../fusex/painel.html" class="action-card" id="card-fusex" hidden>
+                <div class="action-icon">≡</div>
+                <div><h2>Painel do colaborador</h2>
+                    <p>Consultar e acompanhar solicitações dos beneficiários</p></div>
             </a>
-            <button class="menu-button">
-                ☰
-            </button>
-        </div>
-    </header>
 
-    <main class="main-container">
-        <section class="welcome">
-            <h1 id="welcome-title">Olá!</h1>
-            <p>
-                O que você deseja fazer?
-            </p>
-        </section>
-
-        <section class="actions">
-            <a href="nova-pre-guia.html"
-               class="action-card">
-                <div class="action-icon">
-                    +
-                </div>
-                <div>
-                    <h2>Nova solicitação</h2>
-                    <p>
-                        Solicite uma nova pré-guia
-                    </p>
-                </div>
-            </a>
-
-            <a href="pre-guias.html"
-               class="action-card">
-                <div class="action-icon">
-                    ≡
-                </div>
-                <div>
-                    <h2>Minhas solicitações</h2>
-                    <p>
-                        Acompanhe seus pedidos
-                    </p>
-                </div>
-            </a>
-
-            <!-- Só aparece para quem tem perfil FUSEX / LISURA / ADMIN (js/acesso-lisura.js) -->
+            <!-- Perfis FUSEX / LISURA / ADMIN (js/acesso-lisura.js) -->
             <a href="../lisura/index.html"
                class="action-card action-card-lisura"
                id="card-lisura"
@@ -77,19 +106,37 @@
                     </p>
                 </div>
             </a>
-        </section>
 
-        <!-- A idéia desse card aqui é mostrar apenas a solicitação mais recente, seja o status dela em análise, negado ou aprovado -->
-        <section class="recent" id="recent" hidden>
-            <h2>Solicitação recente</h2>
-            <div id="recent-card"></div>
-        </section>
-    </main>
-    <script src="../../js/api.js"></script>
-    <script src="../../js/formatters.js"></script>
-    <script src="../../js/request-card.js"></script>
-    <script src="../../js/ficha-pre-guia.js"></script>
-    <script src="../../js/inicio.js"></script>
-    <script src="../../js/acesso-lisura.js"></script>
+            <!-- Perfis FUSEX / ADMIN (js/acesso-acompanhamento.js) -->
+            <a href="../fusex/acompanhamento.html"
+               class="action-card action-card-acompanhamento"
+               id="card-acompanhamento"
+               hidden>
+                <div class="action-icon">
+                    ◷
+                </div>
+                <div>
+                    <h2>Acompanhamento</h2>
+                    <p>
+                        Em que etapa está cada guia
+                    </p>
+                </div>
+            </a>
+        </div>
+    </section>
+
+    <!-- A idéia desse card aqui é mostrar apenas a solicitação mais recente, seja o status dela em análise, negado ou aprovado -->
+    <section class="recent" id="recent" hidden>
+        <h2>Solicitação recente</h2>
+        <div id="recent-card"></div>
+    </section>
+</main>
+<script src="../../js/api.js"></script>
+<script src="../../js/formatters.js"></script>
+<script src="../../js/request-card.js"></script>
+<script src="../../js/ficha-pre-guia.js"></script>
+<script src="../../js/inicio.js"></script>
+<script src="../../js/acesso-lisura.js"></script>
+<script src="../../js/acesso-acompanhamento.js"></script>
 </body>
 </html>

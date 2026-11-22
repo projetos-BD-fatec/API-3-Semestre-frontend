@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>FUSEx - Espelhos salvos</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/main.css">
+</head>
+
+<body class="prestador-page">
+
+<!-- CABEÇALHO -->
+<header class="header">
+    <div class="header-container">
+
+        <a href="painel-prestador.html" class="logo">FUSEx</a>
+
+        <div class="prestador-header-actions">
+            <span class="prestador-header-label">Área do Prestador</span>
+
+            <button id="btn-sair" class="prestador-sair" type="button">Sair</button>
+        </div>
+
+    </div>
+</header>
+
+<main class="main-container prestador-container">
+
+    <a href="painel-prestador.html" class="detalhes-voltar espelho-voltar">
+        &larr; Voltar ao painel
+    </a>
+
+    <section class="salvos-topo">
+        <div>
+            <span class="prestador-eyebrow">PORTAL DO PRESTADOR</span>
+            <h1>Espelhos salvos</h1>
+            <p>
+                Estes espelhos ainda estão com você. Selecione os que deseja
+                enviar ao FUSEx &mdash; todos de uma vez no fechamento do mês
+                ou apenas alguns, caso o FUSEx peça um espelho antecipadamente.
+            </p>
+        </div>
+
+        <button id="btn-atualizar" class="secondary-button" type="button">Atualizar lista</button>
+    </section>
+
+    <!-- Resultado do último envio -->
+    <p id="salvos-sucesso" class="espelho-banner" role="status" hidden></p>
+
+    <!-- Carregando / erro / vazio -->
+    <div id="salvos-loading" class="prestador-feedback" role="status">
+        Carregando espelhos salvos...
+    </div>
+
+    <div id="salvos-erro" class="prestador-feedback prestador-feedback-erro" role="alert" hidden>
+        <p id="salvos-erro-texto">Não foi possível carregar os espelhos salvos.</p>
+        <button id="btn-tentar-novamente" type="button" class="secondary-button">Tentar novamente</button>
+    </div>
+
+    <div id="salvos-vazio" class="prestador-feedback" hidden>
+        <h3>Nenhum espelho salvo</h3>
+        <p>
+            Quando você salvar um espelho, ele aparecerá aqui até ser enviado ao FUSEx.
+            Os espelhos são criados a partir dos detalhes de cada guia utilizada.
+        </p>
+    </div>
+
+    <!-- Lista -->
+    <section id="salvos-conteudo" class="espelho-card salvos-card" hidden>
+
+        <div class="salvos-barra-topo">
+            <label class="salvos-check-todos">
+                <input type="checkbox" id="check-todos">
+                <span>Selecionar todos</span>
+            </label>
+
+            <span id="salvos-contador" class="prestador-contador">—</span>
+        </div>
+
+        <div class="espelho-tabela-wrap">
+            <table class="espelho-tabela salvos-tabela">
+                <thead>
+                    <tr>
+                        <th class="col-check"><span class="sr-only">Selecionar</span></th>
+                        <th>Beneficiário</th>
+                        <th>PRECCP</th>
+                        <th>Salvo em</th>
+                    </tr>
+                </thead>
+                <tbody id="tabela-salvos"></tbody>
+            </table>
+        </div>
+
+        <p id="salvos-feedback" class="form-error" role="alert" hidden></p>
+
+        <div class="salvos-rodape">
+            <p id="salvos-resumo" class="salvos-resumo">Nenhum espelho selecionado.</p>
+
+            <button id="btn-enviar-fusex" type="button" class="primary-button" disabled>
+                Enviar para FUSEX
+            </button>
+        </div>
+    </section>
+
+</main>
+
+<!-- Confirmação de envio -->
+<dialog id="dlg-enviar-lote" class="espelho-dialog">
+    <h2>Enviar ao FUSEx?</h2>
+    <p>
+        Depois de enviados, os espelhos não podem mais ser alterados.
+        Confira a seleção antes de confirmar.
+    </p>
+    <p id="dlg-lote-resumo" class="espelho-dialog-resumo"></p>
+    <p id="dlg-lote-erro" class="form-error" role="alert" hidden></p>
+    <div class="espelho-dialog-acoes">
+        <button type="button" id="dlg-lote-voltar" class="secondary-button">Voltar</button>
+        <button type="button" id="dlg-lote-confirmar" class="primary-button">Confirmar envio</button>
+    </div>
+</dialog>
+
+<script src="../../js/api.js"></script>
+<script src="../../js/formatters.js"></script>
+<script src="../../js/espelhos-salvos.js"></script>
+
+</body>
+
+</html>

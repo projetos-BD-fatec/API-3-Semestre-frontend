@@ -141,7 +141,9 @@ async function requisitarEspelho(url, metodo, corpo, mensagemPadrao) {
     const response = await fetchAutenticado(url, opcoes);
 
     if (!response.ok) {
-        throw new Error(await lerMensagemErro(response, mensagemPadrao));
+        const erro = new Error(await lerMensagemErro(response, mensagemPadrao));
+        erro.status = response.status;   // quem chama pode reagir (ex.: 409 = conflito de estado)
+        throw erro;
     }
 
     return response.json();
@@ -195,11 +197,79 @@ function excluirItemEspelho(idEspelho, idItem) {
     );
 }
 
-/** POST /espelhos/{id}/enviar */
-function enviarEspelho(idEspelho) {
+/**
+ * POST /espelhos/{id}/salvar
+ * Conclui o espelho SEM enviar ao FUSEx: status SALVO, em posse da OCS.
+ */
+function salvarEspelho(idEspelho) {
     return requisitarEspelho(
-        `${API_URL}/espelhos/${idEspelho}/enviar`,
-        "POST", undefined, "Não foi possível enviar o espelho."
+        `${API_URL}/espelhos/${idEspelho}/salvar`,
+        "POST", undefined, "Não foi possível salvar o espelho."
+    );
+}
+
+/**
+ * GET /espelhos/salvos
+ * Espelhos salvos da OCS logada, ainda não enviados ao FUSEx.
+ * Cada item: { idEspelho, idGuia, codigoGuia, nomeBeneficiario, precCp,
+ *              salvoEm, quantidadeItens, valorTotal }
+ */
+function listarEspelhosSalvos() {
+    return requisitarEspelho(
+        `${API_URL}/espelhos/salvos`,
+        "GET", undefined, "Não foi possível carregar os espelhos salvos."
+    );
+}
+
+/**
+ * POST /espelhos/enviar-lote
+ * Envia ao FUSEx os espelhos salvos escolhidos (tudo ou nada).
+ * Devolve { totalEnviados, valorTotal, enviadoEm, idsEspelho }.
+ */
+function enviarEspelhosEmLote(idsEspelho) {
+    return requisitarEspelho(
+        `${API_URL}/espelhos/enviar-lote`,
+        "POST", { idsEspelho: idsEspelho }, "Não foi possível enviar os espelhos."
+    );
+}
+
+
+/* =====================================================
+   ASSINATURA DO BENEFICIÁRIO NA GUIA UTILIZADA
+===================================================== */
+
+/**
+ * POST /api/guias/{id}/assinatura/solicitar   (OCS)
+ * Gera um código de 6 dígitos que aparece SÓ no app do beneficiário.
+ * Devolve { expiraEm, validadeMinutos } — o código não vem para a OCS.
+ */
+function solicitarAssinaturaGuia(idGuia) {
+    return requisitarEspelho(
+        `${API_URL}/api/guias/${encodeURIComponent(idGuia)}/assinatura/solicitar`,
+        "POST", undefined, "Não foi possível gerar o código de assinatura."
+    );
+}
+
+/**
+ * POST /api/guias/{id}/assinatura/confirmar   (OCS)
+ * Informa o código que o beneficiário disse. Devolve { idGuia, dataAssinatura }.
+ */
+function confirmarAssinaturaGuia(idGuia, codigo) {
+    return requisitarEspelho(
+        `${API_URL}/api/guias/${encodeURIComponent(idGuia)}/assinatura/confirmar`,
+        "POST", { codigo: codigo }, "Não foi possível confirmar a assinatura."
+    );
+}
+
+/**
+ * GET /api/beneficiario/assinaturas-pendentes   (beneficiário)
+ * Guias dele aguardando assinatura, com o código vigente:
+ * { idGuia, codigoGuia, nomePrestador, procedimentos[], codigo, expiraEm, segundosRestantes }
+ */
+function listarAssinaturasPendentes() {
+    return requisitarEspelho(
+        `${API_URL}/api/beneficiario/assinaturas-pendentes`,
+        "GET", undefined, "Não foi possível carregar as guias para assinar."
     );
 }
 
@@ -443,3 +513,221 @@ async function buscarArquivoGuiaOficial(idGuia) {
     return resposta.blob();
 }
 
+
+/* =====================================================
+   COLABORADOR FUSEX — PRÉ-GUIAS
+===================================================== */
+
+// Lista todas as solicitações para colaboradores autorizados
+async function listarPreGuiasFusex() {
+    const resposta = await fetchAutenticado(
+        `${API_URL}/pre-guias/fusex`
+    );
+
+    if (!resposta.ok) {
+        if (resposta.status === 403) {
+            throw new Error(
+                "Você não tem permissão para consultar as solicitações."
+            );
+        }
+
+        throw new Error(
+            "Não foi possível carregar as solicitações."
+        );
+    }
+
+    return resposta.json();
+}
+
+// Recupera o encaminhamento de uma pré-guia
+async function obterArquivoPreGuiaFusex(idPreGuia) {
+    const resposta = await fetchAutenticado(
+        `${API_URL}/pre-guias/fusex/${encodeURIComponent(idPreGuia)}/arquivo`
+    );
+
+    if (!resposta.ok) {
+        throw new Error(
+            resposta.status === 404
+                ? "Encaminhamento não encontrado."
+                : "Não foi possível abrir o encaminhamento."
+        );
+    }
+
+    return URL.createObjectURL(await resposta.blob());
+}
+
+
+/* =====================================================
+   FUSEX — DECISÃO DE PRÉ-GUIAS
+===================================================== */
+
+async function decidirPreGuia(idPreGuia, decisao, motivoRecusa = "") {
+
+    const resposta = await fetchAutenticado(
+        `${API_URL}/pre-guias/fusex/${encodeURIComponent(idPreGuia)}/decisao`,
+        {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                decisao,
+                motivoRecusa
+            })
+        }
+    );
+
+    if (!resposta.ok) {
+        const mensagens = {
+            400: "Verifique a decisão e a justificativa.",
+            401: "Sua sessão expirou.",
+            403: "Você não pode analisar esta solicitação.",
+            404: "Pré-guia não encontrada.",
+            409: "Esta solicitação já foi analisada."
+        };
+
+        throw new Error(
+            mensagens[resposta.status]
+            || "Não foi possível registrar a decisão."
+        );
+    }
+
+    return resposta.json();
+}
+
+
+/* =====================================================
+   FUSEX — EMISSÃO DE GUIA OFICIAL
+===================================================== */
+
+async function emitirGuiaOficial(idPreGuia, arquivo) {
+
+    const formData = new FormData();
+
+    formData.append("file", arquivo);
+    formData.append("solicitacaoId", idPreGuia);
+
+    const resposta = await fetchAutenticado(
+        `${API_URL}/api/guias/upload`,
+        {
+            method: "POST",
+            body: formData
+        }
+    );
+
+    if (!resposta.ok) {
+
+        const mensagens = {
+            400: "Verifique o PDF e os dados da solicitação.",
+            401: "Sua sessão expirou.",
+            403: "Você não possui permissão para emitir esta guia.",
+            404: "A solicitação não foi encontrada.",
+            409: "A guia já foi emitida ou a solicitação não está apta para emissão.",
+            413: "O arquivo ultrapassa o tamanho permitido."
+        };
+
+        throw new Error(
+            mensagens[resposta.status]
+            || "Não foi possível emitir a guia oficial."
+        );
+    }
+
+    return resposta.json();
+}
+
+
+/* =====================================================
+   FUSEX — EXIBIR GUIA OFICIAL
+===================================================== */
+
+async function obterPdfGuiaOficial(idGuiaOficial) {
+
+    const resposta = await fetchAutenticado(
+        `${API_URL}/api/guias/${encodeURIComponent(idGuiaOficial)}/arquivo`
+    );
+
+    if (!resposta.ok) {
+
+        const mensagens = {
+            401: "Sua sessão expirou.",
+            403: "Você não tem permissão para visualizar esta guia.",
+            404: "O PDF da guia oficial não foi encontrado."
+        };
+
+        throw new Error(
+            mensagens[resposta.status]
+            || "Não foi possível visualizar o PDF da guia."
+        );
+    }
+
+    return URL.createObjectURL(
+        await resposta.blob()
+    );
+}
+
+
+// ==============================
+// ACOMPANHAMENTO DO FLUXO (US17)
+// ==============================
+
+/** Etapas do fluxo, na ordem, para montar o filtro da listagem. */
+const ETAPAS_FLUXO = [
+    { valor: "SOLICITACAO", rotulo: "Solicitação" },
+    { valor: "EMISSAO", rotulo: "Emissão" },
+    { valor: "REALIZACAO", rotulo: "Realização" },
+    { valor: "FATURAMENTO", rotulo: "Faturamento" },
+    { valor: "LISURA", rotulo: "Lisura" },
+    { valor: "LIQUIDACAO", rotulo: "Liquidação" }
+];
+
+/**
+ * GET /acompanhamento[?etapa=ETAPA]
+ * Guias com a etapa do fluxo em que cada uma está.
+ * etapa vazia = todas.
+ */
+function listarAcompanhamento(etapa) {
+    const filtro = etapa
+        ? `?etapa=${encodeURIComponent(etapa)}`
+        : "";
+
+    return requisitarEspelho(
+        `${API_URL}/acompanhamento${filtro}`,
+        "GET", undefined, "Não foi possível carregar o acompanhamento das guias."
+    );
+}
+
+/**
+ * GET /acompanhamento/{idGuia}
+ * Linha do tempo da guia: as seis etapas, com data nas já concluídas.
+ */
+function buscarAcompanhamentoGuia(idGuia) {
+    return requisitarEspelho(
+        `${API_URL}/acompanhamento/${encodeURIComponent(idGuia)}`,
+        "GET", undefined, "Não foi possível carregar o fluxo desta guia."
+    );
+}
+
+/**
+ * GET /liquidacao/{idGuia}
+ * Resumo dos valores aprovados: itens com valor cobrado e aprovado,
+ * totais, e se a liquidação pode ser confirmada agora (campo impedimento
+ * diz o motivo quando não pode).
+ */
+function buscarResumoLiquidacao(idGuia) {
+    return requisitarEspelho(
+        `${API_URL}/liquidacao/${encodeURIComponent(idGuia)}`,
+        "GET", undefined, "Não foi possível carregar os valores desta guia."
+    );
+}
+
+/**
+ * PATCH /liquidacao/{idGuia}
+ * Confirma a liquidação. Devolve o resumo atualizado, com data,
+ * responsável e valor registrados.
+ */
+function liquidarGuia(idGuia) {
+    return requisitarEspelho(
+        `${API_URL}/liquidacao/${encodeURIComponent(idGuia)}`,
+        "PATCH", undefined, "Não foi possível registrar a liquidação."
+    );
+}
