@@ -150,8 +150,7 @@ window.addEventListener("pagehide", () => {
 
 
     detalhes.btnSair.addEventListener("click", () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("sessaoOcs");
+        encerrarSessao();
 
         window.location.href = "../auth/login.html";
     });
