@@ -121,6 +121,10 @@ async function carregarGuias() {
             );
         }
 
+        // Libera a flag antes de filtrar: aplicarFiltros()
+        // não faz nada enquanto buscandoGuias for true.
+        buscandoGuias = false;
+
         atualizarIndicadores(guiasCarregadas);
         aplicarFiltros();
 
@@ -460,7 +464,7 @@ function criarCardGuia(guia) {
 ===================================================== */
 
 function sairDoPainel() {
-    localStorage.removeItem("token");
+    encerrarSessao();
 
     window.location.href = "../auth/login.html";
 }

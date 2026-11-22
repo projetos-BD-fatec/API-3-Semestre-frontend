@@ -41,6 +41,13 @@ function formatDate(date) {
         return "—";
     }
 
+    // Data pura ("AAAA-MM-DD"): new Date() leria como meia-noite UTC
+    // e, no horário de Brasília, mostraria o dia anterior.
+    const dataPura = /^(\d{4})-(\d{2})-(\d{2})$/.exec(date);
+    if (dataPura) {
+        return `${dataPura[3]}/${dataPura[2]}/${dataPura[1]}`;
+    }
+
     return new Date(date).toLocaleDateString("pt-BR");
 }
 

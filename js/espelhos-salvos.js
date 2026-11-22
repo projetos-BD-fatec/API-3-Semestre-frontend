@@ -316,7 +316,7 @@ el.dlgConfirmar.addEventListener("click", async function () {
 ================================ */
 
 el.btnSair.addEventListener("click", function () {
-    localStorage.removeItem("token");
+    encerrarSessao();
     window.location.href = "../auth/login.html";
 });
 

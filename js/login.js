@@ -281,7 +281,8 @@ formLoginUsuario.addEventListener("submit", async function (event) {
 
         salvarSessao(
             "sessaoUsuario",
-            { email: email, ...dadosResposta }
+            { email: email, ...dadosResposta },
+            document.getElementById("lembrarUsuario").checked
         );
 
 
@@ -430,7 +431,8 @@ formLoginOcs.addEventListener("submit", async function (event) {
 
         salvarSessao(
             "sessaoOcs",
-            { cnpj: cnpj, ...dadosResposta }
+            { cnpj: cnpj, ...dadosResposta },
+            document.getElementById("lembrarOcs").checked
         );
 
 
@@ -474,31 +476,6 @@ formLoginOcs.addEventListener("submit", async function (event) {
 
 
 /* ===============================
-   SESSÃO
-================================ */
-
-function salvarSessao(chave, dados) {
-
-    localStorage.setItem(
-        chave,
-        JSON.stringify(dados)
-    );
-
-
-    /*
-     * Caso o backend devolva JWT:
-     */
-    if (dados.token) {
-
-        localStorage.setItem(
-            "token",
-            dados.token
-        );
-    }
-}
-
-
-/* ===============================
    MENSAGENS DE ERRO
 ================================ */
 
@@ -518,3 +495,30 @@ function limparErro(elemento) {
     elemento.className =
         "form-feedback";
 }
+
+
+/* ===============================
+   ESQUECI MINHA SENHA
+   Ainda não existe redefinição de senha pelo sistema:
+   orienta o usuário a procurar quem administra o acesso.
+================================ */
+
+const MENSAGEM_ESQUECI_SENHA = {
+    usuario: "Para redefinir sua senha, procure o setor do FUSEx responsável pelo seu cadastro.",
+    ocs: "Para redefinir a senha da OCS, entre em contato com o FUSEx informando o CNPJ cadastrado."
+};
+
+document.querySelectorAll("[data-esqueci]").forEach(function (botao) {
+
+    botao.addEventListener("click", function () {
+
+        const tipo = botao.dataset.esqueci;
+
+        const elemento = document.getElementById(
+            tipo === "ocs" ? "loginErrorOcs" : "loginErrorUsuario"
+        );
+
+        elemento.textContent = MENSAGEM_ESQUECI_SENHA[tipo];
+        elemento.className = "form-feedback info";
+    });
+});
