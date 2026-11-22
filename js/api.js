@@ -10,7 +10,7 @@ const LOGIN_URL = "../auth/login.html";
 
 
 async function fetchAutenticado(url, opcoes = {}) {
-    const token = localStorage.getItem("token");
+    const token = obterToken();
 
     if (!token) {
         window.location.href = LOGIN_URL;
@@ -25,7 +25,7 @@ async function fetchAutenticado(url, opcoes = {}) {
     const response = await fetch(url, { ...opcoes, headers });
 
     if (response.status === 401) {
-        localStorage.removeItem("token");
+        encerrarSessao();
         window.location.href = LOGIN_URL;
         throw new Error("Sessão expirada.");
     }
@@ -453,7 +453,7 @@ const PERFIS_LISURA = ["FUSEX", "LISURA", "ADMIN"];
  * Serve só para mostrar/esconder botões: quem garante o acesso é o backend.
  */
 function perfisDoUsuario() {
-    const token = localStorage.getItem("token");
+    const token = obterToken();
 
     if (!token || token.split(".").length !== 3) {
         return [];

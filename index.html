@@ -6,7 +6,7 @@
     <noscript><meta http-equiv="refresh" content="0; url=pages/auth/login.html"></noscript>
     <script>
         location.replace(
-            localStorage.getItem("token")
+            (sessionStorage.getItem("token") || localStorage.getItem("token"))
                 ? "pages/beneficiario/inicio.html"
                 : "pages/auth/login.html"
         );
